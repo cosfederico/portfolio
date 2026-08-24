@@ -894,6 +894,43 @@ body.focus-mode-on .home-fade {
 
 /* ── Videos ── */
 
+/* Scoped to the videos page only (not the shared .page-shell rule, so
+   nothing else risks inheriting a new stacking context). z-index:0 here
+   (not just position:relative) is what actually creates that stacking
+   context - it's what keeps .video-bg's negative z-index scoped to just
+   this page's own content instead of comparing against the header/footer. */
+.video-page .page-shell {
+  position: relative;
+  z-index: 0;
+}
+
+.video-bg {
+  /* Full-bleed: .page-shell caps out at 1320px, but the background should
+     span the actual browser width - top/bottom still match .page-shell
+     (its height, from the real content), only left/right break out of it. */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.video-bg__stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.video-bg__stack video {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.14;
+}
+
 .youtube-link {
   color: rgba(255, 0, 51, 1);
   text-decoration: underline;

@@ -13,6 +13,7 @@ const Site = {
   mosaic: null,
   site: null,
   channelPlaylists: null,
+  backgroundVideos: null,
   focusMode: false,
   _aspectCache: new Map(),
 
@@ -120,12 +121,13 @@ const Site = {
       }
     };
 
-    [this.photos, this.videos, this.mosaic, this.site, this.channelPlaylists] = await Promise.all([
+    [this.photos, this.videos, this.mosaic, this.site, this.channelPlaylists, this.backgroundVideos] = await Promise.all([
       fetchJson("/data/photos.json"),
       fetchJson("/data/videos.json"),
       fetchJson("/data/mosaic-items.json"),
       fetchJson("/data/site.json"),
       fetchJson("/data/youtube-playlists.json"),
+      fetchJson("/data/background-videos.json"),
     ]);
   },
 
@@ -655,7 +657,23 @@ const Site = {
     this.lightbox.caption.textContent = image.caption || "";
   },
 
+  // Ambient page background: a vertical stack of small, silent, looping
+  // clips (converted by scripts/convert-videos-to-web.bat - see
+  // data/background-videos.json) behind the page content at low opacity.
+  // Each keeps its own native aspect ratio (width:100%, height:auto in
+  // CSS) rather than being cropped to fill a fixed box.
+  renderBackgroundVideos() {
+    const stack = document.getElementById("video-bg-stack");
+    if (!stack || !this.backgroundVideos?.length) return;
+
+    stack.innerHTML = this.backgroundVideos
+      .map((bg) => `<video src="${bg.src}" autoplay muted loop playsinline preload="auto"></video>`)
+      .join("");
+  },
+
   renderVideosPage() {
+    this.renderBackgroundVideos();
+
     const featured = document.getElementById("video-featured");
     const grid = document.getElementById("video-grid");
     if (!this.videos?.length) return;
