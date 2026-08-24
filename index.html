@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Federico Coscia | Photographer & Filmmaker</title>
+    <meta name="description" content="Cinematic photography and film by Federico Coscia — landscapes, travel, and quiet portraits shaped by light and atmosphere." />
+    <link rel="icon" type="image/png" href="/_resources/fc_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="home-page" data-page="home">
+    <div id="site-header-placeholder"></div>
+
+    <main class="home-hero">
+      <section class="home-mosaic" aria-hidden="true">
+        <div id="home-mosaic-grid" class="home-mosaic-grid"></div>
+      </section>
+      <div class="home-fade" aria-hidden="true"></div>
+
+      <section class="hero-overlay">
+        <h1 class="hero-name">FEDERICO COSCIA</h1>
+        <p class="hero-role">Photographer &middot; Videomaker</p>
+      </section>
+    </main>
+
+    <div id="polaroid-modal" class="polaroid-modal" hidden></div>
+
+    <div class="focus-toggle">
+      <span class="focus-toggle__glow" aria-hidden="true"></span>
+      <span class="focus-toggle__label">Interactive Mode</span>
+      <button
+        type="button"
+        class="focus-toggle__switch"
+        id="focus-switch"
+        role="switch"
+        aria-checked="false"
+        aria-label="Toggle interactive mode"
+      >
+        <span class="focus-toggle__knob"></span>
+      </button>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

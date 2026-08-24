@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact // Federico Coscia</title>
+    <meta name="description" content="Get in touch with Federico Coscia for photography and filmmaking commissions." />
+    <link rel="icon" type="image/png" href="/_resources/fc_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="contact-page" data-page="contact">
+    <div id="site-header-placeholder"></div>
+
+    <div class="contact-bg" style="background-image: url('/_resources/images-web/IMG_0082.webp')" aria-hidden="true"></div>
+    <!-- <div class="home-fade" aria-hidden="true"></div> -->
+
+    <main class="page-shell">
+      <div class="contact-layout">
+        <div class="contact-info reveal">
+          <p class="eyebrow">Contact</p>
+          <h1>Tell me your story.</h1>
+          <p class="lead">Available for commissions and creative collaborations.</p>
+          <a class="email-link" href="mailto:cosciafederico@outlook.com">cosciafederico@outlook.com</a>
+          <p>Based in Milan, Italy. Currently working in Italy.</p>
+        </div>
+
+        <form id="contact-form" class="form-card reveal" novalidate>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your story" required></textarea>
+          </div>
+          <button class="button button--filled" type="submit">Send inquiry</button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div>
+        <nav class="social-links" aria-label="Social media">
+            <a href="https://instagram.com/pikasfed" target="_blank" rel="noopener noreferrer">Personal Instagram</a>
+            <a href="https://instagram.com/federicocosciaphotographer" target="_blank" rel="noopener noreferrer">Events Photography Instagram</a>
+            <a href="https://youtube.com/@pikasfed" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </nav>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© <span id="year"></span> Federico Coscia</p>
+    </footer>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

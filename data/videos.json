@@ -1,0 +1,26 @@
+[
+  {
+    "id": "winter-light",
+    "title": "Winter Light",
+    "description": "Quiet landscapes and delicate motion across the northern coast.",
+    "youtubeId": "ScMzIvxBSi4",
+    "year": 2025,
+    "featured": true
+  },
+  {
+    "id": "stories-in-motion",
+    "title": "Stories in Motion",
+    "description": "Reflective scenes built around rhythm, texture, and natural light.",
+    "youtubeId": "aqz-KE-bpKQ",
+    "year": 2024,
+    "featured": false
+  },
+  {
+    "id": "between-tides",
+    "title": "Between Tides",
+    "description": "A short study of shoreline movement and changing weather.",
+    "youtubeId": "1La4QzGeaaQ",
+    "year": 2024,
+    "featured": false
+  }
+]
