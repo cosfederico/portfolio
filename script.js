@@ -3,6 +3,7 @@ const Site = {
   videos: null,
   mosaic: null,
   site: null,
+  channelPlaylists: null,
   focusMode: false,
   _aspectCache: new Map(),
 
@@ -110,11 +111,12 @@ const Site = {
       }
     };
 
-    [this.photos, this.videos, this.mosaic, this.site] = await Promise.all([
+    [this.photos, this.videos, this.mosaic, this.site, this.channelPlaylists] = await Promise.all([
       fetchJson("/data/photos.json"),
       fetchJson("/data/videos.json"),
       fetchJson("/data/mosaic-items.json"),
       fetchJson("/data/site.json"),
+      fetchJson("/data/youtube-playlists.json"),
     ]);
   },
 
@@ -694,6 +696,148 @@ const Site = {
     }
 
     this.initReveal();
+    this.renderChannelPlaylists();
+  },
+
+  // Netflix/channel-style rows: one row per playlist, thumbnails scroll
+  // horizontally, clicking one opens the shared player modal via the
+  // YouTube IFrame Player API instead of the inline featured embed above.
+  renderChannelPlaylists() {
+    const container = document.getElementById("channel-playlists");
+    if (!container) return;
+
+    const playlists = this.channelPlaylists?.playlists || [];
+    if (!playlists.length) {
+      container.innerHTML = '<p class="empty-state">No playlists yet - run scripts/fetch_youtube_playlists.py to pull them from YouTube.</p>';
+      return;
+    }
+
+    container.innerHTML = playlists
+      .map(
+        (playlist) => `
+        <section class="playlist-row reveal" aria-label="${playlist.title}">
+          <h3 class="playlist-row__title">${playlist.title}</h3>
+          <div class="playlist-row__scroller">
+            ${playlist.videos
+              .map(
+                (video) => `
+                <button
+                  class="playlist-card"
+                  data-video-id="${video.id}"
+                  data-video-title="${video.title.replace(/"/g, "&quot;")}"
+                  aria-label="Play ${video.title}"
+                >
+                  <span class="playlist-card__thumb">
+                    <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" />
+                    <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
+                  </span>
+                  <span class="playlist-card__title">${video.title}</span>
+                </button>`
+              )
+              .join("")}
+          </div>
+        </section>`
+      )
+      .join("");
+
+    container.querySelectorAll(".playlist-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        this.openVideoModal(card.dataset.videoId, card.dataset.videoTitle);
+      });
+    });
+
+    this.initReveal();
+  },
+
+  // Lazily loads the IFrame Player API script once and resolves when
+  // window.YT is ready to construct players with.
+  loadYouTubeIframeApi() {
+    if (this._youtubeApiPromise) return this._youtubeApiPromise;
+
+    this._youtubeApiPromise = new Promise((resolve) => {
+      if (window.YT && window.YT.Player) {
+        resolve(window.YT);
+        return;
+      }
+      const previousCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (typeof previousCallback === "function") previousCallback();
+        resolve(window.YT);
+      };
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    });
+
+    return this._youtubeApiPromise;
+  },
+
+  initVideoModal() {
+    if (this._videoModal) return;
+
+    const modal = document.createElement("div");
+    modal.className = "video-modal";
+    modal.hidden = true;
+    modal.innerHTML = `
+      <div class="video-modal__panel">
+        <div class="video-modal__stage">
+          <div id="youtube-player"></div>
+        </div>
+        <div class="video-modal__footer">
+          <h3 class="video-modal__title" id="video-modal-title"></h3>
+          <button type="button" class="video-modal__close" id="video-modal-close" aria-label="Close video">&times;</button>
+        </div>
+      </div>`;
+
+    document.body.appendChild(modal);
+
+    this._videoModal = {
+      el: modal,
+      title: modal.querySelector("#video-modal-title"),
+      player: null,
+    };
+
+    modal.querySelector("#video-modal-close").addEventListener("click", () => this.closeVideoModal());
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) this.closeVideoModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) this.closeVideoModal();
+    });
+  },
+
+  async openVideoModal(videoId, title) {
+    this.initVideoModal();
+    const m = this._videoModal;
+
+    m.title.textContent = title || "";
+    m.el.hidden = false;
+    document.body.classList.add("modal-open");
+    requestAnimationFrame(() => m.el.classList.add("is-open"));
+
+    const YT = await this.loadYouTubeIframeApi();
+
+    if (m.player) {
+      m.player.loadVideoById(videoId);
+    } else {
+      m.player = new YT.Player("youtube-player", {
+        videoId,
+        playerVars: { rel: 0, playsinline: 1, autoplay: 1 },
+      });
+    }
+  },
+
+  closeVideoModal() {
+    const m = this._videoModal;
+    if (!m) return;
+    m.el.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
+    if (m.player?.stopVideo) m.player.stopVideo();
+    // Let the fade-out transition (see .video-modal.is-open in styles.css)
+    // finish before actually hiding it - display:none can't be transitioned.
+    setTimeout(() => {
+      if (!m.el.classList.contains("is-open")) m.el.hidden = true;
+    }, 450);
   },
 
   initContactForm() {

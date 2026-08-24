@@ -34,6 +34,7 @@ body {
   line-height: 1.65;
   font-weight: 400;
   font-size: 1rem;
+  overflow-x: hidden; /* full-bleed sections (e.g. .channel-playlists) use 100vw breakouts */
 }
 
 img {
@@ -1020,6 +1021,204 @@ body.focus-mode-on .home-fade {
   margin-bottom: 0.5rem;
 }
 
+/* ── Channel playlists (Netflix-style rows) ── */
+
+.channel-playlists {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.playlist-row__title {
+  /* Stays inside .page-shell's normal gutter, aligned with the rest of the
+     page's text - only the scroller below breaks out to the edges. */
+  margin: 0 0 1rem;
+}
+
+.playlist-row__scroller {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge */
+  /* Full-bleed: break out of .page-shell's centered max-width column so the
+     video strip spans the whole viewport instead of stopping at the page
+     gutters, while .playlist-row__title above stays put. */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.playlist-row__scroller::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, modern Edge */
+}
+
+.playlist-card {
+  /* Sized to the film strip's own ratio (1920x1318 - taller than 16:9), so
+     the strip's sprocket-hole bands stick out above/below the video, which
+     sits centered in a shorter 16:9 box inside. Nothing here ever overflows
+     its box, so the row never needs to clip anything. */
+  position: relative;
+  flex: 0 0 260px;
+  aspect-ratio: 1920 / 1318;
+  scroll-snap-align: start;
+  padding: 0;
+  border: 0;
+  background-color: #050505;
+  background-image: url("/_resources/film-strip.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  text-align: left;
+}
+
+.playlist-card__thumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.playlist-card__thumb img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.playlist-card:hover .playlist-card__thumb img {
+  transform: scale(1.06);
+}
+
+.playlist-card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.playlist-card:hover .playlist-card__play {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.playlist-card__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 1.75rem 0.65rem 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.playlist-card:hover .playlist-card__title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Video player modal (YouTube IFrame Player API) ── */
+/* Same darkened-glass treatment as .polaroid-modal: the page stays visible
+   underneath, just dimmed and blurred, and both open/close fade via the
+   is-open class + a matching setTimeout in script.js (display:none can't
+   itself be transitioned). */
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, background 0.45s ease, backdrop-filter 0.45s ease;
+}
+
+.video-modal[hidden] { display: none !important; }
+
+.video-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.video-modal__panel {
+  width: min(960px, 100%);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  transform: translateY(16px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.45s var(--ease-out), opacity 0.45s var(--ease-out);
+}
+
+.video-modal.is-open .video-modal__panel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.video-modal__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video-modal__stage iframe,
+.video-modal__stage #youtube-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.video-modal__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.video-modal__close {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: background 0.25s ease;
+}
+
+.video-modal__close:hover { background: var(--surface); }
+
 /* ── About ── */
 
 .about-bg {
@@ -1411,6 +1610,10 @@ body.lightbox-open {
 
   .lightbox__nav--prev { left: 0.5rem; }
   .lightbox__nav--next { right: 0.5rem; }
+
+  .playlist-card { flex-basis: 170px; }
+
+  .video-modal { padding: 0; }
 }
 
 @media (max-width: 480px) {
