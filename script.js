@@ -660,14 +660,20 @@ const Site = {
   // Ambient page background: a vertical stack of small, silent, looping
   // clips (converted by scripts/convert-videos-to-web.bat - see
   // data/background-videos.json) behind the page content at low opacity.
-  // Each keeps its own native aspect ratio (width:100%, height:auto in
-  // CSS) rather than being cropped to fill a fixed box.
+  // Each is scaled to the full page width, then cropped to 16:9 (see
+  // aspect-ratio/object-fit on .video-bg__stack video in styles.css).
+  // `focusY` (0-100, default 50) picks which part of that taller source
+  // frame stays in the crop: 0 keeps the top, 100 the bottom, 50 centers
+  // it - tune it per clip in data/background-videos.json.
   renderBackgroundVideos() {
     const stack = document.getElementById("video-bg-stack");
     if (!stack || !this.backgroundVideos?.length) return;
 
     stack.innerHTML = this.backgroundVideos
-      .map((bg) => `<video src="${bg.src}" autoplay muted loop playsinline preload="auto"></video>`)
+      .map((bg) => {
+        const focusY = Number.isFinite(bg.focusY) ? bg.focusY : 50;
+        return `<video src="${bg.src}" autoplay muted loop playsinline preload="auto" style="--focus-y: ${focusY}%"></video>`;
+      })
       .join("");
   },
 
