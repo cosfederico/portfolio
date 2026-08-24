@@ -1,3 +1,12 @@
+// Clone cards padded onto each end of a looped playlist row (see
+// initInfiniteScrollers). Fixed and small on purpose: enough clones must be
+// visible on both sides of a scroll-jump for it to be seamless, so this
+// needs to cover one full row's width - 14 cards (~3640px at the desktop
+// card width) comfortably covers even ultrawide monitors. It never grows
+// past this, so the DOM/memory cost per row is constant no matter how far -
+// or how long - someone scrolls.
+const LOOP_BUFFER_CARDS = 14;
+
 const Site = {
   photos: null,
   videos: null,
@@ -712,32 +721,41 @@ const Site = {
       return;
     }
 
+    const buildCard = (video, isClone) => `
+      <button
+        class="playlist-card"
+        data-video-id="${video.id}"
+        data-video-title="${video.title.replace(/"/g, "&quot;")}"
+        aria-label="Play ${video.title}"
+        ${isClone ? 'aria-hidden="true" tabindex="-1"' : ""}
+      >
+        <span class="playlist-card__thumb">
+          <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" />
+          <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
+        </span>
+        <span class="playlist-card__title">${video.title}</span>
+      </button>`;
+
     container.innerHTML = playlists
-      .map(
-        (playlist) => `
+      .map((playlist) => {
+        const videos = playlist.videos;
+        // Looping only makes sense with more than one video - a single one
+        // would just repeat itself. Below LOOP_BUFFER_CARDS, wrappedSlice
+        // cycles back through the same short list to still fill the buffer.
+        const canLoop = videos.length >= 2;
+        const before = canLoop ? this.wrappedSlice(videos, -LOOP_BUFFER_CARDS, LOOP_BUFFER_CARDS) : [];
+        const after = canLoop ? this.wrappedSlice(videos, videos.length, LOOP_BUFFER_CARDS) : [];
+
+        return `
         <section class="playlist-row reveal" aria-label="${playlist.title}">
           <h3 class="playlist-row__title">${playlist.title}</h3>
-          <div class="playlist-row__scroller">
-            ${playlist.videos
-              .map(
-                (video) => `
-                <button
-                  class="playlist-card"
-                  data-video-id="${video.id}"
-                  data-video-title="${video.title.replace(/"/g, "&quot;")}"
-                  aria-label="Play ${video.title}"
-                >
-                  <span class="playlist-card__thumb">
-                    <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" />
-                    <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
-                  </span>
-                  <span class="playlist-card__title">${video.title}</span>
-                </button>`
-              )
-              .join("")}
+          <div class="playlist-row__scroller" data-loop="${canLoop}" data-real-count="${videos.length}">
+            ${before.map((v) => buildCard(v, true)).join("")}
+            ${videos.map((v) => buildCard(v, false)).join("")}
+            ${after.map((v) => buildCard(v, true)).join("")}
           </div>
-        </section>`
-      )
+        </section>`;
+      })
       .join("");
 
     container.querySelectorAll(".playlist-card").forEach((card) => {
@@ -747,6 +765,100 @@ const Site = {
     });
 
     this.initReveal();
+    this.initInfiniteScrollers();
+  },
+
+  // Returns `length` items from `list`, starting at `start` (which may be
+  // negative or beyond list.length) and wrapping around as many times as
+  // needed. Used to build the clone buffers below.
+  wrappedSlice(list, start, length) {
+    const n = list.length;
+    const out = [];
+    for (let i = 0; i < length; i++) {
+      out.push(list[(((start + i) % n) + n) % n]);
+    }
+    return out;
+  },
+
+  // Makes each looped playlist row scroll endlessly in both directions
+  // without ever growing the DOM or re-fetching anything while scrolling.
+  //
+  // Each row was rendered as [clone tail][real videos][clone head] - a
+  // fixed, small, one-time set of nodes (LOOP_BUFFER_CARDS on each side,
+  // reusing the same thumbnail URLs as their real counterparts, so the
+  // browser's own image cache serves them with no extra network cost).
+  // Nothing is ever added, removed, or reassigned while the user scrolls:
+  // we just watch scrollLeft and, whenever it drifts into a clone buffer,
+  // jump it by exactly one real-content width. Because every clone mirrors
+  // the real card at the equivalent wrapped position, the frame after the
+  // jump is pixel-identical to the frame before it - so the jump is
+  // invisible, and the same fixed set of nodes can be scrolled forever.
+  initInfiniteScrollers() {
+    const scrollers = document.querySelectorAll('.playlist-row__scroller[data-loop="true"]');
+
+    // `_loopBound` guards each scroller against getting a second scroll
+    // listener if this is ever called again for the same row; entries are
+    // accumulated on `this` (rather than captured only in this call's
+    // closure) so the one shared resize listener below always covers every
+    // row that has ever been initialized, not just the latest batch.
+    const entries = Array.from(scrollers)
+      .filter((scroller) => !scroller._loopBound)
+      .map((scroller) => ({ scroller, realCount: Number(scroller.dataset.realCount) || 0, cardWidth: 0 }))
+      .filter((entry) => entry.realCount > 0);
+    if (!entries.length) return;
+
+    const measure = (entry) => {
+      entry.cardWidth = entry.scroller.children[0]?.getBoundingClientRect().width || 0;
+    };
+
+    entries.forEach((entry) => {
+      entry.scroller._loopBound = true;
+      measure(entry);
+      if (!entry.cardWidth) return;
+
+      entry.scroller.scrollLeft = LOOP_BUFFER_CARDS * entry.cardWidth;
+
+      let ticking = false;
+      entry.scroller.addEventListener(
+        "scroll",
+        () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => {
+            ticking = false;
+            const bufferWidth = LOOP_BUFFER_CARDS * entry.cardWidth;
+            const realWidth = entry.realCount * entry.cardWidth;
+            let x = entry.scroller.scrollLeft;
+            while (x < bufferWidth) x += realWidth;
+            while (x >= bufferWidth + realWidth) x -= realWidth;
+            if (x !== entry.scroller.scrollLeft) entry.scroller.scrollLeft = x;
+          });
+        },
+        { passive: true }
+      );
+    });
+
+    this._loopEntries = (this._loopEntries || []).concat(entries);
+
+    // One resize listener total, no matter how many rows/times this runs.
+    if (!this._loopResizeBound) {
+      this._loopResizeBound = true;
+      window.addEventListener("resize", () => {
+        // Card width only actually changes when the responsive breakpoint
+        // flips (e.g. crossing 768px), not on every resize tick, but
+        // re-measuring is cheap - keep the same card visible rather than
+        // just re-centering.
+        clearTimeout(this._playlistResizeTimer);
+        this._playlistResizeTimer = setTimeout(() => {
+          this._loopEntries.forEach((entry) => {
+            if (!entry.cardWidth) return;
+            const cardIndex = Math.round(entry.scroller.scrollLeft / entry.cardWidth);
+            measure(entry);
+            if (entry.cardWidth) entry.scroller.scrollLeft = cardIndex * entry.cardWidth;
+          });
+        }, 200);
+      });
+    }
   },
 
   // Lazily loads the IFrame Player API script once and resolves when
