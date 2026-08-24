@@ -1,0 +1,99 @@
+{
+  "categories": ["All", "Landscapes", "Travel", "Portraits"],
+  "projects": [
+    {
+      "slug": "iceland-winter",
+      "title": "Iceland Winter",
+      "category": "Landscapes",
+      "year": 2025,
+      "cover": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
+      "description": "Volcanic coastlines and glacier light in the southern highlands.",
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Mountain range in blue haze",
+          "title": "Blue Distance",
+          "caption": "The mountain line emerged slowly as the morning light shifted."
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Sunlit mountain ridge",
+          "title": "Sunlit Ridge",
+          "caption": "A quiet dawn over the ridgeline before the world had fully woken."
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Waterline at dusk",
+          "title": "Dusk Horizon",
+          "caption": "The horizon felt like a pause — time softened and settled."
+        }
+      ]
+    },
+    {
+      "slug": "alpine-passages",
+      "title": "Alpine Passages",
+      "category": "Landscapes",
+      "year": 2024,
+      "cover": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",
+      "description": "Forest trails and alpine valleys across the Dolomites.",
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Forest path in autumn",
+          "title": "Autumn Path",
+          "caption": "A place that made you slow down without wanting to leave."
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Road through pine trees",
+          "title": "The Long Road",
+          "caption": "The road felt endless, but the stillness made it intentional."
+        }
+      ]
+    },
+    {
+      "slug": "coastal-japan",
+      "title": "Coastal Japan",
+      "category": "Travel",
+      "year": 2024,
+      "cover": "https://images.unsplash.com/photo-1493976040374-85c8e912f137?auto=format&fit=crop&w=1600&q=80",
+      "description": "Temples, coastlines, and the rhythm of everyday light.",
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1493976040374-85c8e912f137?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Traditional temple in Kyoto",
+          "title": "Morning Temple",
+          "caption": "First light over the courtyard before visitors arrived."
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1545569341-9eb8b3c46932?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Torii gate at sunset",
+          "title": "Torii at Dusk",
+          "caption": "The gate framed the sea like a threshold between worlds."
+        }
+      ]
+    },
+    {
+      "slug": "quiet-portraits",
+      "title": "Quiet Portraits",
+      "category": "Portraits",
+      "year": 2025,
+      "cover": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1600&q=80",
+      "description": "Intimate portraits built on patience, trust, and natural light.",
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Portrait in soft evening light",
+          "title": "Evening Portrait",
+          "caption": "Every detail earned through patience and trust."
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=2000&q=85",
+          "alt": "Portrait with dramatic side light",
+          "title": "Side Light",
+          "caption": "A single window — enough to tell the whole story."
+        }
+      ]
+    }
+  ]
+}
