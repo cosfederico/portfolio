@@ -401,6 +401,21 @@ const Site = {
     return `${day}/${month}/${year}`;
   },
 
+  // "21 August 2025" - parsed by hand (not `new Date`) so a "YYYY-MM-DD"
+  // string never shifts by a day across timezones.
+  formatLongDate(dateStr) {
+    if (!dateStr) return "";
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr.trim());
+    if (!match) return dateStr;
+    const [, year, month, day] = match;
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
+    ];
+    const monthName = months[Number(month) - 1] || month;
+    return `${Number(day)} ${monthName} ${year}`;
+  },
+
   async openPolaroid(item) {
     this.initPolaroid();
     const p = this._polaroid;
@@ -660,9 +675,9 @@ const Site = {
           ></iframe>
         </div>
         <div class="video-featured__info reveal">
-          <p class="eyebrow">Featured video · ${featuredVideo.year}</p>
-          <h2>${featuredVideo.title}</h2>
-          <p class="lead">${featuredVideo.description}</p>
+          <h2 class="video-featured__title">${featuredVideo.title}</h2>
+          <p class="video-featured__date">${this.formatLongDate(featuredVideo.date)}</p>
+          <p class="video-featured__description">${featuredVideo.description}</p>
         </div>`;
     }
 
@@ -696,9 +711,9 @@ const Site = {
           if (video && featured) {
             featured.scrollIntoView({ behavior: "smooth" });
             featured.querySelector("iframe").src = `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
-            featured.querySelector("h2").textContent = video.title;
-            featured.querySelector(".lead").textContent = video.description;
-            featured.querySelector(".eyebrow").textContent = `Featured video · ${video.year}`;
+            featured.querySelector(".video-featured__title").textContent = video.title;
+            featured.querySelector(".video-featured__date").textContent = this.formatLongDate(video.date);
+            featured.querySelector(".video-featured__description").textContent = video.description;
           }
         });
       });
