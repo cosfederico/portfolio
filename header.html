@@ -4,6 +4,21 @@
     <span></span>
     <span></span>
   </button>
+  <!-- Only shown (via JS) on pages that actually render a video background -
+       lets visitors stop the looping background clips, for accessibility
+       (respects prefers-reduced-motion by default too) and lighter/slower
+       browsers. -->
+  <button
+    class="bg-toggle"
+    id="bg-toggle"
+    type="button"
+    aria-label="Pause background videos"
+    aria-pressed="false"
+    hidden
+  >
+    <span class="bg-toggle__icon bg-toggle__icon--pause" aria-hidden="true"></span>
+    <span class="bg-toggle__icon bg-toggle__icon--play" aria-hidden="true"></span>
+  </button>
   <nav class="site-nav" aria-label="Main navigation">
     <a href="/about/">About</a>
     <span class="nav-dot" aria-hidden="true">·</span>

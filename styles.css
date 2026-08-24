@@ -239,6 +239,57 @@ h3 {
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
+.bg-toggle {
+  position: absolute;
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0px solid var(--border);
+  background: transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.bg-toggle:hover {
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.bg-toggle[hidden] { display: none !important; }
+
+.bg-toggle__icon { display: none; }
+
+/* Showing a pause icon while playing (and vice versa) - the icon is
+   always what clicking the button will do next, same convention as any
+   media player's play/pause control. */
+.bg-toggle:not(.is-paused) .bg-toggle__icon--pause {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.bg-toggle:not(.is-paused) .bg-toggle__icon--pause::before,
+.bg-toggle:not(.is-paused) .bg-toggle__icon--pause::after {
+  content: "";
+  width: 3px;
+  height: 11px;
+  background: var(--text);
+}
+
+.bg-toggle.is-paused .bg-toggle__icon--play {
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent var(--text);
+}
+
 /* ── Buttons ── */
 
 .button {
@@ -1637,6 +1688,13 @@ body.lightbox-open {
   :root { --header-height: 64px; }
 
   .nav-toggle { display: block; }
+
+  /* .nav-toggle (hamburger) already owns the right edge here - move this
+     to the opposite side instead of overlapping it. */
+  .bg-toggle {
+    right: auto;
+    left: 1.25rem;
+  }
 
   .site-nav {
     position: fixed;
