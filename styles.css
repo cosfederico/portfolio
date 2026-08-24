@@ -927,8 +927,13 @@ body.focus-mode-on .home-fade {
 .video-bg__stack video {
   display: block;
   width: 100%;
-  height: auto;
-  opacity: 0.14;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* Vertical crop focal point, per-video - see the "focusY" field in
+     data/background-videos.json and renderBackgroundVideos() in script.js.
+     0% = show the top of the frame, 100% = the bottom, 50% = centered. */
+  object-position: center var(--focus-y, 50%);
+  opacity: 0.45;
 }
 
 .youtube-link {
