@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark;
   --bg: #080808;
-  --bg-elevated: #111111;
+  --bg-elevated: #111111af;
   --surface: rgba(255, 255, 255, 0.035);
   --text: #ffffff;
   --text-soft: #d7d5d5;
@@ -1780,6 +1780,7 @@ body.lightbox-open {
     overflow-y: visible;
     border-left: 0;
     border-top: 1px solid var(--border);
+    opacity: 0.5;
   }
 }
 
