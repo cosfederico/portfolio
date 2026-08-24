@@ -675,6 +675,40 @@ const Site = {
         return `<video src="${bg.src}" autoplay muted loop playsinline preload="auto" style="--focus-y: ${focusY}%"></video>`;
       })
       .join("");
+
+    this.initBackgroundVideoToggle(stack);
+  },
+
+  // Reveals the header's play/pause control (hidden by default - see
+  // header.html - so it never shows up on pages with no video background)
+  // and wires it to pause/resume every clip in the stack at once. Also
+  // respects prefers-reduced-motion: if set, the videos start paused
+  // instead of autoplaying, same spirit as the reduced-motion block in
+  // styles.css that already turns off CSS animations/transitions.
+  initBackgroundVideoToggle(stack) {
+    const toggle = document.getElementById("bg-toggle");
+    if (!toggle) return;
+
+    const videos = () => stack.querySelectorAll("video");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const setPaused = (paused) => {
+      videos().forEach((video) => (paused ? video.pause() : video.play().catch(() => {})));
+      toggle.classList.toggle("is-paused", paused);
+      toggle.setAttribute("aria-pressed", String(paused));
+      toggle.setAttribute("aria-label", paused ? "Resume background videos" : "Pause background videos");
+    };
+
+    toggle.hidden = false;
+    setPaused(reducedMotion);
+
+    // Guard against binding twice if this is ever called again for the
+    // same header (e.g. a future re-render) - the header markup persists
+    // across renderVideosPage() calls, only .video-bg-stack is rebuilt.
+    if (!toggle._bgToggleBound) {
+      toggle._bgToggleBound = true;
+      toggle.addEventListener("click", () => setPaused(!toggle.classList.contains("is-paused")));
+    }
   },
 
   renderVideosPage() {
