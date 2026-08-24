@@ -649,7 +649,7 @@ const Site = {
           ></iframe>
         </div>
         <div class="video-featured__info reveal">
-          <p class="eyebrow">Featured film · ${featuredVideo.year}</p>
+          <p class="eyebrow">Featured video · ${featuredVideo.year}</p>
           <h2>${featuredVideo.title}</h2>
           <p class="lead">${featuredVideo.description}</p>
         </div>`;
@@ -687,7 +687,7 @@ const Site = {
             featured.querySelector("iframe").src = `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
             featured.querySelector("h2").textContent = video.title;
             featured.querySelector(".lead").textContent = video.description;
-            featured.querySelector(".eyebrow").textContent = `Featured film · ${video.year}`;
+            featured.querySelector(".eyebrow").textContent = `Featured video · ${video.year}`;
           }
         });
       });
