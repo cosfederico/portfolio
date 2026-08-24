@@ -1,26 +1,34 @@
 [
   {
-    "id": "winter-light",
-    "title": "Winter Light",
-    "description": "Quiet landscapes and delicate motion across the northern coast.",
-    "youtubeId": "ScMzIvxBSi4",
+    "id": "scarlett",
+    "title": "Holly Humberstone - Scarlett (Garden Version) (slowed + reverb) [4K]",
+    "description": "",
+    "youtubeId": "3A9y4JiM8n4",
     "year": 2025,
     "featured": true
   },
   {
-    "id": "stories-in-motion",
-    "title": "Stories in Motion",
-    "description": "Reflective scenes built around rhythm, texture, and natural light.",
-    "youtubeId": "aqz-KE-bpKQ",
+    "id": "himym",
+    "title": "How I Met Your Mother - Screams and Dreams (Edit)",
+    "description": "",
+    "youtubeId": "R0pnDLn6ipA",
     "year": 2024,
     "featured": false
   },
+   {
+    "id": "twawtt-holly",
+    "title": "Holly Humberstone - The Walls Are Way Too Thin [slowed + reverb] (inside the walls)",
+    "description": "",
+    "youtubeId": "J-C3XjUsO38",
+    "year": 2023,
+    "featured": false
+  },
   {
-    "id": "between-tides",
-    "title": "Between Tides",
-    "description": "A short study of shoreline movement and changing weather.",
-    "youtubeId": "1La4QzGeaaQ",
-    "year": 2024,
+    "id": "smother-daughter",
+    "title": "Trying to Visualize Daughter's Smother.",
+    "description": "",
+    "youtubeId": "xI5c2MSAm_Y",
+    "year": 2022,
     "featured": false
   }
 ]

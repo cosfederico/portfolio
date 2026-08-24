@@ -893,6 +893,17 @@ body.focus-mode-on .home-fade {
 
 /* ── Videos ── */
 
+.youtube-link {
+  color: rgba(255, 0, 51, 1);
+  text-decoration: underline;
+  filter: none;
+  transition: filter 0.25s ease;
+}
+
+.youtube-link:hover {
+  filter: drop-shadow(0 0 5px rgba(255, 0, 51, 0.5)) drop-shadow(0 0 10px rgba(255, 0, 51, 0.25));
+}
+
 .video-featured {
   margin-bottom: 3rem;
 }
