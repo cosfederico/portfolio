@@ -15,7 +15,7 @@
   --border-strong: rgba(255, 255, 255, 0.18);
   --header-height: 72px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Bricolage Grotesque", "DM Sans", system-ui, sans-serif;
   --font-body: "DM Sans", system-ui, sans-serif;
 }
 
