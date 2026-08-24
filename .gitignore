@@ -1,2 +1,8 @@
 .claude/
 _resources/
+__pycache__/
+
+# Secrets used by scripts/fetch_youtube_playlists.py - never commit real keys.
+.env
+.env.*
+!.env.example
