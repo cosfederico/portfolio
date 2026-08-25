@@ -29,7 +29,66 @@ const mosaicJson = JSON.stringify(mosaicItems).replace(/</g, "\\u003c");
     </section>
   </main>
 
-  <div id="polaroid-modal" class="polaroid-modal" hidden></div>
+  <dialog id="polaroid-modal" class="polaroid-modal" aria-label="Photo details">
+    <div class="polaroid-panel">
+      <div class="polaroid" id="polaroid">
+        <div class="polaroid__card">
+          <div class="polaroid__face polaroid__front">
+            <div class="polaroid__photo">
+              <img id="polaroid-image" src="" alt="" />
+            </div>
+            <div class="polaroid__caption">
+              <p class="polaroid__place" id="polaroid-place"></p>
+              <p class="polaroid__date" id="polaroid-date"></p>
+              <p class="polaroid__story" id="polaroid-story"></p>
+            </div>
+          </div>
+          <div class="polaroid__face polaroid__back">
+            <div class="polaroid__back-photo">
+              <table class="polaroid__meta-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="polaroid__meta-cell">
+                        <span class="polaroid__meta-value" id="polaroid-camera"></span>
+                        <span class="polaroid__meta-label">Camera</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="polaroid__meta-cell">
+                        <span class="polaroid__meta-value" id="polaroid-aperture"></span>
+                        <span class="polaroid__meta-label">Aperture</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="polaroid__meta-cell">
+                        <span class="polaroid__meta-value" id="polaroid-shutter"></span>
+                        <span class="polaroid__meta-label">Shutter</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="polaroid__meta-cell">
+                        <span class="polaroid__meta-value" id="polaroid-iso"></span>
+                        <span class="polaroid__meta-label">ISO</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr><td id="polaroid-back-date"></td><td id="polaroid-back-place"></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="polaroid__back-blank" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="polaroid-actions">
+        <button type="button" class="polaroid-actions__btn polaroid-actions__btn--flip" id="polaroid-flip">Turn over</button>
+        <button type="button" class="polaroid-actions__btn polaroid-actions__btn--close" id="polaroid-close">Put back</button>
+      </div>
+    </div>
+  </dialog>
 
   <div class="focus-toggle">
     <span class="focus-toggle__glow" aria-hidden="true"></span>

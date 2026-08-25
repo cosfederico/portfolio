@@ -11,8 +11,19 @@ const Site = {
   focusMode: false,
   _aspectCache: new Map(),
 
+  // With View Transitions (see Layout.astro), this whole module only ever
+  // executes ONCE per browsing session - Astro recognizes the same script
+  // across pages and doesn't re-run it, and it swaps the page content
+  // in-place rather than doing a full reload. `astro:page-load` is Astro's
+  // event for "the page content is ready" that fires both on that one
+  // initial load AND after every subsequent transition, so init() runs
+  // once per page view the way it always did - it just can't assume it's
+  // starting from a blank slate: some setup (window-level listeners) must
+  // only ever happen once, other setup (wiring up this page's now-fresh
+  // DOM nodes) must happen every time. See the comments below on each
+  // function for which case it is.
   init() {
-    this.initHeaderBehavior();
+    this.initHeaderScrollOnce();
     this.initMobileNav();
     this.initReveal();
     this.initContactForm();
@@ -50,20 +61,31 @@ const Site = {
     });
   },
 
-  initHeaderBehavior() {
-    const header = document.querySelector(".site-header");
-    if (!header) return;
-
+  // The header itself is ordinary page content re-rendered fresh on every
+  // navigation (not persisted across the view transition), so the actual
+  // element needs re-reading on every page-load - but the window scroll
+  // listener must only ever be attached ONCE, or it piles up one instance
+  // per navigation for the rest of the session. Solved by binding the
+  // listener a single time and having it look up the current header itself
+  // each time it fires, rather than closing over a specific (page-load) copy.
+  initHeaderScrollOnce() {
     const onScroll = () => {
-      header.classList.toggle("is-scrolled", window.scrollY > 40);
+      document.querySelector(".site-header")?.classList.toggle("is-scrolled", window.scrollY > 40);
     };
-
     onScroll();
+
+    if (this._headerScrollBound) return;
+    this._headerScrollBound = true;
     window.addEventListener("scroll", onScroll, { passive: true });
   },
 
   initReveal() {
-    const items = document.querySelectorAll(".reveal:not(.is-observed)");
+    // A fresh page-load always means fresh (unobserved) .reveal elements -
+    // the old observer's targets are gone with the old DOM, so it's just
+    // disconnected rather than left to reference dead nodes indefinitely.
+    this._revealObserver?.disconnect();
+
+    const items = document.querySelectorAll(".reveal");
     if (!items.length) return;
 
     const observer = new IntersectionObserver(
@@ -79,10 +101,11 @@ const Site = {
     );
 
     items.forEach((el, i) => {
-      el.classList.add("is-observed");
       el.style.transitionDelay = `${i * 0.08}s`;
       observer.observe(el);
     });
+
+    this._revealObserver = observer;
   },
 
   initPage() {
@@ -108,11 +131,24 @@ const Site = {
   // the user scrolls - looping back through the image list - instead of
   // growing the DOM without limit or re-fetching/re-decoding images that are
   // already loaded.
+  //
+  // Guards on the actual grid element, not a boolean "have I ever run"
+  // flag: with View Transitions, navigating home -> elsewhere -> home again
+  // fires this again, and the *page* is fresh (a brand new #home-mosaic-grid
+  // element) even though `this` (the one long-lived script instance) isn't.
+  // A boolean flag would wrongly skip rebuilding the pool against a grid
+  // element that no longer exists, leaving the mosaic permanently empty on
+  // revisit. Comparing elements lets a genuinely fresh grid rebuild while
+  // still skipping redundant re-init within the same page view.
   initMosaic() {
     const grid = document.getElementById("home-mosaic-grid");
     const items = this.readEmbeddedJson("mosaic-data");
-    if (!grid || !items?.length || this._mosaicInitialized) return;
-    this._mosaicInitialized = true;
+    if (!grid || !items?.length || grid === this._mosaicGrid) return;
+
+    // Tear down the previous visit's pool-growth machinery (its targets -
+    // the old grid/sentinel - are gone with the old page) before rebuilding.
+    this._mosaicObserver?.disconnect();
+    clearTimeout(this._mosaicResizeTimer);
 
     this._mosaicGrid = grid;
     this._mosaicImages = [...items].sort(() => Math.random() - 0.5);
@@ -134,10 +170,16 @@ const Site = {
 
     this.growOrRecycleMosaic();
 
-    window.addEventListener("resize", () => {
-      clearTimeout(this._mosaicResizeTimer);
-      this._mosaicResizeTimer = setTimeout(() => this.growOrRecycleMosaic(), 250);
-    });
+    // One-time (not per-visit) window listener; it always reads the
+    // *current* this._mosaicGrid/_mosaicSentinel, so it stays correct
+    // across however many times the mosaic itself gets rebuilt above.
+    if (!this._mosaicResizeBound) {
+      this._mosaicResizeBound = true;
+      window.addEventListener("resize", () => {
+        clearTimeout(this._mosaicResizeTimer);
+        this._mosaicResizeTimer = setTimeout(() => this.growOrRecycleMosaic(), 250);
+      });
+    }
   },
 
   mosaicTilesPerScreen() {
@@ -222,6 +264,10 @@ const Site = {
     const grid = document.getElementById("home-mosaic-grid");
     if (!toggle) return;
 
+    // Reset (not carried over from a previous visit) - the fresh toggle
+    // button always starts unchecked, so internal state should match.
+    this.focusMode = false;
+
     toggle.addEventListener("click", () => {
       this.focusMode = !this.focusMode;
       toggle.classList.toggle("is-on", this.focusMode);
@@ -232,69 +278,21 @@ const Site = {
     });
   },
 
+  // The dialog's full markup is static (rendered by index.astro, not built
+  // here) - a native <dialog> gives real focus-trapping and ESC-to-close
+  // for free, neither of which the old hand-rolled div version had. This
+  // only wires up interactivity on top of what's already there.
+  //
+  // Guards on the actual dialog element (this._polaroidBoundEl), not a
+  // boolean flag: openPolaroid() calls this on every click, so *within* one
+  // page view it must skip re-wiring an already-wired dialog - but after a
+  // View Transitions navigation home -> elsewhere -> home, the dialog is a
+  // brand new element (the old one, and its listeners, are gone with the
+  // old page), and a boolean flag would wrongly skip rewiring it.
   initPolaroid() {
     const modal = document.getElementById("polaroid-modal");
-    if (!modal || this._polaroid) return;
-
-    modal.innerHTML = `
-      <div class="polaroid-panel">
-        <div class="polaroid" id="polaroid">
-          <div class="polaroid__card">
-            <div class="polaroid__face polaroid__front">
-              <div class="polaroid__photo">
-                <img id="polaroid-image" src="" alt="" />
-              </div>
-              <div class="polaroid__caption">
-                <p class="polaroid__place" id="polaroid-place"></p>
-                <p class="polaroid__date" id="polaroid-date"></p>
-                <p class="polaroid__story" id="polaroid-story"></p>
-              </div>
-            </div>
-            <div class="polaroid__face polaroid__back">
-              <div class="polaroid__back-photo">
-                <table class="polaroid__meta-table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="polaroid__meta-cell">
-                          <span class="polaroid__meta-value" id="polaroid-camera"></span>
-                          <span class="polaroid__meta-label">Camera</span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="polaroid__meta-cell">
-                          <span class="polaroid__meta-value" id="polaroid-aperture"></span>
-                          <span class="polaroid__meta-label">Aperture</span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="polaroid__meta-cell">
-                          <span class="polaroid__meta-value" id="polaroid-shutter"></span>
-                          <span class="polaroid__meta-label">Shutter</span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="polaroid__meta-cell">
-                          <span class="polaroid__meta-value" id="polaroid-iso"></span>
-                          <span class="polaroid__meta-label">ISO</span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr><td id="polaroid-back-date"></td><td id="polaroid-back-place"></td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="polaroid__back-blank" aria-hidden="true"></div>
-            </div>
-          </div>
-        </div>
-        <div class="polaroid-actions">
-          <button type="button" class="polaroid-actions__btn polaroid-actions__btn--flip" id="polaroid-flip">Turn over</button>
-          <button type="button" class="polaroid-actions__btn polaroid-actions__btn--close" id="polaroid-close">Put back</button>
-        </div>
-      </div>`;
+    if (!modal || modal === this._polaroidBoundEl) return;
+    this._polaroidBoundEl = modal;
 
     this._polaroid = {
       modal,
@@ -321,17 +319,30 @@ const Site = {
     });
 
     modal.querySelector("#polaroid-close").addEventListener("click", () => this.closePolaroid());
+    // Clicking the backdrop lands on the dialog element itself (not
+    // anything inside .polaroid-panel), same trick as the old div version.
     modal.addEventListener("click", (e) => {
       if (e.target === modal) this.closePolaroid();
     });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) this.closePolaroid();
+    // One `close` handler covers every way the dialog can close (button,
+    // backdrop click, or the browser's own native ESC handling) instead of
+    // duplicating this cleanup at each call site.
+    modal.addEventListener("close", () => {
+      document.body.classList.remove("modal-open");
     });
 
+    this.initPolaroidResizeOnce();
+  },
+
+  // One-time (not per-dialog-instance) resize listener - it always reads
+  // this._polaroid fresh, so it keeps working across however many times
+  // initPolaroid() above rebuilds that state.
+  initPolaroidResizeOnce() {
+    if (this._polaroidResizeBound) return;
+    this._polaroidResizeBound = true;
     window.addEventListener("resize", () => {
-      if (!modal.hidden && this._polaroid.currentAspect) {
-        this.sizePolaroid(this._polaroid.currentAspect);
-      }
+      const p = this._polaroid;
+      if (p?.modal.open && p.currentAspect) this.sizePolaroid(p.currentAspect);
     });
   },
 
@@ -391,9 +402,8 @@ const Site = {
     p.image.src = item.src;
     p.image.alt = item.alt || "";
 
-    p.modal.hidden = false;
     document.body.classList.add("modal-open");
-    requestAnimationFrame(() => p.modal.classList.add("is-open"));
+    if (!p.modal.open) p.modal.showModal();
   },
 
   loadImageAspect(src) {
@@ -413,13 +423,10 @@ const Site = {
   },
 
   closePolaroid() {
-    const p = this._polaroid;
-    if (!p) return;
-    p.modal.classList.remove("is-open");
-    document.body.classList.remove("modal-open");
-    setTimeout(() => {
-      if (!p.modal.classList.contains("is-open")) p.modal.hidden = true;
-    }, 450);
+    // body class cleanup happens in the dialog's "close" listener (see
+    // initPolaroid) - covers this call, the close button, backdrop clicks,
+    // and native ESC all in one place.
+    if (this._polaroid?.modal.open) this._polaroid.modal.close();
   },
 
   // The grid/filter markup itself is now rendered by Astro at build time
@@ -474,34 +481,14 @@ const Site = {
     }
   },
 
+  // Static markup (photos/index.astro), native <dialog> for real focus
+  // trapping/ESC-to-close - same reasoning as initPolaroid above, including
+  // the element-identity guard (this._lightboxBoundEl) so a fresh dialog
+  // after a View Transitions navigation gets rewired instead of skipped.
   initLightbox() {
-    if (document.getElementById("lightbox")) return;
-
-    const lightbox = document.createElement("div");
-    lightbox.id = "lightbox";
-    lightbox.className = "lightbox";
-    lightbox.hidden = true;
-    lightbox.setAttribute("role", "dialog");
-    lightbox.setAttribute("aria-modal", "true");
-    lightbox.innerHTML = `
-      <div class="lightbox__header">
-        <h2 class="lightbox__title" id="lightbox-title"></h2>
-        <span class="lightbox__counter" id="lightbox-counter"></span>
-        <button class="lightbox__close" id="lightbox-close" aria-label="Close gallery">&times;</button>
-      </div>
-      <div class="lightbox__stage">
-        <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous image">&#8592;</button>
-        <div class="lightbox__image-wrap">
-          <img id="lightbox-image" src="" alt="" />
-        </div>
-        <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next image">&#8594;</button>
-      </div>
-      <div class="lightbox__footer">
-        <p class="lightbox__caption-title" id="lightbox-caption-title"></p>
-        <p class="lightbox__caption" id="lightbox-caption"></p>
-      </div>`;
-
-    document.body.appendChild(lightbox);
+    const lightbox = document.getElementById("lightbox");
+    if (!lightbox || lightbox === this._lightboxBoundEl) return;
+    this._lightboxBoundEl = lightbox;
 
     this.lightbox = {
       el: lightbox,
@@ -525,30 +512,47 @@ const Site = {
       if (e.target === lightbox) this.closeLightbox();
     });
 
+    // One `close` handler covers every way the dialog can close (button,
+    // backdrop click, or native ESC) instead of duplicating this cleanup.
+    lightbox.addEventListener("close", () => {
+      document.body.classList.remove("lightbox-open");
+      history.replaceState(null, "", window.location.pathname);
+    });
+
+    this.initLightboxKeysOnce();
+  },
+
+  // Arrow-key navigation isn't an open/close concern (dialogs don't have
+  // anything built in for it), so it's still manual - but bound to
+  // `document` exactly once: document, unlike page content, isn't replaced
+  // by a View Transitions navigation, so binding this inside initLightbox()
+  // (which reruns per visit) would add one more listener every time the
+  // photos page is revisited in the same session. Reading this.lightbox
+  // fresh on every keypress instead of closing over one visit's dialog
+  // keeps it correct regardless of how many times the lightbox is rebuilt.
+  initLightboxKeysOnce() {
+    if (this._lightboxKeysBound) return;
+    this._lightboxKeysBound = true;
     document.addEventListener("keydown", (e) => {
-      if (lightbox.hidden) return;
-      if (e.key === "Escape") this.closeLightbox();
+      if (!this.lightbox?.el.open) return;
       if (e.key === "ArrowLeft") this.navigateLightbox(-1);
       if (e.key === "ArrowRight") this.navigateLightbox(1);
     });
   },
 
   openLightbox(project, index = 0) {
-    if (!this.lightbox) this.initLightbox();
+    this.initLightbox();
 
     this.lightbox.project = project;
     this.lightbox.index = index;
     this.updateLightbox();
-    this.lightbox.el.hidden = false;
     document.body.classList.add("lightbox-open");
+    if (!this.lightbox.el.open) this.lightbox.el.showModal();
     history.replaceState(null, "", `#${project.slug}`);
   },
 
   closeLightbox() {
-    if (!this.lightbox) return;
-    this.lightbox.el.hidden = true;
-    document.body.classList.remove("lightbox-open");
-    history.replaceState(null, "", window.location.pathname);
+    if (this.lightbox?.el.open) this.lightbox.el.close();
   },
 
   navigateLightbox(direction) {
@@ -583,8 +587,27 @@ const Site = {
     const videos = () => stack.querySelectorAll("video");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // Force a real reload before playing, every time this runs (i.e. every
+    // page-load, View Transitions or not). Without this, whether the video
+    // actually starts is a coin flip after a client-side navigation: Astro
+    // can morph/reuse an existing <video> element instead of replacing it,
+    // and simply having a different `src` attribute doesn't reliably
+    // restart a media element's load - the browser needs an explicit
+    // .load() to reset that pipeline. These are silent, muted, looping
+    // ambient clips, so resetting playback to 0:00 on every visit is
+    // unnoticeable - there's no meaningful position to preserve.
+    const tryPlay = (video) => {
+      video.load();
+      const play = () => video.play().catch(() => {});
+      play();
+      // Belt and suspenders: if play() was rejected because there wasn't
+      // enough data buffered yet (readyState was still HAVE_NOTHING), try
+      // again once the browser says it actually has something to play.
+      video.addEventListener("canplay", play, { once: true });
+    };
+
     const setPaused = (paused) => {
-      videos().forEach((video) => (paused ? video.pause() : video.play().catch(() => {})));
+      videos().forEach((video) => (paused ? video.pause() : tryPlay(video)));
       toggle.classList.toggle("is-paused", paused);
       toggle.setAttribute("aria-pressed", String(paused));
       toggle.setAttribute("aria-label", paused ? "Resume background videos" : "Pause background videos");
@@ -647,19 +670,24 @@ const Site = {
     const scrollers = document.querySelectorAll('.playlist-row__scroller[data-loop="true"]');
 
     const entries = Array.from(scrollers)
-      .filter((scroller) => !scroller._loopBound)
       .map((scroller) => ({ scroller, realCount: Number(scroller.dataset.realCount) || 0, cardWidth: 0 }))
       .filter((entry) => entry.realCount > 0);
-    if (!entries.length) return;
+
+    // Replaced, not accumulated, on every call: this runs once per fresh
+    // page view (View Transitions or not), and the previous page's
+    // scrollers - if this is a revisit - are gone with the old DOM.
+    // Concatenating would grow this array by a row-count's worth of dead
+    // entries every time someone revisits the videos page in one session.
+    this._loopEntries = entries;
 
     const measure = (entry) => {
       entry.cardWidth = entry.scroller.children[0]?.getBoundingClientRect().width || 0;
     };
 
     entries.forEach((entry) => {
-      entry.scroller._loopBound = true;
       measure(entry);
-      if (!entry.cardWidth) return;
+      if (!entry.cardWidth || entry.scroller._loopBound) return;
+      entry.scroller._loopBound = true;
 
       entry.scroller.scrollLeft = LOOP_BUFFER_CARDS * entry.cardWidth;
 
@@ -683,8 +711,9 @@ const Site = {
       );
     });
 
-    this._loopEntries = (this._loopEntries || []).concat(entries);
-
+    // One-time (not per-visit) resize listener; it always reads
+    // this._loopEntries fresh, so it stays correct across however many
+    // times this page gets (re)initialized.
     if (!this._loopResizeBound) {
       this._loopResizeBound = true;
       window.addEventListener("resize", () => {
@@ -724,25 +753,18 @@ const Site = {
     return this._youtubeApiPromise;
   },
 
+  // Static markup (videos/index.astro), native <dialog> - same reasoning
+  // as initPolaroid/initLightbox above, including the element-identity
+  // guard (this._videoModalBoundEl) so a fresh dialog after a View
+  // Transitions navigation gets rewired instead of skipped. Also destroys
+  // any previous visit's leftover YT.Player - it was bound to the old,
+  // now-detached #youtube-player div, so it can't be reused either way.
   initVideoModal() {
-    if (this._videoModal) return;
+    const modal = document.getElementById("video-modal");
+    if (!modal || modal === this._videoModalBoundEl) return;
+    this._videoModalBoundEl = modal;
 
-    const modal = document.createElement("div");
-    modal.className = "video-modal";
-    modal.hidden = true;
-    modal.innerHTML = `
-      <div class="video-modal__panel">
-        <div class="video-modal__stage">
-          <div id="youtube-player"></div>
-        </div>
-        <div class="video-modal__footer">
-          <h3 class="video-modal__title" id="video-modal-title"></h3>
-          <button type="button" class="video-modal__close" id="video-modal-close" aria-label="Close video">&times;</button>
-        </div>
-      </div>`;
-
-    document.body.appendChild(modal);
-
+    this._videoModal?.player?.destroy?.();
     this._videoModal = {
       el: modal,
       title: modal.querySelector("#video-modal-title"),
@@ -753,8 +775,12 @@ const Site = {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) this.closeVideoModal();
     });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.hidden) this.closeVideoModal();
+
+    // One `close` handler covers every way the dialog can close (button,
+    // backdrop click, or native ESC) instead of duplicating this cleanup.
+    modal.addEventListener("close", () => {
+      document.body.classList.remove("modal-open");
+      this._videoModal.player?.stopVideo?.();
     });
   },
 
@@ -763,9 +789,8 @@ const Site = {
     const m = this._videoModal;
 
     m.title.textContent = title || "";
-    m.el.hidden = false;
     document.body.classList.add("modal-open");
-    requestAnimationFrame(() => m.el.classList.add("is-open"));
+    if (!m.el.open) m.el.showModal();
 
     const YT = await this.loadYouTubeIframeApi();
 
@@ -780,16 +805,7 @@ const Site = {
   },
 
   closeVideoModal() {
-    const m = this._videoModal;
-    if (!m) return;
-    m.el.classList.remove("is-open");
-    document.body.classList.remove("modal-open");
-    if (m.player?.stopVideo) m.player.stopVideo();
-    // Let the fade-out transition (see .video-modal.is-open in global.css)
-    // finish before actually hiding it - display:none can't be transitioned.
-    setTimeout(() => {
-      if (!m.el.classList.contains("is-open")) m.el.hidden = true;
-    }, 450);
+    if (this._videoModal?.el.open) this._videoModal.el.close();
   },
 
   initContactForm() {
@@ -807,8 +823,11 @@ const Site = {
   },
 };
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => Site.init());
-} else {
-  Site.init();
-}
+// `astro:page-load` fires once for the very first load AND after every
+// subsequent View Transitions navigation (Astro wires it to the window's
+// native `load` event for the first case, and dispatches it again after
+// every swap for the rest - confirmed in astro/dist/transitions/router.js).
+// Since Astro recognizes this script as unchanged across pages and never
+// re-runs the module itself, this is the only hook that gets init() to run
+// again on navigation.
+document.addEventListener("astro:page-load", () => Site.init());

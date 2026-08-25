@@ -54,6 +54,25 @@ const photosJson = JSON.stringify(photos).replace(/</g, "\\u003c");
       <p id="photos-empty" class="empty-state" hidden>No projects in this category yet.</p>
     </section>
 
+    <dialog id="lightbox" class="lightbox" aria-label="Photo gallery">
+      <div class="lightbox__header">
+        <h2 class="lightbox__title" id="lightbox-title"></h2>
+        <span class="lightbox__counter" id="lightbox-counter"></span>
+        <button class="lightbox__close" id="lightbox-close" aria-label="Close gallery">&times;</button>
+      </div>
+      <div class="lightbox__stage">
+        <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous image">&#8592;</button>
+        <div class="lightbox__image-wrap">
+          <img id="lightbox-image" src="" alt="" />
+        </div>
+        <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next image">&#8594;</button>
+      </div>
+      <div class="lightbox__footer">
+        <p class="lightbox__caption-title" id="lightbox-caption-title"></p>
+        <p class="lightbox__caption" id="lightbox-caption"></p>
+      </div>
+    </dialog>
+
     <script type="application/json" id="photos-data" set:html={photosJson}></script>
   </main>
 </Layout>

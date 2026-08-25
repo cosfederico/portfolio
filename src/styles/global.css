@@ -517,34 +517,77 @@ body.focus-mode-on .home-fade {
 }
 
 /* ── Polaroid modal ── */
+/* Native <dialog> instead of a hand-rolled div: showModal()/close() give us
+   real focus-trapping and ESC-to-close for free (the old div-based version
+   had neither). Open/close fade is pure CSS via @starting-style +
+   transition-behavior:allow-discrete - no more JS setTimeout tied by a
+   magic number to the CSS transition-duration to swap `hidden` after the
+   fact. See openPolaroid/closePolaroid in site.js for the JS half. */
 
-.polaroid-modal {
+dialog.polaroid-modal {
+  /* Full-viewport flex-centering box (like the old div was) rather than a
+     dialog sized to its content - .polaroid-panel below is still sized
+     dynamically by sizePolaroid() in site.js based on the photo's aspect
+     ratio, so the dialog itself just needs to get out of the way and
+     center whatever width that ends up being. */
+  /* No `display` here on purpose - dialog:not([open]) { display: none }
+     from the browser's own UA stylesheet must stay in effect while closed,
+     or (as happened before this comment existed) the dialog keeps
+     rendering as a full-viewport fixed layer at opacity:0 - invisible, but
+     still very much there intercepting every click on the page under it. */
   position: fixed;
   inset: 0;
   z-index: 300;
-  display: flex;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
+}
+
+dialog.polaroid-modal[open] {
+  display: flex;
+  opacity: 1;
+}
+
+@starting-style {
+  dialog.polaroid-modal[open] {
+    opacity: 0;
+  }
+}
+
+dialog.polaroid-modal::backdrop {
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease, background 0.45s ease, backdrop-filter 0.45s ease;
+  transition: background 0.45s var(--ease-out), backdrop-filter 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
 }
 
-.polaroid-modal[hidden] { display: none !important; }
-
-.polaroid-modal.is-open {
-  opacity: 1;
-  pointer-events: auto;
+dialog.polaroid-modal[open]::backdrop {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
+@starting-style {
+  dialog.polaroid-modal[open]::backdrop {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+}
+
 .polaroid-panel {
+  /* Default before sizePolaroid() (site.js) sets an inline width computed
+     from the photo's own aspect ratio. */
   width: min(380px, 100%);
   max-width: 100%;
   display: flex;
@@ -555,9 +598,16 @@ body.focus-mode-on .home-fade {
   transition: transform 0.45s var(--ease-out), opacity 0.45s var(--ease-out), width 0.4s var(--ease-out);
 }
 
-.polaroid-modal.is-open .polaroid-panel {
+dialog.polaroid-modal[open] .polaroid-panel {
   transform: translateY(0) scale(1);
   opacity: 1;
+}
+
+@starting-style {
+  dialog.polaroid-modal[open] .polaroid-panel {
+    transform: translateY(16px) scale(0.96);
+    opacity: 0;
+  }
 }
 
 .polaroid {
@@ -822,23 +872,38 @@ body.focus-mode-on .home-fade {
 }
 
 /* ── Lightbox ── */
+/* Native <dialog>, same reasoning as .polaroid-modal above: real focus
+   trapping/ESC-to-close from the browser, open/close fade via
+   @starting-style instead of a JS-timed class swap. */
 
-.lightbox {
+dialog.lightbox {
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: flex;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  padding: 0;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.96);
   backdrop-filter: blur(20px);
-  animation: fadeIn 0.35s ease;
+  color: inherit;
+  opacity: 0;
+  transition: opacity 0.35s ease, overlay 0.35s allow-discrete, display 0.35s allow-discrete;
 }
 
-.lightbox[hidden] { display: none !important; }
+dialog.lightbox[open] {
+  display: flex;
+  opacity: 1;
+}
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@starting-style {
+  dialog.lightbox[open] {
+    opacity: 0;
+  }
 }
 
 .lightbox__header {
@@ -1276,49 +1341,65 @@ body.focus-mode-on .home-fade {
 }
 
 /* ── Video player modal (YouTube IFrame Player API) ── */
-/* Same darkened-glass treatment as .polaroid-modal: the page stays visible
-   underneath, just dimmed and blurred, and both open/close fade via the
-   is-open class + a matching setTimeout in script.js (display:none can't
-   itself be transitioned). */
+/* Native <dialog>, same reasoning as .polaroid-modal above: real focus
+   trapping/ESC-to-close from the browser, open/close fade via
+   @starting-style instead of a JS-timed class swap. Page stays visible
+   underneath via ::backdrop, just dimmed and blurred. */
 
-.video-modal {
+dialog.video-modal {
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  margin: auto;
+  width: min(960px, calc(100% - 4rem));
+  max-width: none;
+  max-height: calc(100vh - 4rem);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
+}
+
+dialog.video-modal[open] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@starting-style {
+  dialog.video-modal[open] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+}
+
+dialog.video-modal::backdrop {
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease, background 0.45s ease, backdrop-filter 0.45s ease;
+  transition: background 0.45s var(--ease-out), backdrop-filter 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
 }
 
-.video-modal[hidden] { display: none !important; }
-
-.video-modal.is-open {
-  opacity: 1;
-  pointer-events: auto;
+dialog.video-modal[open]::backdrop {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-.video-modal__panel {
-  width: min(960px, 100%);
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  transform: translateY(16px) scale(0.97);
-  opacity: 0;
-  transition: transform 0.45s var(--ease-out), opacity 0.45s var(--ease-out);
+@starting-style {
+  dialog.video-modal[open]::backdrop {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
 }
 
-.video-modal.is-open .video-modal__panel {
-  transform: translateY(0) scale(1);
-  opacity: 1;
+.video-modal__panel {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
 }
 
 .video-modal__stage {
