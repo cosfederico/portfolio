@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import Header from "../components/Header.astro";
 import fcLogo from "../assets/fc_logo.png";
 import "../styles/global.css";
@@ -28,6 +29,7 @@ const { title, description, bodyClass, page, noFooter = false } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
       rel="stylesheet"
     />
+    <ViewTransitions />
   </head>
   <body class={bodyClass} data-page={page}>
     <Header />

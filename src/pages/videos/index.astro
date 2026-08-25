@@ -120,5 +120,17 @@ const rows = (channelPlaylists?.playlists || []).map((playlist) => {
         </section>
       ))}
     </section>
+
+    <dialog id="video-modal" class="video-modal" aria-label="Video player">
+      <div class="video-modal__panel">
+        <div class="video-modal__stage">
+          <div id="youtube-player"></div>
+        </div>
+        <div class="video-modal__footer">
+          <h3 class="video-modal__title" id="video-modal-title"></h3>
+          <button type="button" class="video-modal__close" id="video-modal-close" aria-label="Close video">&times;</button>
+        </div>
+      </div>
+    </dialog>
   </main>
 </Layout>
