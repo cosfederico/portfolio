@@ -1,4 +1,5 @@
 .claude/
+.claudectl/
 _resources/
 __pycache__/
 
