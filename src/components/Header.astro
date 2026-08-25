@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import fcLogo from "../assets/fc_logo.png";
+
 // Active-nav highlighting used to be done client-side (fetch header.html,
 // inject it, then compare window.location.pathname against each link) -
 // Astro.url.pathname gives us the same answer at build time instead, so
@@ -35,7 +38,13 @@ const isActive = (href) => (href.replace(/\/$/, "") || "/") === currentPath;
     <a href="/photos/" class:list={{ "is-active": isActive("/photos/") }}>Photography</a>
     <span class="nav-dot" aria-hidden="true">·</span>
     <a class="brand-link" href="/" aria-label="Home" class:list={{ "is-active": isActive("/") }}>
-      <img src="/_resources/fc_logo.png" alt="FC" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" />
+      <Image
+        src={fcLogo}
+        alt="FC"
+        width={112}
+        height={112}
+        onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"
+      />
       <span class="brand-text" style="display:none">FC</span>
     </a>
     <span class="nav-dot" aria-hidden="true">·</span>

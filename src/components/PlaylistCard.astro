@@ -16,7 +16,18 @@ const { video, isClone = false } = Astro.props;
   tabindex={isClone ? -1 : undefined}
 >
   <span class="playlist-card__thumb">
-    <img src={video.thumbnail} alt={video.title} loading="lazy" />
+    {/*
+      Not swapped to astro:assets' <Image> - these are remote YouTube CDN
+      URLs refreshed by scripts/fetch_youtube_playlists.py, not local
+      assets. Routing them through Astro's image pipeline would mean every
+      `npm run build` re-downloads and re-encodes ~80 thumbnails that
+      YouTube already serves pre-sized (mqdefault = 320x180) - real network
+      dependency and build time added for content we don't control and
+      isn't meaningfully improved by it. Explicit width/height still gives
+      the browser a layout hint before the image loads (on top of the
+      aspect-ratio already reserving the space via CSS).
+    */}
+    <img src={video.thumbnail} alt={video.title} width="320" height="180" loading="lazy" />
     <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
   </span>
   <span class="playlist-card__title">{video.title}</span>
