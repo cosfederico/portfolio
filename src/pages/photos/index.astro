@@ -1,0 +1,59 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import photos from "../../data/photos.json";
+
+const categories = photos.categories || ["All"];
+
+// Embedded as inline JSON rather than fetched at runtime - the lightbox
+// (see initLightbox/navigateLightbox in site.js) needs the full per-project
+// image list client-side to step through prev/next, but Astro already has
+// this data at build time, so it's baked straight into the page instead of
+// costing a network round trip.
+const photosJson = JSON.stringify(photos).replace(/</g, "\\u003c");
+---
+
+<Layout
+  title="Photography // Federico Coscia"
+  description="Curated photography projects — landscapes, travel, and portraits by Federico Coscia."
+  bodyClass=""
+  page="photos"
+>
+  <main class="page-shell">
+    <header class="page-header reveal">
+      <p class="eyebrow">Photography</p>
+      <h1>Still frames with volume and calm.</h1>
+      <p class="lead">Curated projects across landscapes, travel, and portraiture. Select a collection to view the full gallery.</p>
+    </header>
+
+    <div id="photo-filters" class="filter-bar reveal">
+      {categories.map((cat) => (
+        <button class:list={["filter-btn", { "is-active": cat === "All" }]} data-category={cat}>
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <section id="photos-grid" class="photos-grid" aria-label="Photography projects">
+      {photos.projects.map((project, i) => (
+        <button
+          class="photo-card reveal"
+          data-project={project.slug}
+          data-category={project.category}
+          style={`transition-delay: ${i * 0.06}s`}
+        >
+          <div class="photo-card__image">
+            <img src={project.cover} alt={project.title} loading="lazy" decoding="async" />
+          </div>
+          <span class="photo-card__count">{project.images.length} images</span>
+          <div class="photo-card__info">
+            <h3>{project.title}</h3>
+            <p>{project.category} · {project.year}</p>
+          </div>
+        </button>
+      ))}
+      <p id="photos-empty" class="empty-state" hidden>No projects in this category yet.</p>
+    </section>
+
+    <script type="application/json" id="photos-data" set:html={photosJson}></script>
+  </main>
+</Layout>

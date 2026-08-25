@@ -2,14 +2,12 @@
 """
 Fetches this channel's public playlists (and the videos inside each one) from
 the YouTube Data API v3 and writes the normalized result to
-data/youtube-playlists.json - the same static-JSON pattern the site already
-uses for photos.json / videos.json / mosaic-items.json.
+src/data/youtube-playlists.json - the same build-time-imported JSON pattern
+the site uses for photos.json / videos.json / mosaic-items.json.
 
 This script runs OUTSIDE the browser (on your machine, or later from a
-scheduled CI job) so the API key never ships to visitors. The site itself
-only ever fetches the plain JSON this script produces - see
-scripts/README.md for the full explanation of why the key lives here and
-not in script.js.
+scheduled CI job) so the API key never ships to visitors - Astro just
+imports the plain JSON this script produces at build time.
 
 Setup:
   1. Copy .env.example to .env and fill in YOUTUBE_API_KEY (see that file
@@ -25,7 +23,7 @@ Setup:
 
 Environment variables:
   YOUTUBE_API_KEY         required. Your API key with YouTube Data API v3 enabled.
-  YOUTUBE_CHANNEL_HANDLE  optional, default "@pikasfed" (see data/site.json).
+  YOUTUBE_CHANNEL_HANDLE  optional, default "@pikasfed" (see src/data/site.json).
   YOUTUBE_CHANNEL_ID      optional. Skips the handle lookup if already known.
 """
 
@@ -38,7 +36,7 @@ import urllib.request
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_PATH = REPO_ROOT / "data" / "youtube-playlists.json"
+OUTPUT_PATH = REPO_ROOT / "src" / "data" / "youtube-playlists.json"
 API_BASE = "https://www.googleapis.com/youtube/v3"
 
 DEFAULT_HANDLE = "@pikasfed"

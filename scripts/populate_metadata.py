@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Reads EXIF metadata straight from the original photos in _resources/images
-and fills in the matching (currently-empty) fields in data/mosaic-items.json:
-camera, shutter, aperture, iso, date, place.
+Reads EXIF metadata straight from the original photos in
+assets-source/images and fills in the matching (currently-empty) fields
+in src/data/mosaic-items.json: camera, shutter, aperture, iso, date, place.
 
 Only overwrites a field if it is currently blank, so manually-entered story
 text or corrections are never clobbered by re-running this.
 
-The JSON's "src" may point at the webp copies (_resources/images-web),
+The JSON's "src" may point at the webp copies (public/_resources/images-web),
 which have their EXIF stripped by the ffmpeg conversion - so this script
 always looks up the matching *original* file by basename to read metadata.
 """
@@ -21,8 +21,8 @@ from pathlib import Path
 from PIL import ExifTags, Image
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-JSON_PATH = REPO_ROOT / "data" / "mosaic-items.json"
-ORIGINALS_DIR = REPO_ROOT / "_resources" / "images"
+JSON_PATH = REPO_ROOT / "src" / "data" / "mosaic-items.json"
+ORIGINALS_DIR = REPO_ROOT / "assets-source" / "images"
 ORIGINAL_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 
 

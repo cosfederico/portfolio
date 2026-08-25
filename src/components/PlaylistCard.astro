@@ -1,0 +1,23 @@
+---
+// Rendered three times per playlist row (before-clones, real, after-clones)
+// by src/pages/videos/index.astro - the clone-buffer construction that
+// used to happen client-side (buildCard() in the old script.js) now
+// happens once at build time, so the browser never has to build this
+// markup itself, only scroll and click on it.
+const { video, isClone = false } = Astro.props;
+---
+
+<button
+  class="playlist-card"
+  data-video-id={video.id}
+  data-video-title={video.title}
+  aria-label={`Play ${video.title}`}
+  aria-hidden={isClone ? "true" : undefined}
+  tabindex={isClone ? -1 : undefined}
+>
+  <span class="playlist-card__thumb">
+    <img src={video.thumbnail} alt={video.title} loading="lazy" />
+    <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
+  </span>
+  <span class="playlist-card__title">{video.title}</span>
+</button>

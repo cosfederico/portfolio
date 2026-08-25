@@ -1,58 +1,32 @@
-// Clone cards padded onto each end of a looped playlist row (see
-// initInfiniteScrollers). Fixed and small on purpose: enough clones must be
-// visible on both sides of a scroll-jump for it to be seamless, so this
-// needs to cover one full row's width - 14 cards (~3640px at the desktop
-// card width) comfortably covers even ultrawide monitors. It never grows
-// past this, so the DOM/memory cost per row is constant no matter how far -
-// or how long - someone scrolls.
-const LOOP_BUFFER_CARDS = 14;
+import { LOOP_BUFFER_CARDS } from "../lib/constants.js";
 
+// Everything that used to be fetched at runtime (photos.json, videos.json,
+// mosaic-items.json, youtube-playlists.json, background-videos.json) is now
+// either rendered directly into the page HTML by Astro, or - where client
+// JS genuinely needs the raw dataset (the mosaic's recycling pool, the
+// photo lightbox's prev/next navigation) - embedded as an inline
+// <script type="application/json"> data island by the relevant .astro
+// page. Either way, there's no more fetch() waterfall on page load.
 const Site = {
-  photos: null,
-  videos: null,
-  mosaic: null,
-  site: null,
-  channelPlaylists: null,
-  backgroundVideos: null,
   focusMode: false,
   _aspectCache: new Map(),
 
-  async init() {
-    this.setYear();
-    await this.loadHeader();
+  init() {
     this.initHeaderBehavior();
+    this.initMobileNav();
     this.initReveal();
-    await this.loadData();
-    this.initPage();
     this.initContactForm();
+    this.initPage();
   },
 
-  setYear() {
-    const year = document.getElementById("year");
-    if (year) year.textContent = new Date().getFullYear();
-  },
-
-  async loadHeader() {
-    const placeholder = document.getElementById("site-header-placeholder");
-    if (!placeholder) return;
-
+  readEmbeddedJson(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
     try {
-      const response = await fetch("/header.html");
-      if (!response.ok) return;
-      placeholder.innerHTML = await response.text();
-      this.markActiveNav();
-      this.initMobileNav();
-    } catch (error) {
-      console.error("Failed to load header", error);
+      return JSON.parse(el.textContent);
+    } catch {
+      return null;
     }
-  },
-
-  markActiveNav() {
-    const path = window.location.pathname.replace(/\/$/, "") || "/";
-    document.querySelectorAll(".site-nav a[href]").forEach((link) => {
-      const href = link.getAttribute("href").replace(/\/$/, "") || "/";
-      link.classList.toggle("is-active", href === path);
-    });
   },
 
   initMobileNav() {
@@ -89,7 +63,7 @@ const Site = {
   },
 
   initReveal() {
-    const items = document.querySelectorAll(".reveal");
+    const items = document.querySelectorAll(".reveal:not(.is-observed)");
     if (!items.length) return;
 
     const observer = new IntersectionObserver(
@@ -105,30 +79,10 @@ const Site = {
     );
 
     items.forEach((el, i) => {
+      el.classList.add("is-observed");
       el.style.transitionDelay = `${i * 0.08}s`;
       observer.observe(el);
     });
-  },
-
-  async loadData() {
-    const fetchJson = async (url) => {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(res.status);
-        return await res.json();
-      } catch {
-        return null;
-      }
-    };
-
-    [this.photos, this.videos, this.mosaic, this.site, this.channelPlaylists, this.backgroundVideos] = await Promise.all([
-      fetchJson("/data/photos.json"),
-      fetchJson("/data/videos.json"),
-      fetchJson("/data/mosaic-items.json"),
-      fetchJson("/data/site.json"),
-      fetchJson("/data/youtube-playlists.json"),
-      fetchJson("/data/background-videos.json"),
-    ]);
   },
 
   initPage() {
@@ -139,10 +93,10 @@ const Site = {
         this.initFocusToggle();
         break;
       case "photos":
-        this.renderPhotosPage();
+        this.initPhotosPage();
         break;
       case "videos":
-        this.renderVideosPage();
+        this.initVideosPage();
         break;
       default:
         break;
@@ -156,11 +110,12 @@ const Site = {
   // already loaded.
   initMosaic() {
     const grid = document.getElementById("home-mosaic-grid");
-    if (!grid || !this.mosaic?.length || this._mosaicInitialized) return;
+    const items = this.readEmbeddedJson("mosaic-data");
+    if (!grid || !items?.length || this._mosaicInitialized) return;
     this._mosaicInitialized = true;
 
     this._mosaicGrid = grid;
-    this._mosaicImages = [...this.mosaic].sort(() => Math.random() - 0.5);
+    this._mosaicImages = [...items].sort(() => Math.random() - 0.5);
     this._mosaicCycleIndex = 0;
     this._mosaicPool = [];
 
@@ -403,21 +358,6 @@ const Site = {
     return `${day}/${month}/${year}`;
   },
 
-  // "21 August 2025" - parsed by hand (not `new Date`) so a "YYYY-MM-DD"
-  // string never shifts by a day across timezones.
-  formatLongDate(dateStr) {
-    if (!dateStr) return "";
-    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr.trim());
-    if (!match) return dateStr;
-    const [, year, month, day] = match;
-    const months = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December",
-    ];
-    const monthName = months[Number(month) - 1] || month;
-    return `${Number(day)} ${monthName} ${year}`;
-  },
-
   async openPolaroid(item) {
     this.initPolaroid();
     const p = this._polaroid;
@@ -482,80 +422,53 @@ const Site = {
     }, 450);
   },
 
-  renderPhotosPage() {
+  // The grid/filter markup itself is now rendered by Astro at build time
+  // (src/pages/photos/index.astro) - this only wires up interactivity on
+  // top of what's already in the DOM: toggling which already-rendered
+  // cards are visible per filter (instead of re-building the grid's HTML
+  // on every click), and opening the lightbox.
+  initPhotosPage() {
     const filterBar = document.getElementById("photo-filters");
     const grid = document.getElementById("photos-grid");
-    if (!grid || !this.photos?.projects?.length) return;
+    const emptyState = document.getElementById("photos-empty");
+    this._photos = this.readEmbeddedJson("photos-data");
+    if (!filterBar || !grid) return;
 
-    const categories = this.photos.categories || ["All"];
-    let activeCategory = "All";
+    const cards = Array.from(grid.querySelectorAll(".photo-card"));
 
-    const renderFilters = () => {
-      if (!filterBar) return;
-      filterBar.innerHTML = categories
-        .map(
-          (cat) =>
-            `<button class="filter-btn${cat === activeCategory ? " is-active" : ""}" data-category="${cat}">${cat}</button>`
-        )
-        .join("");
-
-      filterBar.querySelectorAll(".filter-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          activeCategory = btn.dataset.category;
-          renderFilters();
-          renderGrid();
-        });
+    const applyFilter = (category) => {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const matches = category === "All" || card.dataset.category === category;
+        card.hidden = !matches;
+        if (matches) visibleCount++;
       });
+      if (emptyState) emptyState.hidden = visibleCount > 0;
     };
 
-    const renderGrid = () => {
-      const projects =
-        activeCategory === "All"
-          ? this.photos.projects
-          : this.photos.projects.filter((p) => p.category === activeCategory);
-
-      if (!projects.length) {
-        grid.innerHTML = '<p class="empty-state">No projects in this category yet.</p>';
-        return;
-      }
-
-      grid.innerHTML = projects
-        .map(
-          (project, i) => `
-          <button class="photo-card reveal" data-project="${project.slug}" style="transition-delay: ${i * 0.06}s">
-            <div class="photo-card__image">
-              <img src="${project.cover}" alt="${project.title}" loading="lazy" decoding="async" />
-            </div>
-            <span class="photo-card__count">${project.images.length} images</span>
-            <div class="photo-card__info">
-              <h3>${project.title}</h3>
-              <p>${project.category} · ${project.year}</p>
-            </div>
-          </button>`
-        )
-        .join("");
-
-      grid.querySelectorAll(".photo-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          const project = this.photos.projects.find((p) => p.slug === card.dataset.project);
-          if (project) this.openLightbox(project, 0);
-        });
+    filterBar.querySelectorAll(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBar.querySelectorAll(".filter-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
+        applyFilter(btn.dataset.category);
       });
+    });
 
-      this.initReveal();
-      this.handlePhotoHash();
-    };
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const project = this._photos?.projects?.find((p) => p.slug === card.dataset.project);
+        if (project) this.openLightbox(project, 0);
+      });
+    });
 
-    renderFilters();
-    renderGrid();
     this.initLightbox();
+    this.handlePhotoHash();
   },
 
   handlePhotoHash() {
     const hash = window.location.hash.replace("#", "");
     if (!hash) return;
 
-    const project = this.photos?.projects?.find((p) => p.slug === hash);
+    const project = this._photos?.projects?.find((p) => p.slug === hash);
     if (project) {
       requestAnimationFrame(() => this.openLightbox(project, 0));
     }
@@ -657,37 +570,15 @@ const Site = {
     this.lightbox.caption.textContent = image.caption || "";
   },
 
-  // Ambient page background: a vertical stack of small, silent, looping
-  // clips (converted by scripts/convert-videos-to-web.bat - see
-  // data/background-videos.json) behind the page content at low opacity.
-  // Each is scaled to the full page width, then cropped to 16:9 (see
-  // aspect-ratio/object-fit on .video-bg__stack video in styles.css).
-  // `focusY` (0-100, default 50) picks which part of that taller source
-  // frame stays in the crop: 0 keeps the top, 100 the bottom, 50 centers
-  // it - tune it per clip in data/background-videos.json.
-  renderBackgroundVideos() {
-    const stack = document.getElementById("video-bg-stack");
-    if (!stack || !this.backgroundVideos?.length) return;
-
-    stack.innerHTML = this.backgroundVideos
-      .map((bg) => {
-        const focusY = Number.isFinite(bg.focusY) ? bg.focusY : 50;
-        return `<video src="${bg.src}" autoplay muted loop playsinline preload="auto" style="--focus-y: ${focusY}%"></video>`;
-      })
-      .join("");
-
-    this.initBackgroundVideoToggle(stack);
-  },
-
   // Reveals the header's play/pause control (hidden by default - see
-  // header.html - so it never shows up on pages with no video background)
+  // Header.astro - so it never shows up on pages with no video background)
   // and wires it to pause/resume every clip in the stack at once. Also
   // respects prefers-reduced-motion: if set, the videos start paused
   // instead of autoplaying, same spirit as the reduced-motion block in
-  // styles.css that already turns off CSS animations/transitions.
+  // global.css that already turns off CSS animations/transitions.
   initBackgroundVideoToggle(stack) {
     const toggle = document.getElementById("bg-toggle");
-    if (!toggle) return;
+    if (!toggle || !stack) return;
 
     const videos = () => stack.querySelectorAll("video");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -702,155 +593,41 @@ const Site = {
     toggle.hidden = false;
     setPaused(reducedMotion);
 
-    // Guard against binding twice if this is ever called again for the
-    // same header (e.g. a future re-render) - the header markup persists
-    // across renderVideosPage() calls, only .video-bg-stack is rebuilt.
     if (!toggle._bgToggleBound) {
       toggle._bgToggleBound = true;
       toggle.addEventListener("click", () => setPaused(!toggle.classList.contains("is-paused")));
     }
   },
 
-  renderVideosPage() {
-    this.renderBackgroundVideos();
+  // The featured player, "more videos" grid (if re-enabled), and playlist
+  // rows are all rendered by Astro at build time now (see
+  // src/pages/videos/index.astro) - this only wires up interactivity on
+  // top of what's already in the DOM.
+  initVideosPage() {
+    this.initBackgroundVideoToggle(document.getElementById("video-bg-stack"));
 
     const featured = document.getElementById("video-featured");
-    const grid = document.getElementById("video-grid");
-    if (!this.videos?.length) return;
+    const grid = document.getElementById("video-grid"); // currently disabled - see the .astro page
 
-    const featuredVideo = this.videos.find((v) => v.featured) || this.videos[0];
-    const rest = this.videos.filter((v) => v.id !== featuredVideo.id);
-
-    if (featured) {
-      featured.innerHTML = `
-        <div class="video-featured__player reveal">
-          <iframe
-            src="https://www.youtube.com/embed/${featuredVideo.youtubeId}?rel=0"
-            title="${featuredVideo.title}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
-        </div>
-        <div class="video-featured__info reveal">
-          <h2 class="video-featured__title">${featuredVideo.title}</h2>
-          <p class="video-featured__date">${this.formatLongDate(featuredVideo.date)}</p>
-          <p class="video-featured__description">${featuredVideo.description}</p>
-        </div>`;
-    }
-
-    if (grid) {
-      grid.innerHTML = rest
-        .map(
-          (video, i) => `
-          <article class="video-card reveal" style="transition-delay: ${i * 0.08}s">
-            <button class="video-card__thumb" data-video-id="${video.youtubeId}" aria-label="Play ${video.title}">
-              <img
-                src="https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg"
-                alt="${video.title}"
-                loading="lazy"
-                onerror="this.src='https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg'"
-              />
-              <span class="video-card__play"><span class="video-card__play-icon"></span></span>
-            </button>
-            <div class="video-card__body">
-              <p class="video-card__meta">${video.year}</p>
-              <h3>${video.title}</h3>
-              <p>${video.description}</p>
-            </div>
-          </article>`
-        )
-        .join("");
-
+    if (featured && grid) {
       grid.querySelectorAll(".video-card__thumb").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const videoId = btn.dataset.videoId;
-          const video = this.videos.find((v) => v.youtubeId === videoId);
-          if (video && featured) {
-            featured.scrollIntoView({ behavior: "smooth" });
-            featured.querySelector("iframe").src = `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
-            featured.querySelector(".video-featured__title").textContent = video.title;
-            featured.querySelector(".video-featured__date").textContent = this.formatLongDate(video.date);
-            featured.querySelector(".video-featured__description").textContent = video.description;
-          }
+          featured.scrollIntoView({ behavior: "smooth" });
+          featured.querySelector("iframe").src = `https://www.youtube.com/embed/${btn.dataset.videoId}?rel=0&autoplay=1`;
+          featured.querySelector(".video-featured__title").textContent = btn.dataset.videoTitle || "";
+          featured.querySelector(".video-featured__date").textContent = btn.dataset.videoDate || "";
+          featured.querySelector(".video-featured__description").textContent = btn.dataset.videoDescription || "";
         });
       });
     }
 
-    this.initReveal();
-    this.renderChannelPlaylists();
-  },
-
-  // Netflix/channel-style rows: one row per playlist, thumbnails scroll
-  // horizontally, clicking one opens the shared player modal via the
-  // YouTube IFrame Player API instead of the inline featured embed above.
-  renderChannelPlaylists() {
-    const container = document.getElementById("channel-playlists");
-    if (!container) return;
-
-    const playlists = this.channelPlaylists?.playlists || [];
-    if (!playlists.length) {
-      container.innerHTML = '<p class="empty-state">No playlists yet - run scripts/fetch_youtube_playlists.py to pull them from YouTube.</p>';
-      return;
-    }
-
-    const buildCard = (video, isClone) => `
-      <button
-        class="playlist-card"
-        data-video-id="${video.id}"
-        data-video-title="${video.title.replace(/"/g, "&quot;")}"
-        aria-label="Play ${video.title}"
-        ${isClone ? 'aria-hidden="true" tabindex="-1"' : ""}
-      >
-        <span class="playlist-card__thumb">
-          <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" />
-          <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
-        </span>
-        <span class="playlist-card__title">${video.title}</span>
-      </button>`;
-
-    container.innerHTML = playlists
-      .map((playlist) => {
-        const videos = playlist.videos;
-        // Looping only makes sense with more than one video - a single one
-        // would just repeat itself. Below LOOP_BUFFER_CARDS, wrappedSlice
-        // cycles back through the same short list to still fill the buffer.
-        const canLoop = videos.length >= 2;
-        const before = canLoop ? this.wrappedSlice(videos, -LOOP_BUFFER_CARDS, LOOP_BUFFER_CARDS) : [];
-        const after = canLoop ? this.wrappedSlice(videos, videos.length, LOOP_BUFFER_CARDS) : [];
-
-        return `
-        <section class="playlist-row reveal" aria-label="${playlist.title}">
-          <h3 class="playlist-row__title">${playlist.title}</h3>
-          <div class="playlist-row__scroller" data-loop="${canLoop}" data-real-count="${videos.length}">
-            ${before.map((v) => buildCard(v, true)).join("")}
-            ${videos.map((v) => buildCard(v, false)).join("")}
-            ${after.map((v) => buildCard(v, true)).join("")}
-          </div>
-        </section>`;
-      })
-      .join("");
-
-    container.querySelectorAll(".playlist-card").forEach((card) => {
+    document.querySelectorAll(".playlist-card").forEach((card) => {
       card.addEventListener("click", () => {
         this.openVideoModal(card.dataset.videoId, card.dataset.videoTitle);
       });
     });
 
-    this.initReveal();
     this.initInfiniteScrollers();
-  },
-
-  // Returns `length` items from `list`, starting at `start` (which may be
-  // negative or beyond list.length) and wrapping around as many times as
-  // needed. Used to build the clone buffers below.
-  wrappedSlice(list, start, length) {
-    const n = list.length;
-    const out = [];
-    for (let i = 0; i < length; i++) {
-      out.push(list[(((start + i) % n) + n) % n]);
-    }
-    return out;
   },
 
   // Makes each looped playlist row scroll endlessly in both directions
@@ -869,11 +646,6 @@ const Site = {
   initInfiniteScrollers() {
     const scrollers = document.querySelectorAll('.playlist-row__scroller[data-loop="true"]');
 
-    // `_loopBound` guards each scroller against getting a second scroll
-    // listener if this is ever called again for the same row; entries are
-    // accumulated on `this` (rather than captured only in this call's
-    // closure) so the one shared resize listener below always covers every
-    // row that has ever been initialized, not just the latest batch.
     const entries = Array.from(scrollers)
       .filter((scroller) => !scroller._loopBound)
       .map((scroller) => ({ scroller, realCount: Number(scroller.dataset.realCount) || 0, cardWidth: 0 }))
@@ -913,14 +685,9 @@ const Site = {
 
     this._loopEntries = (this._loopEntries || []).concat(entries);
 
-    // One resize listener total, no matter how many rows/times this runs.
     if (!this._loopResizeBound) {
       this._loopResizeBound = true;
       window.addEventListener("resize", () => {
-        // Card width only actually changes when the responsive breakpoint
-        // flips (e.g. crossing 768px), not on every resize tick, but
-        // re-measuring is cheap - keep the same card visible rather than
-        // just re-centering.
         clearTimeout(this._playlistResizeTimer);
         this._playlistResizeTimer = setTimeout(() => {
           this._loopEntries.forEach((entry) => {
@@ -1018,7 +785,7 @@ const Site = {
     m.el.classList.remove("is-open");
     document.body.classList.remove("modal-open");
     if (m.player?.stopVideo) m.player.stopVideo();
-    // Let the fade-out transition (see .video-modal.is-open in styles.css)
+    // Let the fade-out transition (see .video-modal.is-open in global.css)
     // finish before actually hiding it - display:none can't be transitioned.
     setTimeout(() => {
       if (!m.el.classList.contains("is-open")) m.el.hidden = true;
@@ -1040,4 +807,8 @@ const Site = {
   },
 };
 
-document.addEventListener("DOMContentLoaded", () => Site.init());
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => Site.init());
+} else {
+  Site.init();
+}

@@ -1,7 +1,11 @@
 .claude/
 .claudectl/
 _resources/
+assets-source/
 __pycache__/
+node_modules/
+dist/
+.astro/
 
 # Secrets used by scripts/fetch_youtube_playlists.py - never commit real keys.
 .env

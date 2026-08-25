@@ -1,17 +1,19 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Converts every clip in _resources\videos to a small, silent, looping
-rem .mp4 copy in _resources\videos-web, for use as background decoration
-rem instead of the raw phone-camera originals (which run 20-150MB each).
+rem Converts every clip in assets-source\videos to a small, silent, looping
+rem .mp4 copy in public\_resources\videos-web, for use as background
+rem decoration instead of the raw phone-camera originals (20-150MB each).
 rem Scaled down, capped to MAX_DURATION seconds, and stripped of audio,
-rem since these only ever autoplay muted and small in the background -
-rem full resolution/length/audio would just be wasted bandwidth.
+rem since these only ever autoplay muted and small in the background - full
+rem resolution/length/audio would just be wasted bandwidth. The originals
+rem live OUTSIDE public/ on purpose - anything under public/ gets copied
+rem into every Astro build as-is.
 
 set "SCRIPT_DIR=%~dp0"
 set "REPO_ROOT=%SCRIPT_DIR%.."
-set "SRC_DIR=%REPO_ROOT%\_resources\videos"
-set "DEST_DIR=%REPO_ROOT%\_resources\videos-web"
+set "SRC_DIR=%REPO_ROOT%\assets-source\videos"
+set "DEST_DIR=%REPO_ROOT%\public\_resources\videos-web"
 set MAX_DIM=1280
 set MAX_DURATION=15
 set CRF=28

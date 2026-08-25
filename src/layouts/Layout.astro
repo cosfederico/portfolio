@@ -1,0 +1,51 @@
+---
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  bodyClass: string;
+  page: string;
+  noFooter?: boolean;
+}
+
+const { title, description, bodyClass, page, noFooter = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/_resources/fc_logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class={bodyClass} data-page={page}>
+    <Header />
+
+    <slot />
+
+    {
+      !noFooter && (
+        <footer class="site-footer">
+          <slot name="footer-extra" />
+          <p>
+            © {new Date().getFullYear()} Federico Coscia
+          </p>
+        </footer>
+      )
+    }
+
+    <script>
+      import "../scripts/site.js";
+    </script>
+  </body>
+</html>
