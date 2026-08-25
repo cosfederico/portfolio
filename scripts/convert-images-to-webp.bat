@@ -1,14 +1,17 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Converts every photo in _resources\images to a resized .webp copy in
-rem _resources\images-web, for use on the site instead of the raw
-rem full-resolution originals (which run 15-50MB each).
+rem Converts every photo in assets-source\images to a resized .webp copy in
+rem public\_resources\images-web, for use on the site instead of the raw
+rem full-resolution originals (which run 15-50MB each). The originals live
+rem OUTSIDE public/ on purpose - anything under public/ gets copied into
+rem every Astro build as-is, and nobody needs to download 1.8GB of raw
+rem source photos to view the site.
 
 set "SCRIPT_DIR=%~dp0"
 set "REPO_ROOT=%SCRIPT_DIR%.."
-set "SRC_DIR=%REPO_ROOT%\_resources\images"
-set "DEST_DIR=%REPO_ROOT%\_resources\images-web"
+set "SRC_DIR=%REPO_ROOT%\assets-source\images"
+set "DEST_DIR=%REPO_ROOT%\public\_resources\images-web"
 set MAX_DIM=1600
 set QUALITY=82
 

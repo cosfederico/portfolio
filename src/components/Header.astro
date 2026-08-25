@@ -1,10 +1,20 @@
+---
+// Active-nav highlighting used to be done client-side (fetch header.html,
+// inject it, then compare window.location.pathname against each link) -
+// Astro.url.pathname gives us the same answer at build time instead, so
+// there's no flash of an un-highlighted nav link before JS runs, and no
+// runtime fetch for the header at all anymore.
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href) => (href.replace(/\/$/, "") || "/") === currentPath;
+---
+
 <header class="site-header">
   <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
     <span></span>
     <span></span>
     <span></span>
   </button>
-  <!-- Only shown (via JS) on pages that actually render a video background -
+  <!-- Only shown (via site.js) on pages that actually render a video background -
        lets visitors stop the looping background clips, for accessibility
        (respects prefers-reduced-motion by default too) and lighter/slower
        browsers. -->
@@ -20,17 +30,17 @@
     <span class="bg-toggle__icon bg-toggle__icon--play" aria-hidden="true"></span>
   </button>
   <nav class="site-nav" aria-label="Main navigation">
-    <a href="/about/">About</a>
+    <a href="/about/" class:list={{ "is-active": isActive("/about/") }}>About</a>
     <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/photos/">Photography</a>
+    <a href="/photos/" class:list={{ "is-active": isActive("/photos/") }}>Photography</a>
     <span class="nav-dot" aria-hidden="true">·</span>
-    <a class="brand-link" href="/" aria-label="Home">
+    <a class="brand-link" href="/" aria-label="Home" class:list={{ "is-active": isActive("/") }}>
       <img src="/_resources/fc_logo.png" alt="FC" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'" />
       <span class="brand-text" style="display:none">FC</span>
     </a>
     <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/videos/">Videos</a>
+    <a href="/videos/" class:list={{ "is-active": isActive("/videos/") }}>Videos</a>
     <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/contact/">Contact</a>
+    <a href="/contact/" class:list={{ "is-active": isActive("/contact/") }}>Contact</a>
   </nav>
 </header>

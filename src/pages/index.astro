@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+import mosaicItems from "../data/mosaic-items.json";
+
+// Embedded as inline JSON rather than fetched at runtime - the mosaic's
+// infinite-recycling pool (see initMosaic in site.js) needs the full raw
+// item list client-side, but there's no reason that has to cost a network
+// round trip: Astro already has the data at build time, so it's baked
+// straight into the page.
+const mosaicJson = JSON.stringify(mosaicItems).replace(/</g, "\\u003c");
+---
+
+<Layout
+  title="Federico Coscia | Photographer & Filmmaker"
+  description="Cinematic photography and film by Federico Coscia — landscapes, travel, and quiet portraits shaped by light and atmosphere."
+  bodyClass="home-page"
+  page="home"
+  noFooter
+>
+  <main class="home-hero">
+    <section class="home-mosaic" aria-hidden="true">
+      <div id="home-mosaic-grid" class="home-mosaic-grid"></div>
+    </section>
+    <div class="home-fade" aria-hidden="true"></div>
+
+    <section class="hero-overlay">
+      <h1 class="hero-name">FEDERICO COSCIA</h1>
+      <p class="hero-role">Photographer &middot; Videomaker</p>
+    </section>
+  </main>
+
+  <div id="polaroid-modal" class="polaroid-modal" hidden></div>
+
+  <div class="focus-toggle">
+    <span class="focus-toggle__glow" aria-hidden="true"></span>
+    <span class="focus-toggle__label">Interactive Mode</span>
+    <button
+      type="button"
+      class="focus-toggle__switch"
+      id="focus-switch"
+      role="switch"
+      aria-checked="false"
+      aria-label="Toggle interactive mode"
+    >
+      <span class="focus-toggle__knob"></span>
+    </button>
+  </div>
+
+  <script type="application/json" id="mosaic-data" set:html={mosaicJson}></script>
+</Layout>

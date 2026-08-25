@@ -1,0 +1,125 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PlaylistCard from "../../components/PlaylistCard.astro";
+import videos from "../../data/videos.json";
+import channelPlaylists from "../../data/youtube-playlists.json";
+import backgroundVideos from "../../data/background-videos.json";
+import { wrappedSlice } from "../../lib/wrappedSlice.js";
+import { LOOP_BUFFER_CARDS } from "../../lib/constants.js";
+
+const featuredVideo = videos.find((v) => v.featured) || videos[0];
+
+// "21 August 2025" - parsed by hand (not `new Date`) so a "YYYY-MM-DD"
+// string never shifts by a day across timezones.
+function formatLongDate(dateStr) {
+  if (!dateStr) return "";
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr.trim());
+  if (!match) return dateStr;
+  const [, year, month, day] = match;
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  return `${Number(day)} ${months[Number(month) - 1] || month} ${year}`;
+}
+
+// One row per playlist, with the before/after clone buffers (see
+// initInfiniteScrollers in site.js) built once here at build time instead
+// of by the browser on every page load.
+const rows = (channelPlaylists?.playlists || []).map((playlist) => {
+  const items = playlist.videos;
+  const canLoop = items.length >= 2;
+  return {
+    title: playlist.title,
+    videos: items,
+    canLoop,
+    before: canLoop ? wrappedSlice(items, -LOOP_BUFFER_CARDS, LOOP_BUFFER_CARDS) : [],
+    after: canLoop ? wrappedSlice(items, items.length, LOOP_BUFFER_CARDS) : [],
+  };
+});
+---
+
+<Layout
+  title="Videos // Federico Coscia"
+  description="Cinematic short films and video work by Federico Coscia."
+  bodyClass="video-page"
+  page="videos"
+>
+  <Fragment slot="footer-extra">
+    <p>
+      You can find more on my
+      <a class="youtube-link" href="https://www.youtube.com/@pikasfed" target="_blank" rel="noopener noreferrer">YouTube channel</a>.
+    </p>
+  </Fragment>
+
+  <main class="page-shell">
+    <div class="video-bg" aria-hidden="true">
+      <div id="video-bg-stack" class="video-bg__stack">
+        {backgroundVideos.map((bg) => (
+          <video
+            src={bg.src}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            style={`--focus-y: ${Number.isFinite(bg.focusY) ? bg.focusY : 50}%`}
+          />
+        ))}
+      </div>
+    </div>
+
+    <header class="page-header reveal">
+      <h1>Take a seat with me.</h1>
+    </header>
+
+    <section id="video-featured" class="video-featured" aria-label="Featured video">
+      <div class="video-featured__player reveal">
+        <iframe
+          src={`https://www.youtube.com/embed/${featuredVideo.youtubeId}?rel=0`}
+          title={featuredVideo.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div class="video-featured__info reveal">
+        <h2 class="video-featured__title">{featuredVideo.title}</h2>
+        <p class="video-featured__date">{formatLongDate(featuredVideo.date)}</p>
+        <p class="video-featured__description">{featuredVideo.description}</p>
+      </div>
+    </section>
+
+    <!-- "More videos" grid intentionally left disabled, same as before the
+         migration - re-enable by rendering `videos` (minus featuredVideo)
+         into a #video-grid section here; site.js's initVideosPage() already
+         wires up .video-card__thumb clicks (via data-video-id/title/date/
+         description attributes) whenever that section exists. -->
+
+    <div class="section-label reveal">
+      <h2>Let the credits roll</h2>
+    </div>
+
+    <section id="channel-playlists" class="channel-playlists" aria-label="YouTube playlists">
+      {rows.length === 0 && (
+        <p class="empty-state">No playlists yet - run scripts/fetch_youtube_playlists.py to pull them from YouTube.</p>
+      )}
+      {rows.map((row) => (
+        <section class="playlist-row reveal" aria-label={row.title}>
+          <h3 class="playlist-row__title">{row.title}</h3>
+          <div class="playlist-row__scroller" data-loop={String(row.canLoop)} data-real-count={row.videos.length}>
+            {row.before.map((video) => (
+              <PlaylistCard video={video} isClone />
+            ))}
+            {row.videos.map((video) => (
+              <PlaylistCard video={video} />
+            ))}
+            {row.after.map((video) => (
+              <PlaylistCard video={video} isClone />
+            ))}
+          </div>
+        </section>
+      ))}
+    </section>
+  </main>
+</Layout>
