@@ -1,6 +1,6 @@
 # Federico Coscia — Portfolio
 
-Personal photography & filmmaking website. Built with [Astro](https://astro.build) - static output, no client-side framework.
+Personal photography & filmmaking website. Built with [Astro](https://astro.build) - no client-side framework. Every page is static-prerendered (`output: 'hybrid'`) except `src/pages/api/contact.ts`, which opts out with `export const prerender = false` and runs on demand as a Cloudflare Pages Function (via `@astrojs/cloudflare`).
 
 ## Structure
 
