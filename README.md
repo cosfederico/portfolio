@@ -34,6 +34,10 @@ npm run preview   # serve the production build locally
 
 Content in `src/data/*.json` is loaded at **build time** (imported directly into pages), not fetched by the browser - after editing a JSON file you need to re-run `npm run dev`/`npm run build` to see the change.
 
+## Contact form email
+
+`src/pages/api/contact.ts` sends inquiries via the [Cloudflare Email Service REST API](https://developers.cloudflare.com/email-service/api/send-emails/rest-api/) (not the Workers `send_email` binding - that one isn't available on Pages). It needs `CF_ACCOUNT_ID`, `CF_EMAIL_API_TOKEN`, and `CF_EMAIL_FROM` at runtime - see `.dev.vars.example` for local setup (copy to `.dev.vars`) and the one-time Cloudflare dashboard steps (enable Email Sending for your domain, verify the destination address, create a scoped API token). In production, set the same three as environment variables/secrets on the Cloudflare Pages project.
+
 ## License
 
 MIT

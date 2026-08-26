@@ -1,0 +1,25 @@
+# Copy this file to .dev.vars (gitignored - never commit real values) to run
+# the contact form's email sending locally with `npm run dev`.
+#
+# Used by src/pages/api/contact.ts via the Cloudflare adapter's runtime env
+# (locals.runtime.env - see src/env.d.ts). In production these are set as
+# environment variables/secrets on the Cloudflare Pages project instead.
+#
+# Setup (one-time, in the Cloudflare dashboard):
+#   1. Add your domain to Cloudflare, if it isn't already.
+#   2. Compute > Email Service > Email Sending - enable it for that domain.
+#      This verifies the sender domain used by CF_EMAIL_FROM below.
+#   3. Verify cosciafederico@outlook.com as a destination address (Cloudflare
+#      emails it a confirmation link). Sending to a verified destination is
+#      free on any plan - see https://developers.cloudflare.com/email-service/platform/pricing/
+#   4. Create an API token (My Profile > API Tokens) scoped to permission
+#      "Email Service > Sending > Edit" for your account, and use it below.
+
+# Found on the Cloudflare dashboard's right sidebar (Account Home).
+CF_ACCOUNT_ID=
+
+# The API token created in step 4 above.
+CF_EMAIL_API_TOKEN=
+
+# Must be a mailbox on the domain verified in step 2, e.g. contact@yourdomain.com
+CF_EMAIL_FROM=
