@@ -422,7 +422,7 @@ h3 {
 
 body.focus-mode-on .hero-overlay {
   filter: blur(10px);
-  opacity: 0.35;
+  opacity: 0;
 }
 
 .home-fade {
