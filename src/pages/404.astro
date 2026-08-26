@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Vertical crop focal point for the background image below, same idea as
+// the videos page's per-clip `focusY` (0 = top of the image, 100 = bottom,
+// 50 = centered) - tweak here since this page only ever has the one image.
+const bgFocusY = 55;
+---
+
+<Layout
+  title="Page Not Found // Federico Coscia"
+  description="This page doesn't exist."
+  bodyClass="error-page"
+  page="404"
+>
+  <div class="error-bg" aria-hidden="true">
+    <img
+      src="/_resources/images-web/IMG_8638.webp"
+      alt=""
+      style={`--focus-y: ${bgFocusY}%`}
+    />
+  </div>
+
+  <main class="page-shell error-shell">
+    <div class="error-content reveal">
+      <p class="eyebrow">Error 404</p>
+      <h1>"Rules? There are no rules! We're lost!"</h1>
+      <!-- <p class="lead">This page must have ended up on the cutting room floor. The link might be broken, or it's simply moved.</p> -->
+    </div>
+
+    <div class="error-actions button-group reveal">
+      <a class="button" href="/">Back to home</a>
+      <!-- <a class="button" href="/contact/">Get in touch</a> -->
+    </div>
+  </main>
+</Layout>
