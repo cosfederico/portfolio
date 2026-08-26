@@ -1445,69 +1445,93 @@ dialog.video-modal[open]::backdrop {
 .video-modal__close:hover { background: var(--surface); }
 
 /* ── About ── */
+/* Editorial split instead of the old hero-photo-with-text-on-top: the
+   portrait gets its own full-height column (shown at full clarity, not
+   dimmed under an overlay just to keep overlaid text legible), the content
+   column is a plain flowing read - a masthead-style fact list and a bare
+   services list instead of five repeated bordered boxes. */
 
-.about-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  /* opacity: 0.6; */
-}
-
-.about-hero {
-  position: relative;
-  z-index: 2;
+/* Header is position:fixed (out of normal flow, so it isn't a flex item
+   here) - these two are: .about-layout grows to fill whatever's left after
+   it, so the footer sits flush with the bottom of the viewport instead of
+   pushing the page taller than 100vh and forcing a scrollbar. */
+body.about-page {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 38%) minmax(0, 1fr);
+  align-items: stretch;
+  align-content: stretch;
+  flex: 1;
+  min-height: 0; /* let flex:1 govern the height instead of fighting it */
+}
+
+.about-portrait {
+  position: relative;
+  /* Bleeds under the fixed, translucent header on purpose - same trick the
+     home hero and video background already use. */
+}
+
+.about-portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  padding: calc(var(--header-height) + 1.5rem) 3rem 2rem;
+  overflow: hidden;
 }
 
-.about-editorial {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
-  gap: 2rem;
-  width: min(1100px, 100%);
-  margin: 0 auto;
-  align-items: start;
+/* Text is drawn straight on top of this, like the 404/videos backgrounds -
+   own opacity, own focal point, contained to just this column so it sits
+   beside the portrait rather than spanning the whole page. */
+.about-content-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 
-.about-story {
-  display: grid;
-  gap: 1.5rem;
+.about-content-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* See the `contentBgFocusY` constant in about/index.astro. 0% = top of
+     the image, 100% = bottom, 50% = centered. */
+  object-position: center var(--focus-y, 50%);
+  opacity: 0.45;
 }
 
-.about-heading-block {
-  padding-left: 1.5rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.18);
+.about-intro,
+.about-facts,
+.about-services {
+  position: relative;
+  z-index: 1;
 }
 
-.about-content .eyebrow {
-  color: var(--accent);
+.about-intro {
+  max-width: 34rem;
+  margin-bottom: 1.75rem;
 }
 
-.contact-info .eyebrow {
-  color: var(--accent);
-}
-
-.about-story .lead {
+.about-intro .lead {
   color: var(--text);
-  margin-bottom: 0;
-  max-width: 42rem;
+  margin-bottom: 1rem;
 }
 
-.about-copy {
-  display: grid;
-  gap: 0.75rem;
-  max-width: 46rem;
-}
-
-.about-copy p,
-.about-content p {
-  color: var(--text);
+.about-copy p {
   margin: 0;
+  color: var(--text-soft);
 }
 
 .about-copy a.contact-link {
@@ -1521,58 +1545,63 @@ dialog.video-modal[open]::backdrop {
   filter: drop-shadow(0 0 5px var(--accent)) drop-shadow(0 0 10px var(--accent));
 }
 
-.about-side {
+.about-facts {
+  margin: 0 0 1.75rem;
+  border-top: 1px solid var(--border);
+  max-width: 34rem;
+}
+
+.about-facts__row {
   display: grid;
+  /* minmax(0, 1fr), not a bare 1fr: an `fr` track's implicit minimum is
+     auto (its content's min-content width), not 0 - a bare 1fr here let a
+     long word in the value column force this row (and everything sharing
+     its container) wider than the viewport on narrow screens instead of
+     wrapping. */
+  grid-template-columns: 9rem minmax(0, 1fr);
   gap: 1rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.about-meta-card {
-  padding: 1.2rem 1.3rem;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(6px);
-}
-
-.meta-label {
-  display: block;
-  margin-bottom: 0.45rem;
+.about-facts__row dt {
+  margin: 0;
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
-.about-meta-card strong {
-  font-weight: 500;
-  font-size: 1rem;
+.about-facts__row dd {
+  margin: 0;
   color: var(--text);
 }
 
-.about-meta-card .position-link{
+.about-facts .position-link {
   filter: none;
   transition: filter 0.25s ease;
 }
 
-.about-meta-card .position-link:hover{
+.about-facts .position-link:hover {
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
 }
 
-.services-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.9rem;
-  margin-top: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+.about-services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 2.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 34rem;
 }
 
-.service-item {
-  padding: 1rem 1.1rem;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.015);
+.about-services li {
+  flex: 1 1 150px;
+  min-width: 0; /* same reasoning as .about-facts__row above */
 }
 
-.service-item h3 {
+.about-services h3 {
   font-size: 1rem;
   font-family: var(--font-body);
   font-weight: 500;
@@ -1581,10 +1610,85 @@ dialog.video-modal[open]::backdrop {
   color: var(--text);
 }
 
-.service-item p {
+.about-services p {
   margin: 0;
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+
+/* ── 404 ── */
+
+.error-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.error-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Vertical crop focal point - see the `bgFocusY` constant in 404.astro.
+     0% = top of the image, 100% = bottom, 50% = centered. */
+  object-position: center var(--focus-y, 50%);
+  opacity: 0.45;
+}
+
+/* Header is position:fixed (out of normal flow, so it isn't a flex item
+   here) - these two are: .error-shell grows to fill whatever's left after
+   it, pushing the footer down to sit flush with the bottom of the
+   viewport instead of right up against short content. */
+body.error-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-shell {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0; /* let flex:1 govern the height instead of fighting it */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Taken out of the centered flex flow and pinned to the bottom of
+   .error-shell on its own, rather than sitting right under the heading as
+   part of the centered block. */
+.error-actions {
+  /* Centered via left/right/margin, not transform:translateX(-50%) - this
+     element also has .reveal on it for the fade-in, and .reveal.is-visible
+     sets its own transform (translateY). transform is a single property.
+     the two can't combine, so whichever rule wins the cascade replaces it
+     entirely - translateX(-50%) was getting wiped out once the reveal
+     animation finished, leaving the button's left edge at 50% instead of
+     its center. */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3rem;
+  width: fit-content;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.error-content {
+  max-width: 32rem;
+}
+
+.error-content .lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-content .button-group {
+  justify-content: center;
 }
 
 /* ── Contact ── */
@@ -1593,9 +1697,18 @@ dialog.video-modal[open]::backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-size: cover;
-  background-position: bottom;
-  background-repeat: no-repeat;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.contact-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Vertical crop focal point - see the `bgFocusY` constant in
+     contact/index.astro. 0% = top of the image, 100% = bottom, 50% =
+     centered. */
+  object-position: center var(--focus-y, 50%);
   opacity: 0.75;
 }
 
@@ -1824,13 +1937,17 @@ body.lightbox-open {
     grid-template-columns: 1fr;
   }
 
-  .services-list {
+  .about-layout {
     grid-template-columns: 1fr;
   }
 
-  .about-hero {
-    justify-content: center;
-    align-items: flex-end;
+  .about-portrait {
+    position: relative;
+    height: 60vh;
+  }
+
+  .about-content {
+    padding: 3rem 1.5rem 4rem;
   }
 
   .lightbox__stage { padding: 1rem 3rem; }
