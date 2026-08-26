@@ -41,6 +41,7 @@ const isActive = (href) => (href.replace(/\/$/, "") || "/") === currentPath;
       <Image
         src={fcLogo}
         alt="FC"
+        loading="eager"
         width={112}
         height={112}
         transition:name="site-logo"
