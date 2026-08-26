@@ -1,5 +1,16 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
+// Sourced from src/_resources (gitignored, same convention as public/_resources)
+// rather than src/assets - these are delivered content images, not repo
+// assets, and will eventually be served from an external store (e.g.
+// Cloudflare R2) instead of living in the codebase at all.
+import bgImage from "../../_resources/images-web/IMG_0366.webp";
+
+// Vertical crop focal point for the background image below, same convention
+// as the 404/videos/about page backgrounds (0 = top of the image, 100 =
+// bottom, 50 = centered). Matches the old `background-position: bottom`.
+const bgFocusY = 100;
 ---
 
 <Layout
@@ -8,7 +19,9 @@ import Layout from "../../layouts/Layout.astro";
   bodyClass="contact-page"
   page="contact"
 >
-  <div class="contact-bg" style="background-image: url('/_resources/images-web/IMG_0366.webp')" aria-hidden="true"></div>
+  <div class="contact-bg" aria-hidden="true">
+    <Image src={bgImage} alt="" width={1600} height={1067} style={`--focus-y: ${bgFocusY}%`} />
+  </div>
 
   <main class="page-shell">
     <div class="contact-layout">

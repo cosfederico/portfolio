@@ -1,5 +1,17 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
+// Sourced from src/_resources (gitignored, same convention as public/_resources)
+// rather than src/assets - these are delivered content images, not repo
+// assets, and will eventually be served from an external store (e.g.
+// Cloudflare R2) instead of living in the codebase at all.
+import portraitImage from "../../_resources/images-web/IMG_0525.webp";
+import contentBgImage from "../../_resources/images-web/IMG_6675-Federico-Coscia.webp";
+
+// Vertical crop focal point for the content column's background image, same
+// convention as the videos/404 page backgrounds (0 = top of the image,
+// 100 = bottom, 50 = centered).
+const contentBgFocusY = 50;
 ---
 
 <Layout
@@ -8,46 +20,51 @@ import Layout from "../../layouts/Layout.astro";
   bodyClass="about-page"
   page="about"
 >
-  <div class="about-bg" style="background-image: url('/_resources/images-web/IMG_9725.webp')" aria-hidden="true"></div>
-  <div class="home-fade" aria-hidden="true"></div>
+  <main class="about-layout">
+    <div class="about-portrait reveal">
+      <Image src={portraitImage} alt="" width={1280} height={1600} loading="eager" decoding="async" />
+    </div>
 
-  <main class="page-shell about-hero">
-    <div class="about-editorial reveal">
-      <div class="about-story">
-        <div class="about-heading-block">
-          <h1>Ciao!</h1>
-          <p class="lead">My name is Federico, I'm a photographer and filmmaker. I chase stories, looking for the art and beauty in everyday moments. I bridge the gap between photography and cinema.</p>
-        </div>
+    <div class="about-content">
+      <div class="about-content-bg" aria-hidden="true">
+        <Image
+          src={contentBgImage} alt="" width={1600} height={1067} loading="eager" style={`--focus-y: ${contentBgFocusY}%`}
+        />
+      </div>
+
+      <div class="about-intro reveal">
+        <h1>Ciao!</h1>
+        <p class="lead">My name is Federico, I'm a photographer and filmmaker. I chase stories, looking for the art and beauty in everyday moments. I bridge the gap between photography and cinema.</p>
         <div class="about-copy">
           <p>I'm based in Milan, Italy. If you'd like to work with me, <a class="contact-link" href="/contact">reach out</a>! I'd love to hear your story.</p>
         </div>
       </div>
 
-      <aside class="about-side">
-        <div class="about-meta-card">
-          <span class="meta-label">Based in</span>
-          <strong><a class="position-link" href="https://maps.app.goo.gl/UUEow1nBadCgPjQU9" target="_blank" rel="noopener noreferrer">Milan, Italy</a></strong>
+      <dl class="about-facts reveal">
+        <div class="about-facts__row">
+          <dt>Based in</dt>
+          <dd><a class="position-link" href="https://www.google.com/maps/place/Milano+MI/@45.4683957,9.1423754,13z" target="_blank" rel="noopener noreferrer">Milan, Italy</a></dd>
         </div>
-        <div class="about-meta-card">
-          <span class="meta-label">Available for</span>
-          <strong>Music videos, live concerts, shootings, personal projects, and short-form cinematic work.</strong>
+        <div class="about-facts__row">
+          <dt>Available for</dt>
+          <dd>Music videos, live concerts, shootings, personal projects, and short-form cinematic work.</dd>
         </div>
+      </dl>
 
-        <div class="services-list">
-          <div class="service-item">
-            <h3>Photography</h3>
-            <p>Events, travel, and fine art landscapes and portraits</p>
-          </div>
-          <div class="service-item">
-            <h3>Filmmaking</h3>
-            <p>Short films, brand stories, and motion studies</p>
-          </div>
-          <div class="service-item">
-            <h3>Commissions</h3>
-            <p>Available for collaborations in Italy</p>
-          </div>
-        </div>
-      </aside>
+      <ul class="about-services reveal">
+        <li>
+          <h3>Photography</h3>
+          <p>Events, travel, and fine art landscapes and portraits</p>
+        </li>
+        <li>
+          <h3>Filmmaking</h3>
+          <p>Short films, brand stories, and motion studies</p>
+        </li>
+        <li>
+          <h3>Commissions</h3>
+          <p>Available for collaborations in Italy</p>
+        </li>
+      </ul>
     </div>
   </main>
 </Layout>
