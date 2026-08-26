@@ -132,7 +132,12 @@ h3 {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  /* width: 100vw, not right: 0 - vw is fixed to the viewport regardless of
+     whether a scrollbar is present, while right:0 resolves against the
+     containing block, which shrinks by the scrollbar's width on pages long
+     enough to scroll. That mismatch was shifting this centered nav sideways
+     by a few px depending on which page you were on. */
+  width: 100vw;
   z-index: 100;
   height: var(--header-height);
   display: flex;
