@@ -813,12 +813,37 @@ const Site = {
     const status = document.getElementById("form-status");
     if (!form) return;
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (status) {
-        status.textContent = "Thank you — your message has been noted. Connect a form service like Formspree to send emails.";
+      if (status) status.textContent = "Sending…";
+
+      const submitButton = form.querySelector("button[type='submit']");
+      if (submitButton) submitButton.disabled = true;
+
+      const data = new FormData(form);
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: data.get("name"),
+            email: data.get("email"),
+            message: data.get("message"),
+          }),
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok && result.ok) {
+          if (status) status.textContent = "Thank you — your message has been sent.";
+          form.reset();
+        } else {
+          if (status) status.textContent = result.error || "Something went wrong. Please try again.";
+        }
+      } catch {
+        if (status) status.textContent = "Something went wrong. Please try again.";
+      } finally {
+        if (submitButton) submitButton.disabled = false;
       }
-      form.reset();
     });
   },
 };
