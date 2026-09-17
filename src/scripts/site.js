@@ -7,19 +7,35 @@ import { LOOP_BUFFER_CARDS } from "../lib/constants.js";
 // photo lightbox's prev/next navigation) - embedded as an inline
 // <script type="application/json"> data island by the relevant .astro
 // page. Either way, there's no more fetch() waterfall on page load.
-// Timings (ms) for the polaroid's open/close choreography. The photo itself
+
+// Timings for the polaroid's open/close choreography. The photo itself
 // "flies" - a FLIP zoom between its mosaic tile and the polaroid's photo
 // slot - while the frame fades the opposite way, the two deliberately
-// overlapping so they read as a single motion rather than two steps. The
-// matching durations in global.css (backdrop blur, frame fade) carry
-// comments pointing back here; keep them in step.
-const POLAROID = {
-  flight: 700, // photo zoom, mosaic <-> polaroid
-  frameFade: 300, // frame/caption/actions opacity fade
-  frameLead: 250, // open: frame starts fading in this long before the photo lands
-  closeLead: 120, // close: photo starts flying back this long before the frame has finished fading
-  easing: "cubic-bezier(0.65, 0, 0.35, 1)",
-};
+// overlapping so they read as a single motion rather than two steps.
+//
+// The numbers live in global.css as the --polaroid-* custom properties and
+// are read back from there, so the durations CSS transitions with and the
+// ones scheduled here are the same values by construction instead of by
+// remembering to edit both. Tune the animation in the stylesheet.
+let polaroidTiming = null;
+
+const POLAROID = () =>
+  (polaroidTiming ??= (() => {
+    const css = getComputedStyle(document.documentElement);
+    const ms = (name) => {
+      const raw = css.getPropertyValue(name).trim();
+      const value = parseFloat(raw);
+      if (!Number.isFinite(value)) return 0; // property missing: degrade to no animation rather than NaN
+      return raw.endsWith("ms") ? value : value * 1000;
+    };
+    return {
+      flight: ms("--polaroid-flight"),
+      frameFade: ms("--polaroid-frame-fade"),
+      frameLead: ms("--polaroid-frame-lead"),
+      closeLead: ms("--polaroid-close-lead"),
+      easing: css.getPropertyValue("--polaroid-ease").trim() || "ease",
+    };
+  })());
 
 const Site = {
   focusMode: false,
@@ -466,7 +482,7 @@ const Site = {
         // it leaves is what it flies back into on close.
         this.liftMosaicTile(liveTile);
         this.runFlight(liveTile?.querySelector("img") ?? p.image, liveTile?.getBoundingClientRect() ?? toRect, toRect, {
-          leadMs: POLAROID.flight - POLAROID.frameLead,
+          leadMs: POLAROID().flight - POLAROID().frameLead,
           onLead: () => isCurrent() && p.panel.classList.remove("is-chrome-hidden"),
           onLanded: () => isCurrent() && p.panel.classList.remove("is-photo-hidden"),
         });
@@ -505,7 +521,7 @@ const Site = {
           this.setPolaroidBusy(false);
         },
       });
-    }, POLAROID.frameFade - POLAROID.closeLead);
+    }, POLAROID().frameFade - POLAROID().closeLead);
   },
 
   // The FLIP zoom shared by both directions: a clone of an already-decoded
@@ -548,7 +564,7 @@ const Site = {
 
     const flight = ghost.animate(
       [{ transform: `translate(${dx}px, ${dy}px) scale(${scale})` }, { transform: "none" }],
-      { duration: POLAROID.flight, easing: POLAROID.easing, fill: "forwards" }
+      { duration: POLAROID().flight, easing: POLAROID().easing, fill: "forwards" }
     );
     this._polaroidFlight = flight;
     if (onLead) this._polaroidLeadTimer = setTimeout(onLead, Math.max(leadMs ?? 0, 0));
