@@ -385,7 +385,6 @@ h3 {
   padding: 0;
   background: #111;
   cursor: default;
-  filter: brightness(0.82);
   transform: scale(1);
   transition: filter 0.4s ease, transform 0.4s ease;
 }
@@ -422,7 +421,7 @@ h3 {
 }
 
 .home-mosaic-grid.focus-enabled.is-hovering .mosaic-tile {
-  filter: brightness(0.55);
+  filter: brightness(0.6);
 }
 
 .home-mosaic-grid.focus-enabled.is-hovering .mosaic-tile.is-focused {
@@ -550,6 +549,26 @@ body.focus-mode-on .home-fade {
    magic number to the CSS transition-duration to swap `hidden` after the
    fact. See openPolaroid/closePolaroid in site.js for the JS half. */
 
+/* The single source of truth for the open/close choreography. site.js reads
+   these at runtime (readPolaroidTiming) instead of keeping its own copies,
+   so the durations CSS transitions with and the ones JS schedules and
+   animates against cannot drift apart - tune the animation here and only
+   here. The two *-lead values have no CSS consumer; they're pure scheduling
+   for JS, kept here so all of it stays in one place.
+   Units must be ms or s, since JS parses these values. */
+:root,
+dialog.polaroid-modal::backdrop {
+  --polaroid-flight: 500ms; /* photo zoom, mosaic <-> polaroid */
+  --polaroid-frame-fade: 300ms; /* frame/caption/actions opacity fade */
+  --polaroid-frame-lead: 250ms; /* open: frame starts fading in this long before the photo lands */
+  --polaroid-close-lead: 100ms; /* close: photo flies back this long before the frame finished fading */
+  --polaroid-ease: cubic-bezier(0.25, 0, 0.25, 1);
+  /* How long the dialog stays painted after close(), which fires as the
+     return flight starts - it has to outlast that flight, or the ghost gets
+     cut off mid-air when the dialog unmounts. Derived, so it tracks. */
+  --polaroid-keep-alive: calc(var(--polaroid-flight) + 100ms);
+}
+
 dialog.polaroid-modal {
   /* Full-viewport flex-centering box (like the old div was) rather than a
      dialog sized to its content - .polaroid-panel below is still sized
@@ -579,11 +598,7 @@ dialog.polaroid-modal {
   /* No opacity fade on the dialog box itself (unlike the ::backdrop below) -
      it hosts the flying photo ghost (see flyPhoto in site.js) and that needs
      to be visible at full opacity from frame one. */
-  /* 0.65s - must outlast POLAROID.flight (site.js, currently 500ms), since
-     close() fires as that flight starts (see closePolaroid) and this is what
-     keeps the dialog, and the ghost inside it, rendered until the photo
-     lands. Raise it if that flight ever gets slower than this. */
-  transition: overlay 0.65s allow-discrete, display 0.65s allow-discrete;
+  transition: overlay var(--polaroid-keep-alive) allow-discrete, display var(--polaroid-keep-alive) allow-discrete;
 }
 
 dialog.polaroid-modal[open] {
@@ -601,11 +616,11 @@ dialog.polaroid-modal::backdrop {
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  /* 0.5s + this easing = POLAROID.flight/.easing (site.js). Matching both,
-     not just the duration, is what makes the blur/dim read as one motion
-     with the zoom rather than two separately-timed animations - so if that
-     constant moves, move these with it. */
-  transition: background 0.5s cubic-bezier(0.65, 0, 0.35, 1), backdrop-filter 0.5s cubic-bezier(0.65, 0, 0.35, 1), overlay 0.65s allow-discrete, display 0.65s allow-discrete;
+  /* Same duration AND easing as the photo's flight - matching both, not just
+     the timing, is what makes the blur/dim read as one motion with the zoom
+     rather than two separately-timed animations. */
+  transition: background var(--polaroid-flight) var(--polaroid-ease), backdrop-filter var(--polaroid-flight) var(--polaroid-ease),
+    overlay var(--polaroid-keep-alive) allow-discrete, display var(--polaroid-keep-alive) allow-discrete;
 }
 
 dialog.polaroid-modal[open]::backdrop {
@@ -649,10 +664,9 @@ dialog.polaroid-modal[open]::backdrop {
   opacity: 0;
 }
 
-/* 0.3s = POLAROID.frameFade (site.js), which schedules against it. */
 .polaroid__caption,
 .polaroid-actions {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--polaroid-frame-fade) ease;
 }
 
 /* Real photo stays hidden while its flight ghost stands in for it. */
@@ -712,7 +726,7 @@ dialog.polaroid-modal[open]::backdrop {
   position: relative;
   width: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), box-shadow 0.3s ease;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), box-shadow var(--polaroid-frame-fade) ease;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
 
@@ -732,7 +746,7 @@ dialog.polaroid-modal[open]::backdrop {
   -webkit-backface-visibility: hidden;
   width: 100%;
   background-color: #f2efe8;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--polaroid-frame-fade) ease;
   padding: 0.9rem 0.9rem 1.4rem;
 }
 
