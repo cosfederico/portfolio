@@ -177,7 +177,13 @@ const Site = {
       this._mosaicResizeBound = true;
       window.addEventListener("resize", () => {
         clearTimeout(this._mosaicResizeTimer);
-        this._mosaicResizeTimer = setTimeout(() => this.growOrRecycleMosaic(), 250);
+        this._mosaicResizeTimer = setTimeout(() => {
+          // A modal/lightbox open or closing toggles the body scrollbar,
+          // which fires "resize" too - recycling then would reorder tiles
+          // still on screen behind it, seen as background images jumping.
+          if (document.body.classList.contains("modal-open") || document.body.classList.contains("lightbox-open")) return;
+          this.growOrRecycleMosaic();
+        }, 250);
       });
     }
   },
