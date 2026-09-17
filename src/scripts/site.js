@@ -7,6 +7,20 @@ import { LOOP_BUFFER_CARDS } from "../lib/constants.js";
 // photo lightbox's prev/next navigation) - embedded as an inline
 // <script type="application/json"> data island by the relevant .astro
 // page. Either way, there's no more fetch() waterfall on page load.
+// Timings (ms) for the polaroid's open/close choreography. The photo itself
+// "flies" - a FLIP zoom between its mosaic tile and the polaroid's photo
+// slot - while the frame fades the opposite way, the two deliberately
+// overlapping so they read as a single motion rather than two steps. The
+// matching durations in global.css (backdrop blur, frame fade) carry
+// comments pointing back here; keep them in step.
+const POLAROID = {
+  flight: 700, // photo zoom, mosaic <-> polaroid
+  frameFade: 300, // frame/caption/actions opacity fade
+  frameLead: 250, // open: frame starts fading in this long before the photo lands
+  closeLead: 120, // close: photo starts flying back this long before the frame has finished fading
+  easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+};
+
 const Site = {
   focusMode: false,
   _aspectCache: new Map(),
@@ -149,6 +163,13 @@ const Site = {
     // the old grid/sentinel - are gone with the old page) before rebuilding.
     this._mosaicObserver?.disconnect();
     clearTimeout(this._mosaicResizeTimer);
+    clearTimeout(this._mosaicResumeTimer);
+    // A fresh page view means no polaroid is open, whatever a navigation
+    // mid-animation left behind - and a stuck busy flag would make the
+    // growth below defer forever, i.e. an empty mosaic.
+    this._polaroidBusy = false;
+    this._mosaicGrowPending = false;
+    this._liftedTile = null; // whatever it pointed at went with the old page
 
     this._mosaicGrid = grid;
     this._mosaicImages = [...items].sort(() => Math.random() - 0.5);
@@ -177,13 +198,7 @@ const Site = {
       this._mosaicResizeBound = true;
       window.addEventListener("resize", () => {
         clearTimeout(this._mosaicResizeTimer);
-        this._mosaicResizeTimer = setTimeout(() => {
-          // A modal/lightbox open or closing toggles the body scrollbar,
-          // which fires "resize" too - recycling then would reorder tiles
-          // still on screen behind it, seen as background images jumping.
-          if (document.body.classList.contains("modal-open") || document.body.classList.contains("lightbox-open")) return;
-          this.growOrRecycleMosaic();
-        }, 250);
+        this._mosaicResizeTimer = setTimeout(() => this.growOrRecycleMosaic(), 250);
       });
     }
   },
@@ -203,6 +218,18 @@ const Site = {
   },
 
   growOrRecycleMosaic() {
+    // Recycling moves tiles in the DOM, and in a wrapped flex grid that
+    // reflows every row after them. While the polaroid is open or animating
+    // that's either invisible work behind the backdrop or, worse, it yanks
+    // the tile the photo is flying back to out from under it. Every trigger
+    // (sentinel observer, resize, initial fill) routes through here, so this
+    // is the one place that needs to know. setPolaroidBusy(false) picks the
+    // deferred work back up.
+    if (this._polaroidBusy) {
+      this._mosaicGrowPending = true;
+      return;
+    }
+
     const perScreen = this.mosaicTilesPerScreen();
     const maxPool = perScreen * 3; // hard cap: at most ~3 screens' worth of tiles ever exist at once
 
@@ -238,7 +265,10 @@ const Site = {
     tile.appendChild(img);
 
     tile.addEventListener("mouseenter", () => {
-      if (!this.focusMode) return;
+      // Not while the polaroid owns the screen: the dialog unmounting under
+      // a stationary cursor counts as entering whatever tile is beneath it,
+      // which dimmed the whole mosaic for a moment mid close-animation.
+      if (!this.focusMode || this._polaroidBusy) return;
       this._mosaicGrid.classList.add("is-hovering");
       tile.classList.add("is-focused");
     });
@@ -248,7 +278,7 @@ const Site = {
     });
     tile.addEventListener("click", () => {
       if (!this.focusMode) return;
-      if (tile._item) this.openPolaroid(tile._item);
+      if (tile._item) this.openPolaroid(tile._item, tile);
     });
 
     this.assignMosaicTile(tile, item);
@@ -300,6 +330,12 @@ const Site = {
     if (!modal || modal === this._polaroidBoundEl) return;
     this._polaroidBoundEl = modal;
 
+    // Fresh dialog element, so nothing can still be closing - and a stuck
+    // flag here would make closePolaroid() refuse to ever run again.
+    this._polaroidClosing = false;
+    clearTimeout(this._polaroidCloseTimer);
+    clearTimeout(this._polaroidLeadTimer);
+
     this._polaroid = {
       modal,
       panel: modal.querySelector(".polaroid-panel"),
@@ -333,6 +369,12 @@ const Site = {
     // duplicating this cleanup at each call site.
     modal.addEventListener("close", () => {
       document.body.classList.remove("modal-open");
+    });
+    // ESC fires "cancel" (then "close") - without this it'd skip straight to
+    // native instant close, bypassing the fly-back-to-mosaic animation.
+    modal.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      this.closePolaroid();
     });
 
     this.initPolaroidResizeOnce();
@@ -373,30 +415,33 @@ const Site = {
     return `${day}/${month}/${year}`;
   },
 
-  async openPolaroid(item) {
+  // Open: the photo flies out of its mosaic tile into the polaroid's photo
+  // slot, and the frame fades in around it as that zoom finishes. Until the
+  // flight lands, the panel shows nothing at all (no mat, no shadow, no
+  // black photo box) - the ghost is the only polaroid thing on screen, so
+  // nothing sits waiting at the destination while the photo is still on its
+  // way there.
+  async openPolaroid(item, tile) {
     this.initPolaroid();
     const p = this._polaroid;
-    const empty = (value) => (value && value.trim() ? value : "N/A");
 
+    // A click can land during a close-out (the dialog is already
+    // non-interactive by then, see global.css), so this supersedes whatever
+    // that close was still doing rather than racing it.
     const requestId = (this._polaroidRequestId = (this._polaroidRequestId || 0) + 1);
+    const isCurrent = () => requestId === this._polaroidRequestId;
+    clearTimeout(this._polaroidCloseTimer);
+    this._polaroidClosing = false;
+    this.setPolaroidBusy(true);
 
+    p.currentItem = item;
     p.card.classList.remove("is-flipped");
     p.flipBtn.textContent = "Turn over";
+    p.panel.classList.add("is-photo-hidden", "is-chrome-hidden");
+    this.fillPolaroid(item);
 
-    const displayDate = this.formatDateDisplay(item.date);
-
-    p.place.textContent = empty(item.place);
-    p.date.textContent = empty(displayDate);
-    p.story.textContent = empty(item.story);
-    p.camera.textContent = empty(item.camera);
-    p.shutter.textContent = empty(item.shutter);
-    p.aperture.textContent = empty(item.aperture);
-    p.iso.textContent = empty(item.iso);
-
-    // Resolve real dimensions before showing anything, so the card never
-    // renders at a placeholder size and then visibly resizes.
-    const aspect = await this.loadImageAspect(item.src);
-    if (requestId !== this._polaroidRequestId) return; // a newer click superseded this one
+    const aspect = await this.resolveAspect(item, tile);
+    if (!isCurrent()) return;
 
     p.photoBox.style.aspectRatio = String(aspect);
     p.backPhotoBox.style.aspectRatio = String(aspect);
@@ -406,6 +451,199 @@ const Site = {
 
     document.body.classList.add("modal-open");
     if (!p.modal.open) p.modal.showModal();
+
+    // Two rAFs, not a synchronous read right after showModal(): forcing
+    // layout that early can collapse the backdrop's @starting-style frame
+    // into the same tick as its target style, so the blur/dim snaps in
+    // instead of transitioning alongside the zoom.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!isCurrent()) return;
+        const toRect = p.photoBox.getBoundingClientRect();
+        const liveTile = tile?.isConnected ? tile : null;
+        // Empty the tile as the photo leaves it, in the same frame the ghost
+        // appears - the photo is never in two places at once, and the hole
+        // it leaves is what it flies back into on close.
+        this.liftMosaicTile(liveTile);
+        this.runFlight(liveTile?.querySelector("img") ?? p.image, liveTile?.getBoundingClientRect() ?? toRect, toRect, {
+          leadMs: POLAROID.flight - POLAROID.frameLead,
+          onLead: () => isCurrent() && p.panel.classList.remove("is-chrome-hidden"),
+          onLanded: () => isCurrent() && p.panel.classList.remove("is-photo-hidden"),
+        });
+      });
+    });
+  },
+
+  // Close: exact reverse of open - the frame fades out, then the photo flies
+  // back to its tile, with the two overlapping.
+  closePolaroid() {
+    const p = this._polaroid;
+    if (!p?.modal.open || this._polaroidClosing) return;
+    this._polaroidClosing = true;
+    const requestId = this._polaroidRequestId;
+
+    p.panel.classList.add("is-chrome-hidden");
+
+    this._polaroidCloseTimer = setTimeout(() => {
+      // close() before measuring, for two reasons: it releases the body
+      // scroll lock, so the rects describe the layout the photo actually
+      // flies through, and it starts the backdrop's blur fading out
+      // alongside the zoom instead of only once the zoom is over. The dialog
+      // (and the ghost inside it) stays painted throughout thanks to
+      // .polaroid-modal's own display/overlay transition in global.css.
+      p.modal.close();
+
+      const fromRect = p.photoBox.getBoundingClientRect();
+      const toRect = this.mosaicLandingRect(p.currentItem, fromRect);
+
+      p.panel.classList.add("is-photo-hidden");
+      this.runFlight(p.image, fromRect, toRect, {
+        onLanded: () => {
+          if (requestId !== this._polaroidRequestId) return; // re-opened mid-flight
+          this.dropMosaicTile(); // photo is back in the grid, so fill its hole again
+          this._polaroidClosing = false;
+          this.setPolaroidBusy(false);
+        },
+      });
+    }, POLAROID.frameFade - POLAROID.closeLead);
+  },
+
+  // The FLIP zoom shared by both directions: a clone of an already-decoded
+  // <img> is parked at `toRect`, given a starting transform that makes it
+  // look like it's still at `fromRect`, then animated back to no transform -
+  // i.e. to `toRect` itself.
+  //
+  // Cloning a live element rather than building a fresh <img src=...> is
+  // deliberate: the clone paints from the already-decoded bitmap on its
+  // first frame, where a brand new element can miss one and flash blank.
+  // The scale is uniform (width-derived) so a source and destination that
+  // don't share an aspect ratio start small rather than stretched.
+  //
+  // `onLead` fires `leadMs` in, before the landing, so a caller can start a
+  // follow-up fade that overlaps the tail of the zoom.
+  runFlight(sourceImg, fromRect, toRect, { onLanded, onLead, leadMs } = {}) {
+    const p = this._polaroid;
+    this._polaroidFlight?.cancel();
+    clearTimeout(this._polaroidLeadTimer);
+
+    const ghost = sourceImg.cloneNode();
+    ghost.removeAttribute("id"); // the polaroid's own <img> carries one
+    ghost.className = "polaroid-flight-ghost";
+    ghost.alt = "";
+    ghost.loading = "eager";
+    ghost.setAttribute("aria-hidden", "true");
+    Object.assign(ghost.style, {
+      left: `${toRect.left}px`,
+      top: `${toRect.top}px`,
+      width: `${toRect.width}px`,
+      height: `${toRect.height}px`,
+    });
+    // Inside the dialog, not the body: an open <dialog> paints in the top
+    // layer, above every normal stacking context whatever the z-index.
+    p.modal.appendChild(ghost);
+
+    const dx = fromRect.left + fromRect.width / 2 - (toRect.left + toRect.width / 2);
+    const dy = fromRect.top + fromRect.height / 2 - (toRect.top + toRect.height / 2);
+    const scale = toRect.width ? fromRect.width / toRect.width : 1;
+
+    const flight = ghost.animate(
+      [{ transform: `translate(${dx}px, ${dy}px) scale(${scale})` }, { transform: "none" }],
+      { duration: POLAROID.flight, easing: POLAROID.easing, fill: "forwards" }
+    );
+    this._polaroidFlight = flight;
+    if (onLead) this._polaroidLeadTimer = setTimeout(onLead, Math.max(leadMs ?? 0, 0));
+
+    const drop = () => {
+      ghost.remove();
+      if (this._polaroidFlight === flight) this._polaroidFlight = null;
+    };
+    // Two-arg then, not then().catch(): a flight cancelled by a newer one
+    // still has to drop its ghost, but it must NOT report a landing - doing
+    // so let an interrupted open reveal the full-size photo underneath the
+    // close flight that had just replaced it.
+    flight.finished.then(() => {
+      drop();
+      onLanded?.();
+    }, drop);
+  },
+
+  // Where a closing photo flies back to: its own tile if that's still live
+  // (the mosaic recycles constantly, so it's re-found rather than
+  // remembered), otherwise a small box of the same shape near the bottom of
+  // the mosaic, so it shrinks away into the grid instead of into a square.
+  mosaicLandingRect(item, fromRect) {
+    const tile = this._mosaicPool?.find((t) => t.isConnected && t._item === item);
+    if (tile) return tile.getBoundingClientRect();
+
+    const grid = this._mosaicGrid?.getBoundingClientRect();
+    const width = fromRect.width * 0.12;
+    const height = fromRect.height * 0.12;
+    const cx = grid ? grid.left + grid.width / 2 : window.innerWidth / 2;
+    const cy = grid ? Math.min(grid.bottom, window.innerHeight) : window.innerHeight;
+    return new DOMRect(cx - width / 2, cy - height / 2, width, height);
+  },
+
+  // The tile whose photo is currently out in the polaroid sits empty (see
+  // .mosaic-tile.is-lifted in global.css). Tracked as a single element
+  // rather than derived from the item, because the tile has to be restored
+  // even when the flight that emptied it gets superseded.
+  liftMosaicTile(tile) {
+    this.dropMosaicTile();
+    if (!tile) return;
+    this._liftedTile = tile;
+    tile.classList.add("is-lifted");
+  },
+
+  dropMosaicTile() {
+    this._liftedTile?.classList.remove("is-lifted");
+    this._liftedTile = null;
+  },
+
+  // Busy spans the whole interaction, click through landing - the mosaic
+  // must not recycle (reorder) tiles under an open or animating polaroid.
+  setPolaroidBusy(busy) {
+    this._polaroidBusy = busy;
+    clearTimeout(this._mosaicResumeTimer);
+
+    if (busy) {
+      this._mosaicGrid?.classList.remove("is-hovering");
+      return;
+    }
+    if (!this._mosaicGrowPending) return;
+    this._mosaicGrowPending = false;
+    // Deferred, so the reflow it causes doesn't land on top of the photo
+    // that has just flown back into place.
+    this._mosaicResumeTimer = setTimeout(() => this.growOrRecycleMosaic(), 350);
+  },
+
+  fillPolaroid(item) {
+    const p = this._polaroid;
+    const shown = (value) => (value && value.trim() ? value : "N/A");
+
+    p.place.textContent = shown(item.place);
+    p.date.textContent = shown(this.formatDateDisplay(item.date));
+    p.story.textContent = shown(item.story);
+    p.camera.textContent = shown(item.camera);
+    p.shutter.textContent = shown(item.shutter);
+    p.aperture.textContent = shown(item.aperture);
+    p.iso.textContent = shown(item.iso);
+  },
+
+  // The clicked tile's <img> is on screen, so it is already loaded - reading
+  // the aspect straight off it keeps the whole open path synchronous.
+  // Awaiting a fresh probe image instead is what used to make the zoom visibly
+  // hang after the click.
+  resolveAspect(item, tile) {
+    const cached = this._aspectCache.get(item.src);
+    if (cached) return cached;
+
+    const img = tile?.querySelector("img");
+    if (img?.naturalWidth) {
+      const aspect = img.naturalWidth / img.naturalHeight;
+      this._aspectCache.set(item.src, aspect);
+      return aspect;
+    }
+    return this.loadImageAspect(item.src); // no live tile to measure
   },
 
   loadImageAspect(src) {
@@ -422,13 +660,6 @@ const Site = {
       probe.src = src;
       if (probe.complete && probe.naturalWidth) finish(probe.naturalWidth / probe.naturalHeight);
     });
-  },
-
-  closePolaroid() {
-    // body class cleanup happens in the dialog's "close" listener (see
-    // initPolaroid) - covers this call, the close button, backdrop clicks,
-    // and native ESC all in one place.
-    if (this._polaroid?.modal.open) this._polaroid.modal.close();
   },
 
   // The grid/filter markup itself is now rendered by Astro at build time
