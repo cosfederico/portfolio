@@ -350,6 +350,7 @@ h3 {
 .home-mosaic {
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 .home-mosaic-grid {
@@ -358,7 +359,9 @@ h3 {
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 0;
-  width: 100%;
+  /* Wider than the viewport so the row-end tile that doesn't fit gets cut
+     off by .home-mosaic's overflow instead of wrapping and leaving a gap. */
+  width: calc(100% + 420px);
   transition: filter 0.4s ease;
 }
 
