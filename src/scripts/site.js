@@ -308,8 +308,6 @@ const Site = {
       shutter: modal.querySelector("#polaroid-shutter"),
       aperture: modal.querySelector("#polaroid-aperture"),
       iso: modal.querySelector("#polaroid-iso"),
-      backDate: modal.querySelector("#polaroid-back-date"),
-      backPlace: modal.querySelector("#polaroid-back-place"),
       flipBtn: modal.querySelector("#polaroid-flip"),
     };
 
@@ -388,8 +386,6 @@ const Site = {
     p.shutter.textContent = empty(item.shutter);
     p.aperture.textContent = empty(item.aperture);
     p.iso.textContent = empty(item.iso);
-    p.backDate.textContent = empty(displayDate);
-    p.backPlace.textContent = empty(item.place);
 
     // Resolve real dimensions before showing anything, so the card never
     // renders at a placeholder size and then visibly resizes.
