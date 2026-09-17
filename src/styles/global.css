@@ -562,6 +562,7 @@ dialog.polaroid-modal::backdrop {
   --polaroid-frame-fade: 300ms; /* frame/caption/actions opacity fade */
   --polaroid-frame-lead: 250ms; /* open: frame starts fading in this long before the photo lands */
   --polaroid-close-lead: 100ms; /* close: photo flies back this long before the frame finished fading */
+  --polaroid-flip: 800ms; /* card turning over, front <-> back */
   --polaroid-ease: cubic-bezier(0.25, 0, 0.25, 1);
   /* How long the dialog stays painted after close(), which fires as the
      return flight starts - it has to outlast that flight, or the ghost gets
@@ -726,7 +727,7 @@ dialog.polaroid-modal[open]::backdrop {
   position: relative;
   width: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), box-shadow var(--polaroid-frame-fade) ease;
+  transition: transform var(--polaroid-flip) cubic-bezier(0.65, 0, 0.35, 1), box-shadow var(--polaroid-frame-fade) ease;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
 

@@ -33,6 +33,7 @@ const POLAROID = () =>
       frameFade: ms("--polaroid-frame-fade"),
       frameLead: ms("--polaroid-frame-lead"),
       closeLead: ms("--polaroid-close-lead"),
+      flip: ms("--polaroid-flip"),
       easing: css.getPropertyValue("--polaroid-ease").trim() || "ease",
     };
   })());
@@ -370,8 +371,7 @@ const Site = {
     };
 
     this._polaroid.flipBtn.addEventListener("click", () => {
-      const isFlipped = this._polaroid.card.classList.toggle("is-flipped");
-      this._polaroid.flipBtn.textContent = isFlipped ? "Turn back" : "Turn over";
+      this.setPolaroidFlipped(!this.isPolaroidFlipped());
     });
 
     modal.querySelector("#polaroid-close").addEventListener("click", () => this.closePolaroid());
@@ -451,8 +451,7 @@ const Site = {
     this.setPolaroidBusy(true);
 
     p.currentItem = item;
-    p.card.classList.remove("is-flipped");
-    p.flipBtn.textContent = "Turn over";
+    this.setPolaroidFlipped(false);
     p.panel.classList.add("is-photo-hidden", "is-chrome-hidden");
     this.fillPolaroid(item);
 
@@ -490,12 +489,23 @@ const Site = {
     });
   },
 
-  // Close: exact reverse of open - the frame fades out, then the photo flies
-  // back to its tile, with the two overlapping.
+  // Close: the card turns face up if it wasn't already, then the frame fades
+  // out, then the photo flies back to its tile - the last two overlapping.
   closePolaroid() {
     const p = this._polaroid;
     if (!p?.modal.open || this._polaroidClosing) return;
     this._polaroidClosing = true;
+
+    // A photo can't go back into the mosaic showing its back, so a turned
+    // card is turned over first and the rest of the close waits that out.
+    const flipWait = this.isPolaroidFlipped() ? POLAROID().flip : 0;
+    if (flipWait) this.setPolaroidFlipped(false);
+
+    this._polaroidCloseTimer = setTimeout(() => this.runCloseSequence(), flipWait);
+  },
+
+  runCloseSequence() {
+    const p = this._polaroid;
     const requestId = this._polaroidRequestId;
 
     p.panel.classList.add("is-chrome-hidden");
@@ -597,6 +607,19 @@ const Site = {
     const cx = grid ? grid.left + grid.width / 2 : window.innerWidth / 2;
     const cy = grid ? Math.min(grid.bottom, window.innerHeight) : window.innerHeight;
     return new DOMRect(cx - width / 2, cy - height / 2, width, height);
+  },
+
+  // Flip state kept in one place so the button's label can't drift out of
+  // step with the card - the close turns a flipped card back itself, not
+  // just the button does.
+  isPolaroidFlipped() {
+    return this._polaroid.card.classList.contains("is-flipped");
+  },
+
+  setPolaroidFlipped(flipped) {
+    const p = this._polaroid;
+    p.card.classList.toggle("is-flipped", flipped);
+    p.flipBtn.textContent = flipped ? "Turn back" : "Turn over";
   },
 
   // The tile whose photo is currently out in the polaroid sits empty (see
