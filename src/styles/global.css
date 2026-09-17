@@ -24,6 +24,12 @@
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  /* Reserve the scrollbar gutter permanently. body.modal-open sets
+     overflow:hidden, and without this that drops the scrollbar, narrows the
+     content box and re-wraps the whole flex mosaic behind the modal - seen
+     as the background snapping on open/close, and it also invalidates the
+     tile rects the polaroid flight measured (see flyPhoto in site.js). */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -396,6 +402,18 @@ h3 {
   cursor: pointer;
 }
 
+/* The clicked tile sits empty for as long as its photo is out in the
+   polaroid, so the photo reads as having been physically lifted out of the
+   mosaic - and the hole is what it flies back into on close. Instant, not
+   faded: the gap belongs to the photo leaving, not to a transition. */
+.mosaic-tile.is-lifted {
+  background: #000;
+}
+
+.mosaic-tile.is-lifted img {
+  opacity: 0;
+}
+
 .home-mosaic-grid.focus-enabled .mosaic-tile:hover,
 .home-mosaic-grid.focus-enabled .mosaic-tile.is-focused {
   filter: brightness(1);
@@ -404,7 +422,7 @@ h3 {
 }
 
 .home-mosaic-grid.focus-enabled.is-hovering .mosaic-tile {
-  filter: brightness(0.55) blur(2.5px);
+  filter: brightness(0.55);
 }
 
 .home-mosaic-grid.focus-enabled.is-hovering .mosaic-tile.is-focused {
@@ -558,26 +576,36 @@ dialog.polaroid-modal {
   background: transparent;
   color: inherit;
   overflow: visible;
-  opacity: 0;
-  transition: opacity 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
+  /* No opacity fade on the dialog box itself (unlike the ::backdrop below) -
+     it hosts the flying photo ghost (see flyPhoto in site.js) and that needs
+     to be visible at full opacity from frame one. */
+  /* 0.65s - must outlast POLAROID.flight (site.js, currently 500ms), since
+     close() fires as that flight starts (see closePolaroid) and this is what
+     keeps the dialog, and the ghost inside it, rendered until the photo
+     lands. Raise it if that flight ever gets slower than this. */
+  transition: overlay 0.65s allow-discrete, display 0.65s allow-discrete;
 }
 
 dialog.polaroid-modal[open] {
   display: flex;
-  opacity: 1;
 }
 
-@starting-style {
-  dialog.polaroid-modal[open] {
-    opacity: 0;
-  }
+/* The display/overlay transition above keeps the dialog painted for its full
+   duration after close(), and a full-viewport layer that's on its way out
+   must not keep eating clicks meant for the mosaic underneath. */
+dialog.polaroid-modal:not([open]) {
+  pointer-events: none;
 }
 
 dialog.polaroid-modal::backdrop {
   background: rgba(0, 0, 0, 0);
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
-  transition: background 0.45s var(--ease-out), backdrop-filter 0.45s var(--ease-out), overlay 0.45s allow-discrete, display 0.45s allow-discrete;
+  /* 0.5s + this easing = POLAROID.flight/.easing (site.js). Matching both,
+     not just the duration, is what makes the blur/dim read as one motion
+     with the zoom rather than two separately-timed animations - so if that
+     constant moves, move these with it. */
+  transition: background 0.5s cubic-bezier(0.65, 0, 0.35, 1), backdrop-filter 0.5s cubic-bezier(0.65, 0, 0.35, 1), overlay 0.65s allow-discrete, display 0.65s allow-discrete;
 }
 
 dialog.polaroid-modal[open]::backdrop {
@@ -601,26 +629,45 @@ dialog.polaroid-modal[open]::backdrop {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  transform: translateY(16px) scale(0.96);
-  opacity: 0;
-  transition: transform 0.45s var(--ease-out), opacity 0.45s var(--ease-out), width 0.4s var(--ease-out);
-}
-
-dialog.polaroid-modal[open] .polaroid-panel {
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-
-@starting-style {
-  dialog.polaroid-modal[open] .polaroid-panel {
-    transform: translateY(16px) scale(0.96);
-    opacity: 0;
-  }
+  /* Deliberately no width/geometry transition: sizePolaroid() (site.js) sets
+     this per photo, and the flight measures the resulting photo box straight
+     after. Animating it meant re-opening with a different aspect measured a
+     mid-transition box - the photo landed stretched, then snapped. */
 }
 
 .polaroid {
   width: 100%;
   perspective: 2000px;
+}
+
+/* Open: photo ghost flies mosaic -> here first (see flyPhoto in site.js),
+   caption/actions stay hidden until it lands, then fade in.
+   Close: reverse - caption/actions fade out first, then the ghost flies
+   back out to the mosaic. */
+.polaroid-panel.is-chrome-hidden .polaroid__caption,
+.polaroid-panel.is-chrome-hidden .polaroid-actions {
+  opacity: 0;
+}
+
+/* 0.3s = POLAROID.frameFade (site.js), which schedules against it. */
+.polaroid__caption,
+.polaroid-actions {
+  transition: opacity 0.3s ease;
+}
+
+/* Real photo stays hidden while its flight ghost stands in for it. */
+.polaroid-panel.is-photo-hidden .polaroid__photo img {
+  opacity: 0;
+}
+
+.polaroid-flight-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 5;
 }
 
 .polaroid-actions {
@@ -665,7 +712,7 @@ dialog.polaroid-modal[open] .polaroid-panel {
   position: relative;
   width: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), box-shadow 0.3s ease;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
 
@@ -673,12 +720,24 @@ dialog.polaroid-modal[open] .polaroid-panel {
   transform: rotateY(180deg);
 }
 
+/* Frame not just hidden but shadowless/transparent while the photo ghost is
+   flying, or its rectangle would show as an opaque card sitting still at
+   the destination the whole time the ghost is still mid-flight there. */
+.polaroid-panel.is-chrome-hidden .polaroid__card {
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0);
+}
+
 .polaroid__face {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   width: 100%;
-  background: #f2efe8;
+  background-color: #f2efe8;
+  transition: background-color 0.3s ease;
   padding: 0.9rem 0.9rem 1.4rem;
+}
+
+.polaroid-panel.is-chrome-hidden .polaroid__face {
+  background-color: transparent;
 }
 
 .polaroid__front {
@@ -700,18 +759,25 @@ dialog.polaroid-modal[open] .polaroid-panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: aspect-ratio 0.3s ease;
 }
 
 .polaroid__back-blank {
   flex: 1;
 }
 
+/* No aspect-ratio transition here either, same reason as .polaroid-panel:
+   the flight measures this box the moment it's set. */
 .polaroid__photo {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #000;
-  transition: aspect-ratio 0.3s ease;
+}
+
+/* No black box sitting still at the destination while the ghost is still
+   mid-flight there (see .polaroid-panel.is-photo-hidden .polaroid__photo img
+   below, which hides the real photo the same way). */
+.polaroid-panel.is-photo-hidden .polaroid__photo {
+  background: transparent;
 }
 
 .polaroid__photo img {
