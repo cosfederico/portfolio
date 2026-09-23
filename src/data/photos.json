@@ -1,98 +1,116 @@
 {
-  "categories": ["All", "Landscapes", "Travel", "Portraits"],
-  "projects": [
+  "collections": [
     {
-      "slug": "iceland-winter",
-      "title": "Iceland Winter",
-      "category": "Landscapes",
-      "year": 2025,
-      "cover": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
-      "description": "Volcanic coastlines and glacier light in the southern highlands.",
+      "slug": "2026",
+      "title": "2026",
+      "description": "The newest frames, still warm.",
       "images": [
-        {
-          "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Mountain range in blue haze",
-          "title": "Blue Distance",
-          "caption": "The mountain line emerged slowly as the morning light shifted."
-        },
-        {
-          "src": "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Sunlit mountain ridge",
-          "title": "Sunlit Ridge",
-          "caption": "A quiet dawn over the ridgeline before the world had fully woken."
-        },
-        {
-          "src": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Waterline at dusk",
-          "title": "Dusk Horizon",
-          "caption": "The horizon felt like a pause — time softened and settled."
-        }
+        "img-131",
+        "img-132",
+        "img-133",
+        "img-134",
+        "img-135",
+        "img-053",
+        "img-054",
+        "img-055",
+        "img-058",
+        "img-059",
+        "img-060",
+        "img-061"
       ]
     },
     {
-      "slug": "alpine-passages",
-      "title": "Alpine Passages",
-      "category": "Landscapes",
-      "year": 2024,
-      "cover": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",
-      "description": "Forest trails and alpine valleys across the Dolomites.",
+      "slug": "2025",
+      "title": "2025",
+      "description": "A year of light, travel and people.",
       "images": [
-        {
-          "src": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Forest path in autumn",
-          "title": "Autumn Path",
-          "caption": "A place that made you slow down without wanting to leave."
-        },
-        {
-          "src": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Road through pine trees",
-          "title": "The Long Road",
-          "caption": "The road felt endless, but the stillness made it intentional."
-        }
+        "img-023",
+        "img-149",
+        "img-150",
+        "img-151",
+        "img-152",
+        "img-129",
+        "img-130",
+        "img-125",
+        "img-126",
+        "img-127",
+        "img-128"
       ]
     },
     {
-      "slug": "coastal-japan",
-      "title": "Coastal Japan",
-      "category": "Travel",
-      "year": 2024,
-      "cover": "https://images.unsplash.com/photo-1493976040374-85c8e912f137?auto=format&fit=crop&w=1600&q=80",
-      "description": "Temples, coastlines, and the rhythm of everyday light.",
+      "slug": "2024",
+      "title": "2024",
+      "description": "Moments collected along the way.",
       "images": [
-        {
-          "src": "https://images.unsplash.com/photo-1493976040374-85c8e912f137?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Traditional temple in Kyoto",
-          "title": "Morning Temple",
-          "caption": "First light over the courtyard before visitors arrived."
-        },
-        {
-          "src": "https://images.unsplash.com/photo-1545569341-9eb8b3c46932?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Torii gate at sunset",
-          "title": "Torii at Dusk",
-          "caption": "The gate framed the sea like a threshold between worlds."
-        }
+        "img-076",
+        "img-077",
+        "img-078",
+        "img-075",
+        "img-051",
+        "img-052",
+        "img-031",
+        "img-032",
+        "img-033",
+        "img-034",
+        "img-024",
+        "img-160"
       ]
     },
     {
-      "slug": "quiet-portraits",
-      "title": "Quiet Portraits",
-      "category": "Portraits",
-      "year": 2025,
-      "cover": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1600&q=80",
-      "description": "Intimate portraits built on patience, trust, and natural light.",
+      "slug": "2021-2022",
+      "title": "2021 – 2022",
+      "description": "Picking the camera back up.",
       "images": [
-        {
-          "src": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Portrait in soft evening light",
-          "title": "Evening Portrait",
-          "caption": "Every detail earned through patience and trust."
-        },
-        {
-          "src": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=2000&q=85",
-          "alt": "Portrait with dramatic side light",
-          "title": "Side Light",
-          "caption": "A single window — enough to tell the whole story."
-        }
+        "img-112",
+        "img-113",
+        "img-114",
+        "img-115",
+        "img-117",
+        "img-098",
+        "img-099",
+        "img-100",
+        "img-102",
+        "img-095",
+        "img-096",
+        "img-097"
+      ]
+    },
+    {
+      "slug": "2017-2019",
+      "title": "2017 – 2019",
+      "description": "Where it started: a Canon EOS 100D and a lot of curiosity.",
+      "images": [
+        "img-011",
+        "img-003",
+        "img-166",
+        "img-141",
+        "img-137",
+        "img-046",
+        "img-041",
+        "img-026",
+        "img-155",
+        "img-145",
+        "img-121",
+        "img-124"
+      ]
+    },
+    {
+      "slug": "archive",
+      "title": "Archive",
+      "description": "Undated frames from the archive.",
+      "images": [
+        "img-001",
+        "img-008",
+        "img-015",
+        "img-021",
+        "img-040",
+        "img-062",
+        "img-067",
+        "img-072",
+        "img-083",
+        "img-088",
+        "img-103",
+        "img-108"
       ]
     }
   ]

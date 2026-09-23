@@ -1,9 +1,9 @@
 # Copy this file to .dev.vars (gitignored - never commit real values) to run
 # the contact form's email sending locally with `npm run dev`.
 #
-# Used by src/pages/api/contact.ts via the Cloudflare adapter's runtime env
-# (locals.runtime.env - see src/env.d.ts). In production these are set as
-# environment variables/secrets on the Cloudflare Pages project instead.
+# Used by src/pages/api/contact.ts via `import { env } from "cloudflare:workers"`
+# (typed in src/env.d.ts). In production set them as secrets on the Worker
+# instead: `npx wrangler secret put CF_EMAIL_API_TOKEN` (and the other two).
 #
 # Setup (one-time, in the Cloudflare dashboard):
 #   1. Add your domain to Cloudflare, if it isn't already.

@@ -1,0 +1,11 @@
+# Cloudflare static asset headers. The adapter adds immutable caching for
+# /_astro/* (fingerprinted build output) to this file at build time.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: DENY
+
+/_resources/*
+  Cache-Control: public, max-age=604800

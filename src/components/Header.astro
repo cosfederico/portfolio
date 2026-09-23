@@ -2,56 +2,241 @@
 import { Image } from "astro:assets";
 import fcLogo from "../assets/fc_logo.png";
 
-// Active-nav highlighting used to be done client-side (fetch header.html,
-// inject it, then compare window.location.pathname against each link) -
-// Astro.url.pathname gives us the same answer at build time instead, so
-// there's no flash of an un-highlighted nav link before JS runs, and no
-// runtime fetch for the header at all anymore.
+// Active link resolved at build time - no flash of an un-highlighted nav.
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isActive = (href) => (href.replace(/\/$/, "") || "/") === currentPath;
+const isActive = (href: string) => (href.replace(/\/$/, "") || "/") === currentPath;
+
+const left = [
+  { href: "/about/", label: "About" },
+  { href: "/photos/", label: "Photography" },
+];
+const right = [
+  { href: "/videos/", label: "Videos" },
+  { href: "/contact/", label: "Contact" },
+];
 ---
 
 <header class="site-header">
-  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
     <span></span>
     <span></span>
     <span></span>
   </button>
-  <!-- Only shown (via site.js) on pages that actually render a video background -
-       lets visitors stop the looping background clips, for accessibility
-       (respects prefers-reduced-motion by default too) and lighter/slower
-       browsers. -->
-  <button
-    class="bg-toggle"
-    id="bg-toggle"
-    type="button"
-    aria-label="Pause background videos"
-    aria-pressed="false"
-    hidden
-  >
+  <!-- Revealed by the videos page script, which owns the background clips. -->
+  <button class="bg-toggle" id="bg-toggle" type="button" aria-label="Pause background videos" aria-pressed="false" hidden>
     <span class="bg-toggle__icon bg-toggle__icon--pause" aria-hidden="true"></span>
     <span class="bg-toggle__icon bg-toggle__icon--play" aria-hidden="true"></span>
   </button>
-  <nav class="site-nav" aria-label="Main navigation">
-    <a href="/about/" class:list={{ "is-active": isActive("/about/") }}>About</a>
-    <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/photos/" class:list={{ "is-active": isActive("/photos/") }}>Photography</a>
-    <span class="nav-dot" aria-hidden="true">·</span>
-    <a class="brand-link" href="/" aria-label="Home" class:list={{ "is-active": isActive("/") }}>
-      <Image
-        src={fcLogo}
-        alt="FC"
-        loading="eager"
-        width={112}
-        height={112}
-        transition:name="site-logo"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"
-      />
-      <span class="brand-text" style="display:none">FC</span>
+  <nav class="site-nav" id="site-nav" aria-label="Main">
+    {
+      left.map(({ href, label }) => (
+        <>
+          <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+          <span class="nav-dot" aria-hidden="true">·</span>
+        </>
+      ))
+    }
+    <a class="brand-link" href="/" aria-current={isActive("/") ? "page" : undefined}>
+      <Image src={fcLogo} alt="Federico Coscia - Home" loading="eager" width={112} height={112} transition:name="site-logo" />
     </a>
-    <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/videos/" class:list={{ "is-active": isActive("/videos/") }}>Videos</a>
-    <span class="nav-dot" aria-hidden="true">·</span>
-    <a href="/contact/" class:list={{ "is-active": isActive("/contact/") }}>Contact</a>
+    {
+      right.map(({ href, label }) => (
+        <>
+          <span class="nav-dot" aria-hidden="true">·</span>
+          <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
+        </>
+      ))
+    }
   </nav>
 </header>
+
+<script>
+  import "../scripts/header.js";
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 100vw, not right:0 - right:0 resolves against a containing block that
+       shrinks by the scrollbar width, shifting the centered nav per page. */
+    width: 100vw;
+    z-index: 100;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--gutter);
+    background: rgba(8, 8, 8, 0.72);
+    backdrop-filter: blur(24px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+  }
+
+  .site-header.is-scrolled {
+    background: rgba(8, 8, 8, 0.92);
+    border-bottom-color: var(--border);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .site-nav a {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.35rem 0.5rem;
+    transition: color 0.25s ease;
+  }
+
+  .site-nav a:hover,
+  .site-nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  .nav-dot {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.65rem;
+    user-select: none;
+  }
+
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.75rem;
+    margin: 0 0.25rem;
+  }
+
+  .brand-link img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    transition: filter 0.25s ease;
+  }
+
+  .brand-link:hover img {
+    filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.85));
+  }
+
+  .nav-toggle {
+    display: none;
+    position: absolute;
+    right: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 1.375rem;
+    height: 1.5px;
+    margin: 0.3125rem auto;
+    background: var(--text);
+    transition: transform 0.3s var(--ease-out), opacity 0.3s ease;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(calc(0.3125rem + 1.5px)) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(calc(-0.3125rem - 1.5px)) rotate(-45deg); }
+
+  .bg-toggle {
+    position: absolute;
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    transition: background 0.25s ease;
+  }
+
+  .bg-toggle:hover { background: var(--surface); }
+  .bg-toggle[hidden] { display: none; }
+  .bg-toggle__icon { display: none; }
+
+  /* The icon shows what clicking will do next, like any media control. */
+  .bg-toggle:not(.is-paused) .bg-toggle__icon--pause {
+    display: flex;
+    gap: 3px;
+  }
+
+  .bg-toggle:not(.is-paused) .bg-toggle__icon--pause::before,
+  .bg-toggle:not(.is-paused) .bg-toggle__icon--pause::after {
+    content: "";
+    width: 3px;
+    height: 11px;
+    background: var(--text);
+  }
+
+  .bg-toggle.is-paused .bg-toggle__icon--play {
+    display: block;
+    margin-left: 2px;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .nav-toggle { display: block; }
+
+    /* The hamburger owns the right edge here. */
+    .bg-toggle {
+      right: auto;
+      left: 1.25rem;
+    }
+
+    .site-nav {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      padding: 1.5rem;
+      background: rgba(8, 8, 8, 0.98);
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-110%);
+      opacity: 0;
+      /* visibility keeps the closed menu's links out of the tab order. */
+      visibility: hidden;
+      transition: transform 0.4s var(--ease-out), opacity 0.3s ease, visibility 0s linear 0.4s;
+    }
+
+    .site-nav.is-open {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .site-nav a {
+      padding: 0.85rem 0;
+      font-size: 0.8rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .nav-dot { display: none; }
+
+    .site-nav .brand-link {
+      width: auto;
+      margin: 0.5rem 0;
+      padding: 0;
+    }
+  }
+</style>

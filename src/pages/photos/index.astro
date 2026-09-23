@@ -1,78 +1,353 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import photos from "../../data/photos.json";
+import { photoById, photoVariants } from "../../lib/photos";
+import { formatLongDate, toJsonIsland } from "../../lib/format.js";
+import data from "../../data/photos.json";
 
-const categories = photos.categories || ["All"];
+// Collections reference photos by id; all photo metadata (EXIF, dates) lives
+// in mosaic-items.json, shared with the home page mosaic.
+const collections = await Promise.all(
+  data.collections.map(async (collection) => {
+    const photos = await Promise.all(collection.images.map((id) => photoVariants(photoById(id))));
+    const cameras = [...new Set(photos.map((photo) => photo.camera).filter(Boolean))];
+    return { ...collection, photos, cameras };
+  })
+);
 
-// Embedded as inline JSON rather than fetched at runtime - the lightbox
-// (see initLightbox/navigateLightbox in site.js) needs the full per-project
-// image list client-side to step through prev/next, but Astro already has
-// this data at build time, so it's baked straight into the page instead of
-// costing a network round trip.
-const photosJson = JSON.stringify(photos).replace(/</g, "\\u003c");
+// The lightbox steps through a collection client-side, so it gets just the
+// fields it displays.
+const lightboxJson = toJsonIsland(
+  Object.fromEntries(
+    collections.map((c) => [
+      c.slug,
+      {
+        title: c.title,
+        photos: c.photos.map(({ id, src, srcset, width, height, alt, date, camera, aperture, shutter, iso }) => ({
+          id,
+          src,
+          srcset,
+          width,
+          height,
+          alt,
+          date: formatLongDate(date),
+          exif: [camera, aperture, shutter, iso && `ISO ${iso}`].filter(Boolean).join(" · "),
+        })),
+      },
+    ])
+  )
+);
+
+const coverImage = collections[0]?.photos[0];
 ---
 
 <Layout
   title="Federico Coscia | Photography"
-  description="Curated photography projects — landscapes, travel, and portraits by Federico Coscia."
-  bodyClass=""
+  description="Photography by Federico Coscia — selected frames of landscapes, travel, people and everyday moments, from 2017 to today."
   page="photos"
 >
-  <main class="page-shell">
+  <main class="page-shell" id="main">
     <header class="page-header reveal">
       <p class="eyebrow">Photography</p>
       <h1>Still frames with volume and calm.</h1>
-      <p class="lead">Curated projects across landscapes, travel, and portraiture. Select a collection to view the full gallery.</p>
+      <p class="lead">Selected frames, from my very first camera to this year. Pick a chapter, or take them all in.</p>
     </header>
 
-    <div id="photo-filters" class="filter-bar reveal">
-      {categories.map((cat) => (
-        <button class:list={["filter-btn", { "is-active": cat === "All" }]} data-category={cat}>
-          {cat}
-        </button>
-      ))}
+    <nav class="collection-nav reveal" id="collection-nav" aria-label="Collections">
+      <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All</button>
+      {
+        collections.map((c) => (
+          <button type="button" class="filter-btn" data-filter={c.slug} aria-pressed="false">
+            {c.title}
+          </button>
+        ))
+      }
+    </nav>
+
+    <div class="collections" id="collections">
+      {
+        collections.map((c) => (
+          <section class="collection" id={c.slug} data-collection={c.slug} aria-labelledby={`${c.slug}-title`}>
+            <header class="collection__meta reveal">
+              <p class="eyebrow">{c.photos.length} frames</p>
+              <h2 id={`${c.slug}-title`}>{c.title}</h2>
+              <p class="collection__description">{c.description}</p>
+              {c.cameras.length > 0 && <p class="collection__camera">Shot on {c.cameras.join(", ")}</p>}
+            </header>
+            <ul class="collection__grid reveal" role="list">
+              {c.photos.map((photo, index) => (
+                <li style={`--ar: ${photo.aspect}`}>
+                  <button
+                    type="button"
+                    class="photo-tile"
+                    data-collection={c.slug}
+                    data-index={index}
+                    aria-label={`Open photo ${index + 1} of ${c.photos.length}${photo.date ? `, ${formatLongDate(photo.date)}` : ""}`}
+                  >
+                    <img
+                      src={photo.thumb}
+                      alt={photo.alt}
+                      width={Math.round(480 * photo.aspect)}
+                      height="480"
+                      loading={c === collections[0] && index < 4 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
     </div>
 
-    <section id="photos-grid" class="photos-grid" aria-label="Photography projects">
-      {photos.projects.map((project, i) => (
-        <button
-          class="photo-card reveal"
-          data-project={project.slug}
-          data-category={project.category}
-          style={`transition-delay: ${i * 0.06}s`}
-        >
-          <div class="photo-card__image">
-            <img src={project.cover} alt={project.title} loading="lazy" decoding="async" />
-          </div>
-          <span class="photo-card__count">{project.images.length} images</span>
-          <div class="photo-card__info">
-            <h3>{project.title}</h3>
-            <p>{project.category} · {project.year}</p>
-          </div>
-        </button>
-      ))}
-      <p id="photos-empty" class="empty-state" hidden>No projects in this category yet.</p>
-    </section>
-
-    <dialog id="lightbox" class="lightbox" aria-label="Photo gallery">
+    <dialog id="lightbox" class="lightbox modal" aria-labelledby="lightbox-title">
       <div class="lightbox__header">
         <h2 class="lightbox__title" id="lightbox-title"></h2>
-        <span class="lightbox__counter" id="lightbox-counter"></span>
-        <button class="lightbox__close" id="lightbox-close" aria-label="Close gallery">&times;</button>
+        <span class="lightbox__counter" id="lightbox-counter" aria-live="polite"></span>
+        <button type="button" class="icon-button" id="lightbox-close" aria-label="Close gallery">&times;</button>
       </div>
-      <div class="lightbox__stage">
-        <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous image">&#8592;</button>
-        <div class="lightbox__image-wrap">
-          <img id="lightbox-image" src="" alt="" />
-        </div>
-        <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next image">&#8594;</button>
+      <div class="lightbox__stage" id="lightbox-stage">
+        <button type="button" class="icon-button lightbox__nav lightbox__nav--prev" id="lightbox-prev" aria-label="Previous photo">&#8592;</button>
+        <img id="lightbox-image" alt="" sizes="(max-width: 768px) 100vw, 85vw" />
+        <button type="button" class="icon-button lightbox__nav lightbox__nav--next" id="lightbox-next" aria-label="Next photo">&#8594;</button>
       </div>
       <div class="lightbox__footer">
-        <p class="lightbox__caption-title" id="lightbox-caption-title"></p>
-        <p class="lightbox__caption" id="lightbox-caption"></p>
+        <p class="lightbox__date" id="lightbox-date"></p>
+        <p class="lightbox__exif" id="lightbox-exif"></p>
       </div>
     </dialog>
 
-    <script type="application/json" id="photos-data" set:html={photosJson}></script>
+    <script type="application/json" id="photos-data" set:html={lightboxJson} />
   </main>
+  {coverImage && <link slot="head" rel="preload" as="image" href={coverImage.thumb} />}
 </Layout>
+
+<script>
+  import "../../scripts/photos.js";
+</script>
+
+<style>
+  .collection-nav {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 10;
+    display: flex;
+    gap: 0.5rem;
+    margin: 0 calc(-1 * var(--gutter)) 3rem;
+    padding: 0.85rem var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: rgba(8, 8, 8, 0.8);
+    backdrop-filter: blur(16px);
+  }
+
+  .collection-nav::-webkit-scrollbar { display: none; }
+
+  .collections {
+    display: grid;
+    gap: 5rem;
+    /* Leaves room for the sticky header + collection nav when jumped to. */
+    scroll-margin-top: calc(var(--header-height) + 5rem);
+  }
+
+  .collection {
+    display: grid;
+    grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .collection[hidden] { display: none; }
+
+  .collection__meta {
+    position: sticky;
+    top: calc(var(--header-height) + 5.5rem);
+  }
+
+  .collection__meta h2 { margin-bottom: 0.75rem; }
+
+  .collection__description {
+    margin: 0 0 1rem;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+
+  .collection__camera {
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Justified rows in pure CSS: every item grows in proportion to its aspect
+     ratio from a basis of one row height, so all items in a row end up the
+     same height and the row spans the full width. The ::after filler soaks
+     up the free space of the last row so it isn't stretched. */
+  .collection__grid {
+    --row-h: 15rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection__grid::after {
+    content: "";
+    flex: 1e9 1 0;
+  }
+
+  .collection__grid li {
+    flex: calc(var(--ar) * 100) 1 calc(var(--ar) * var(--row-h));
+  }
+
+  .photo-tile {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ar);
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: #111;
+    cursor: zoom-in;
+  }
+
+  .photo-tile img {
+    transition: transform 0.6s var(--ease-out), opacity 0.4s ease;
+  }
+
+  @media (hover: hover) {
+    .collection__grid:has(.photo-tile:hover) .photo-tile:not(:hover) img { opacity: 0.6; }
+    .photo-tile:hover img { transform: scale(1.03); }
+  }
+
+  /* ── Lightbox ── */
+
+  dialog.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    margin: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border: 0;
+    padding: 0;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.94);
+    color: inherit;
+    opacity: 0;
+    transition: opacity 0.35s ease, overlay 0.35s allow-discrete, display 0.35s allow-discrete;
+  }
+
+  dialog.lightbox[open] {
+    display: flex;
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog.lightbox[open] { opacity: 0; }
+  }
+
+  .lightbox__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lightbox__title {
+    flex: 1;
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .lightbox__counter,
+  .lightbox__date {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .lightbox__stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 4.5rem;
+    touch-action: pan-y pinch-zoom; /* horizontal swipes are ours */
+  }
+
+  .lightbox__stage img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.25s ease;
+  }
+
+  .lightbox__stage img.is-loading { opacity: 0.25; }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 1.1rem;
+  }
+
+  .lightbox__nav--prev { left: 1rem; }
+  .lightbox__nav--next { right: 1rem; }
+
+  .lightbox__footer {
+    min-height: 4.5rem;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .lightbox__footer p { margin: 0; }
+
+  .lightbox__footer .lightbox__exif {
+    margin-top: 0.25rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 1024px) {
+    .collection {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .collection__meta { position: static; }
+  }
+
+  @media (max-width: 768px) {
+    .collection__grid { --row-h: 9.375rem; gap: 0.35rem; }
+    .collections { gap: 3.5rem; }
+
+    .lightbox__stage { padding: 0.5rem; }
+
+    /* Swipe does the job on touch; keep the arrows out of the photo. */
+    .lightbox__nav {
+      top: auto;
+      bottom: 0.75rem;
+      transform: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+</style>
