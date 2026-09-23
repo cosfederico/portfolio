@@ -7,7 +7,7 @@ in src/data/mosaic-items.json: camera, shutter, aperture, iso, date, place.
 Only overwrites a field if it is currently blank, so manually-entered story
 text or corrections are never clobbered by re-running this.
 
-The JSON's "src" may point at the webp copies (public/_resources/images-web),
+The JSON's "src" may point at the webp copies (src/_resources/images-web),
 which have their EXIF stripped by the ffmpeg conversion - so this script
 always looks up the matching *original* file by basename to read metadata.
 """

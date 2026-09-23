@@ -3,8 +3,9 @@
   "tagline": "Photographer & Filmmaker",
   "email": "cosciafederico@outlook.com",
   "location": "Based in Milan, Italy. Currently working in Italy.",
-  "social": {
-    "instagram": "https://instagram.com/pikasfed",
-    "youtube": "https://youtube.com/@pikasfed"
-  }
+  "social": [
+    { "label": "Personal Instagram", "url": "https://instagram.com/pikasfed" },
+    { "label": "Events Photography Instagram", "url": "https://instagram.com/federicocosciaphotographer" },
+    { "label": "YouTube", "url": "https://youtube.com/@pikasfed" }
+  ]
 }

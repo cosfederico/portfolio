@@ -1,13 +1,20 @@
 ---
-// Rendered three times per playlist row (before-clones, real, after-clones)
-// by src/pages/videos/index.astro - the clone-buffer construction that
-// used to happen client-side (buildCard() in the old script.js) now
-// happens once at build time, so the browser never has to build this
-// markup itself, only scroll and click on it.
+// One film-strip card in a playlist row. Rendered three times per row by
+// src/pages/videos/index.astro (clone buffer, real cards, clone buffer) for
+// the infinite scroll - clones are hidden from assistive tech and tabbing.
+interface Props {
+  video: { id: string; title: string };
+  isClone?: boolean;
+}
+
 const { video, isClone = false } = Astro.props;
+// Derived from the id rather than the stored URL: the fetch script often
+// records 1280px maxresdefault images for a 260px card.
+const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`;
 ---
 
 <button
+  type="button"
   class="playlist-card"
   data-video-id={video.id}
   data-video-title={video.title}
@@ -16,19 +23,90 @@ const { video, isClone = false } = Astro.props;
   tabindex={isClone ? -1 : undefined}
 >
   <span class="playlist-card__thumb">
-    {/*
-      Not swapped to astro:assets' <Image> - these are remote YouTube CDN
-      URLs refreshed by scripts/fetch_youtube_playlists.py, not local
-      assets. Routing them through Astro's image pipeline would mean every
-      `npm run build` re-downloads and re-encodes ~80 thumbnails that
-      YouTube already serves pre-sized (mqdefault = 320x180) - real network
-      dependency and build time added for content we don't control and
-      isn't meaningfully improved by it. Explicit width/height still gives
-      the browser a layout hint before the image loads (on top of the
-      aspect-ratio already reserving the space via CSS).
-    */}
-    <img src={video.thumbnail} alt={video.title} width="320" height="180" loading="lazy" />
-    <span class="playlist-card__play"><span class="video-card__play-icon"></span></span>
+    <img
+      src={thumb("mqdefault")}
+      srcset={`${thumb("mqdefault")} 320w, ${thumb("hqdefault")} 480w`}
+      sizes="(max-width: 768px) 170px, 250px"
+      alt=""
+      width="320"
+      height="180"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="playlist-card__play" aria-hidden="true"><span class="play-icon"></span></span>
   </span>
   <span class="playlist-card__title">{video.title}</span>
 </button>
+
+<style>
+  /* Sized to the film strip's own ratio (1920x1318), so its sprocket bands
+     frame a centered 16:9 thumbnail. */
+  .playlist-card {
+    position: relative;
+    flex: 0 0 16.25rem;
+    aspect-ratio: 1920 / 1318;
+    scroll-snap-align: start;
+    padding: 0;
+    border: 0;
+    background: #050505 url("/_resources/film-strip.png") no-repeat center / 100% 100%;
+    text-align: left;
+  }
+
+  .playlist-card:focus-visible { outline-offset: -4px; }
+
+  .playlist-card__thumb {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .playlist-card__thumb img { transition: transform 0.4s var(--ease-out); }
+
+  .playlist-card__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .playlist-card__title {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 1.75rem 0.65rem 0.5rem;
+    font-size: 0.78rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .playlist-card:is(:hover, :focus-visible) .playlist-card__thumb img { transform: scale(1.06); }
+
+  .playlist-card:is(:hover, :focus-visible) :is(.playlist-card__play, .playlist-card__title) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* No hover on touch screens: titles are always shown. */
+  @media (hover: none) {
+    .playlist-card__title {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .playlist-card { flex-basis: 10.625rem; }
+  }
+</style>

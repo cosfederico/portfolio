@@ -6,11 +6,27 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^11.2.0",
-    "astro": "^4.16.0",
+    "@astrojs/cloudflare": "^14.3.3",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.4",
     "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.137.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "allowScripts": {
+    "workerd@1.20260921.1": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.28.1": true
   }
 }

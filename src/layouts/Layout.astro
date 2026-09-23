@@ -1,37 +1,78 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
+import { Font, getImage } from "astro:assets";
 import Header from "../components/Header.astro";
 import fcLogo from "../assets/fc_logo.png";
+import defaultShareImage from "../_resources/images-web/IMG_6675-Federico-Coscia.webp";
+import site from "../data/site.json";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
-  bodyClass: string;
   page: string;
+  bodyClass?: string;
   noFooter?: boolean;
+  /** Social share image; defaults to a site-wide photo. */
+  image?: ImageMetadata;
 }
 
-const { title, description, bodyClass, page, noFooter = false } = Astro.props;
+const { title, description, page, bodyClass, noFooter = false, image = defaultShareImage } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const [shareImage, touchIcon, favicon] = await Promise.all([
+  getImage({ src: image, width: 1200, height: 630, fit: "cover", format: "jpg" }),
+  getImage({ src: fcLogo, width: 180, height: 180, format: "png" }),
+  getImage({ src: fcLogo, width: 64, height: 64, format: "png" }),
+]);
+const shareImageUrl = new URL(shareImage.src, Astro.site).href;
+
+const personJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: site.tagline,
+  url: Astro.site?.href,
+  email: `mailto:${site.email}`,
+  image: shareImageUrl,
+  address: { "@type": "PostalAddress", addressLocality: "Milan", addressCountry: "IT" },
+  sameAs: site.social.map((s) => s.url),
+}).replace(/</g, "\u003c");
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href={fcLogo.src} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
-      rel="stylesheet"
-    />
-    <ViewTransitions />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#080808" />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <link rel="apple-touch-icon" href={touchIcon.src} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={personJsonLd} />
+
+    <Font cssVariable="--font-dm-sans" preload />
+    <Font cssVariable="--font-bricolage" preload />
+    <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+    <slot name="head" />
+    <ClientRouter />
   </head>
   <body class={bodyClass} data-page={page}>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Header />
 
     <slot />
@@ -40,15 +81,13 @@ const { title, description, bodyClass, page, noFooter = false } = Astro.props;
       !noFooter && (
         <footer class="site-footer">
           <slot name="footer-extra" />
-          <p>
-            © {new Date().getFullYear()} Federico Coscia
-          </p>
+          <p>© {new Date().getFullYear()} {site.name}</p>
         </footer>
       )
     }
 
     <script>
-      import "../scripts/site.js";
+      import "../scripts/reveal.js";
     </script>
   </body>
 </html>

@@ -1,41 +1,40 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-// Sourced from src/_resources (gitignored, same convention as public/_resources)
-// rather than src/assets - these are delivered content images, not repo
-// assets, and will eventually be served from an external store (e.g.
-// Cloudflare R2) instead of living in the codebase at all.
 import portraitImage from "../../_resources/images-web/IMG_0525.webp";
 import contentBgImage from "../../_resources/images-web/IMG_6675-Federico-Coscia.webp";
 
-const contentBgFocusY = 50;
+const contentBgFocusY = 50; // vertical crop focal point, 0 = top, 100 = bottom
+
+const services = [
+  { title: "Photography", text: "Events, travel, and fine art landscapes and portraits" },
+  { title: "Filmmaking", text: "Short films, brand stories, and motion studies" },
+  { title: "Commissions", text: "Available for collaborations in Italy" },
+];
 ---
 
 <Layout
   title="Federico Coscia | About"
   description="About Federico Coscia — photographer and filmmaker creating atmospheric visual work."
-  bodyClass="about-page"
+  bodyClass="fill-viewport"
   page="about"
+  image={portraitImage}
 >
-  <main class="about-layout">
+  <main class="about-layout" id="main">
     <div class="about-portrait reveal">
-      <Image src={portraitImage} alt="" width={1280} height={1600} loading="eager" decoding="async" />
+      <Image src={portraitImage} alt="Portrait of Federico Coscia" widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, 38vw" loading="eager" fetchpriority="high" />
     </div>
 
     <div class="about-content">
       <div class="about-content-bg" aria-hidden="true">
-        <Image
-          src={contentBgImage} alt="" width={1600} height={1067} loading="eager" style={`--focus-y: ${contentBgFocusY}%`}
-        />
+        <Image src={contentBgImage} alt="" widths={[800, 1200, 1600]} sizes="(max-width: 768px) 100vw, 62vw" style={`--focus-y: ${contentBgFocusY}%`} />
       </div>
 
       <div class="about-intro reveal">
         <h1>Hii!</h1>
         <p class="lead">My name is Federico, I'm a photographer and filmmaker. I look for stories, the art and beauty in everyday moments.</p>
         <p class="lead">I believe that even our little lives can be as beautiful as on the movie screen.</p>
-        <div class="about-copy">
-          <p>I'm based in Milan, Italy. If you'd like to work with me, <a class="contact-link" href="/contact">reach out</a>! I'd love to hear your story.</p>
-        </div>
+        <p class="about-copy">I'm based in Milan, Italy. If you'd like to work with me, <a class="contact-link" href="/contact/">reach out</a>! I'd love to hear your story.</p>
       </div>
 
       <dl class="about-facts reveal">
@@ -46,19 +45,143 @@ const contentBgFocusY = 50;
       </dl>
 
       <ul class="about-services reveal">
-        <li>
-          <h3>Photography</h3>
-          <p>Events, travel, and fine art landscapes and portraits</p>
-        </li>
-        <li>
-          <h3>Filmmaking</h3>
-          <p>Short films, brand stories, and motion studies</p>
-        </li>
-        <li>
-          <h3>Commissions</h3>
-          <p>Available for collaborations in Italy</p>
-        </li>
+        {
+          services.map(({ title, text }) => (
+            <li>
+              <h2>{title}</h2>
+              <p>{text}</p>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </main>
 </Layout>
+
+<style>
+  /* Editorial split: the portrait gets its own full-height column, the
+     content column is a plain flowing read. */
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(17.5rem, 38%) minmax(0, 1fr);
+  }
+
+  /* Bleeds under the translucent header on purpose. */
+  .about-portrait {
+    position: relative;
+  }
+
+  .about-portrait img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .about-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: calc(var(--header-height) + 1.5rem) 3rem 2rem;
+    overflow: hidden;
+  }
+
+  .about-content-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .about-content-bg img {
+    object-position: center var(--focus-y, 50%);
+    opacity: 0.45;
+  }
+
+  .about-intro,
+  .about-facts,
+  .about-services {
+    position: relative;
+    z-index: 1;
+    max-width: 34rem;
+  }
+
+  .about-intro { margin-bottom: 1.75rem; }
+
+  .about-intro .lead {
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .about-copy {
+    margin: 0;
+    color: var(--text-soft);
+  }
+
+  .contact-link {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
+    transition: filter 0.25s ease;
+  }
+
+  .contact-link:hover {
+    filter: drop-shadow(0 0 5px var(--accent)) drop-shadow(0 0 10px var(--accent));
+  }
+
+  .about-facts {
+    margin: 0 0 1.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .about-facts__row {
+    display: grid;
+    /* minmax(0, 1fr): a bare 1fr's minimum is its content's min-content
+       width, which let long words push the row wider than the viewport. */
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .about-facts__row dt {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .about-facts__row dd { margin: 0; }
+
+  .about-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .about-services li {
+    flex: 1 1 9.375rem;
+    min-width: 0;
+  }
+
+  .about-services h2 {
+    font-size: 1rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.35rem;
+  }
+
+  .about-services p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    .about-layout { grid-template-columns: 1fr; }
+    .about-portrait { height: 60svh; }
+    .about-content { padding: 3rem 1.5rem 4rem; }
+    .about-facts__row { grid-template-columns: 1fr; gap: 0.35rem; }
+  }
+</style>
