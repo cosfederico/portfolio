@@ -562,7 +562,7 @@ dialog.polaroid-modal::backdrop {
   --polaroid-frame-fade: 300ms; /* frame/caption/actions opacity fade */
   --polaroid-frame-lead: 250ms; /* open: frame starts fading in this long before the photo lands */
   --polaroid-close-lead: 100ms; /* close: photo flies back this long before the frame finished fading */
-  --polaroid-flip: 800ms; /* card turning over, front <-> back */
+  --polaroid-flip: 800ms; /* card turning over, front <-> back (the flip button; putting a turned card back instead turns it during the flight) */
   --polaroid-ease: cubic-bezier(0.25, 0, 0.25, 1);
   /* How long the dialog stays painted after close(), which fires as the
      return flight starts - it has to outlast that flight, or the ghost gets
@@ -656,12 +656,15 @@ dialog.polaroid-modal[open]::backdrop {
   perspective: 2000px;
 }
 
-/* Open: photo ghost flies mosaic -> here first (see flyPhoto in site.js),
+/* Open: photo ghost flies mosaic -> here first (see runFlight in site.js),
    caption/actions stay hidden until it lands, then fade in.
    Close: reverse - caption/actions fade out first, then the ghost flies
-   back out to the mosaic. */
-.polaroid-panel.is-chrome-hidden .polaroid__caption,
-.polaroid-panel.is-chrome-hidden .polaroid-actions {
+   back out to the mosaic.
+   Matched on the flight ghost too, not just the panel: when a turned card
+   is put back the ghost carries a clone of the whole card, and sheds its
+   frame mid-flight using these very rules (see runCardFlight). */
+:is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__caption,
+:is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid-actions {
   opacity: 0;
 }
 
@@ -675,6 +678,13 @@ dialog.polaroid-modal[open]::backdrop {
   opacity: 0;
 }
 
+/* Whole card is flying instead, so the real one has to be gone outright -
+   hiding only its photo would leave the mat showing through underneath as
+   the ghost translates away. */
+.polaroid-panel.is-card-flying {
+  opacity: 0;
+}
+
 .polaroid-flight-ghost {
   position: fixed;
   top: 0;
@@ -683,6 +693,13 @@ dialog.polaroid-modal[open]::backdrop {
   object-fit: cover;
   pointer-events: none;
   z-index: 5;
+}
+
+/* The turning variant: this wrapper owns the perspective and the FLIP
+   translate/scale, the cloned .polaroid__card inside it owns the rotation,
+   so the polaroid spins in 3D as it drops back into the grid. */
+.polaroid-flight-ghost--card {
+  perspective: 2000px;
 }
 
 .polaroid-actions {
@@ -738,7 +755,7 @@ dialog.polaroid-modal[open]::backdrop {
 /* Frame not just hidden but shadowless/transparent while the photo ghost is
    flying, or its rectangle would show as an opaque card sitting still at
    the destination the whole time the ghost is still mid-flight there. */
-.polaroid-panel.is-chrome-hidden .polaroid__card {
+:is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__card {
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0);
 }
 
@@ -751,7 +768,7 @@ dialog.polaroid-modal[open]::backdrop {
   padding: 0.9rem 0.9rem 1.4rem;
 }
 
-.polaroid-panel.is-chrome-hidden .polaroid__face {
+:is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__face {
   background-color: transparent;
 }
 

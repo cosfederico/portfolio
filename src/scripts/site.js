@@ -33,7 +33,6 @@ const POLAROID = () =>
       frameFade: ms("--polaroid-frame-fade"),
       frameLead: ms("--polaroid-frame-lead"),
       closeLead: ms("--polaroid-close-lead"),
-      flip: ms("--polaroid-flip"),
       easing: css.getPropertyValue("--polaroid-ease").trim() || "ease",
     };
   })());
@@ -452,6 +451,11 @@ const Site = {
 
     p.currentItem = item;
     this.setPolaroidFlipped(false);
+    // Opening is the only thing that clears is-card-flying - a card flight
+    // leaves it set on purpose (see runCardCloseFlight), and a cancelled one
+    // never reports a landing at all. Either way a panel left hidden would
+    // open onto nothing.
+    p.panel.classList.remove("is-card-flying");
     p.panel.classList.add("is-photo-hidden", "is-chrome-hidden");
     this.fillPolaroid(item);
 
@@ -496,12 +500,43 @@ const Site = {
     if (!p?.modal.open || this._polaroidClosing) return;
     this._polaroidClosing = true;
 
-    // A photo can't go back into the mosaic showing its back, so a turned
-    // card is turned over first and the rest of the close waits that out.
-    const flipWait = this.isPolaroidFlipped() ? POLAROID().flip : 0;
-    if (flipWait) this.setPolaroidFlipped(false);
+    // A turned card doesn't turn back and then leave. It spins as it goes,
+    // carrying its frame, and sheds that frame on the way - the whole
+    // polaroid dropping back into the grid as a single motion. A card that
+    // was already face up has nothing to turn, so it takes the plain route:
+    // shed the frame first, then fly the bare photo home.
+    if (this.isPolaroidFlipped()) this.runCardCloseFlight();
+    else this.runCloseSequence();
+  },
 
-    this._polaroidCloseTimer = setTimeout(() => this.runCloseSequence(), flipWait);
+  // The turned-card close: no frame fade beforehand and no waiting for a
+  // flip to finish - the card leaves immediately, turning and shrinking and
+  // shedding its frame all at once.
+  runCardCloseFlight() {
+    const p = this._polaroid;
+    const requestId = this._polaroidRequestId;
+
+    // close() before measuring, same reasoning as runCloseSequence below.
+    p.modal.close();
+
+    const cardRect = p.card.querySelector(".polaroid__card").getBoundingClientRect();
+    const photoRect = p.photoBox.getBoundingClientRect();
+    const toRect = this.mosaicLandingRect(p.currentItem, photoRect);
+
+    p.panel.classList.add("is-card-flying");
+    this.runCardFlight(cardRect, photoRect, toRect, {
+      onLanded: () => {
+        if (requestId !== this._polaroidRequestId) return; // re-opened mid-flight
+        // is-card-flying deliberately stays on: the dialog is still painted
+        // for its keep-alive window after close(), so un-hiding the panel
+        // here flashes the full-size card once the ghost has gone. The next
+        // open clears it, which is the only time it's wanted back.
+        this.resetPolaroidFlip(); // face up again, ready for that next open
+        this.dropMosaicTile(); // photo is back in the grid, so fill its hole again
+        this._polaroidClosing = false;
+        this.setPolaroidBusy(false);
+      },
+    });
   },
 
   runCloseSequence() {
@@ -547,47 +582,108 @@ const Site = {
   //
   // `onLead` fires `leadMs` in, before the landing, so a caller can start a
   // follow-up fade that overlaps the tail of the zoom.
-  runFlight(sourceImg, fromRect, toRect, { onLanded, onLead, leadMs } = {}) {
-    const p = this._polaroid;
-    this._polaroidFlight?.cancel();
-    clearTimeout(this._polaroidLeadTimer);
-
+  runFlight(sourceImg, fromRect, toRect, options = {}) {
     const ghost = sourceImg.cloneNode();
     ghost.removeAttribute("id"); // the polaroid's own <img> carries one
     ghost.className = "polaroid-flight-ghost";
     ghost.alt = "";
     ghost.loading = "eager";
-    ghost.setAttribute("aria-hidden", "true");
     Object.assign(ghost.style, {
       left: `${toRect.left}px`,
       top: `${toRect.top}px`,
       width: `${toRect.width}px`,
       height: `${toRect.height}px`,
     });
-    // Inside the dialog, not the body: an open <dialog> paints in the top
-    // layer, above every normal stacking context whatever the z-index.
-    p.modal.appendChild(ghost);
 
     const dx = fromRect.left + fromRect.width / 2 - (toRect.left + toRect.width / 2);
     const dy = fromRect.top + fromRect.height / 2 - (toRect.top + toRect.height / 2);
     const scale = toRect.width ? fromRect.width / toRect.width : 1;
 
-    const flight = ghost.animate(
-      [{ transform: `translate(${dx}px, ${dy}px) scale(${scale})` }, { transform: "none" }],
-      { duration: POLAROID().flight, easing: POLAROID().easing, fill: "forwards" }
+    this.beginFlight(
+      ghost,
+      (keyframes) => [ghost.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${scale})` }, { transform: "none" }], keyframes)],
+      options
     );
-    this._polaroidFlight = flight;
+  },
+
+  // The turning variant, for putting a *turned* card back: the ghost is the
+  // whole card rather than a bare photo, so it can spin front-to-back in 3D
+  // on its way home. The wrapper takes the perspective and the FLIP
+  // translate/scale, the cloned card inside it takes the rotation.
+  //
+  // It's the photo slot - not the card - that has to come down on the tile,
+  // so the translation is worked out from where that slot ends up once the
+  // card has been scaled about its own centre, not from the card's box.
+  runCardFlight(cardRect, photoRect, toRect, { onLanded } = {}) {
+    const p = this._polaroid;
+    const { flight } = POLAROID();
+
+    const ghost = document.createElement("div");
+    ghost.className = "polaroid-flight-ghost polaroid-flight-ghost--card";
+    Object.assign(ghost.style, {
+      left: `${cardRect.left}px`,
+      top: `${cardRect.top}px`,
+      width: `${cardRect.width}px`,
+      height: `${cardRect.height}px`,
+    });
+    // The frame dissolves over the back half of the flight (see below), so
+    // the rules driving that fade are told to run at that length. Custom
+    // properties only take via setProperty, never plain style assignment.
+    ghost.style.setProperty("--polaroid-frame-fade", `${flight / 2}ms`);
+
+    const card = p.card.querySelector(".polaroid__card").cloneNode(true);
+    card.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+    ghost.appendChild(card);
+
+    const scale = photoRect.width ? toRect.width / photoRect.width : 1;
+    const cardCx = cardRect.left + cardRect.width / 2;
+    const cardCy = cardRect.top + cardRect.height / 2;
+    const dx = toRect.left + toRect.width / 2 - cardCx - scale * (photoRect.left + photoRect.width / 2 - cardCx);
+    const dy = toRect.top + toRect.height / 2 - cardCy - scale * (photoRect.top + photoRect.height / 2 - cardCy);
+
+    this.beginFlight(
+      ghost,
+      (keyframes) => [
+        ghost.animate([{ transform: "none" }, { transform: `translate(${dx}px, ${dy}px) scale(${scale})` }], keyframes),
+        card.animate([{ transform: "rotateY(180deg)" }, { transform: "rotateY(0deg)" }], keyframes),
+      ],
+      {
+        onLanded,
+        // Frame starts dissolving as the card turns past edge-on - i.e. the
+        // moment the photo is the side facing out - and finishes exactly as
+        // it lands, so what settles into the tile is a bare photo and
+        // nothing pops at touchdown.
+        leadMs: flight / 2,
+        onLead: () => ghost.classList.add("is-chrome-hidden"),
+      }
+    );
+  },
+
+  // Shared plumbing for both flight shapes: park the ghost, run its
+  // animations as one unit, and make sure it's dropped whether it lands or
+  // gets cancelled by a newer flight.
+  beginFlight(ghost, createAnimations, { onLanded, onLead, leadMs } = {}) {
+    this._polaroidFlight?.forEach((animation) => animation.cancel());
+    clearTimeout(this._polaroidLeadTimer);
+
+    ghost.setAttribute("aria-hidden", "true");
+    // Inside the dialog, not the body: an open <dialog> paints in the top
+    // layer, above every normal stacking context whatever the z-index.
+    this._polaroid.modal.appendChild(ghost);
+
+    const animations = createAnimations({ duration: POLAROID().flight, easing: POLAROID().easing, fill: "forwards" });
+    this._polaroidFlight = animations;
     if (onLead) this._polaroidLeadTimer = setTimeout(onLead, Math.max(leadMs ?? 0, 0));
 
     const drop = () => {
       ghost.remove();
-      if (this._polaroidFlight === flight) this._polaroidFlight = null;
+      if (this._polaroidFlight === animations) this._polaroidFlight = null;
     };
     // Two-arg then, not then().catch(): a flight cancelled by a newer one
     // still has to drop its ghost, but it must NOT report a landing - doing
     // so let an interrupted open reveal the full-size photo underneath the
     // close flight that had just replaced it.
-    flight.finished.then(() => {
+    Promise.all(animations.map((animation) => animation.finished)).then(() => {
       drop();
       onLanded?.();
     }, drop);
@@ -620,6 +716,18 @@ const Site = {
     const p = this._polaroid;
     p.card.classList.toggle("is-flipped", flipped);
     p.flipBtn.textContent = flipped ? "Turn back" : "Turn over";
+  },
+
+  // Turn the card face up with no animation. Used once a flying ghost has
+  // taken over the visuals: the real card is hidden by then, so an animated
+  // turn would just be a stale 800ms transition running underneath - and
+  // still running, half-turned, if the next open comes quickly.
+  resetPolaroidFlip() {
+    const card = this._polaroid.card.querySelector(".polaroid__card");
+    card.style.transition = "none";
+    this.setPolaroidFlipped(false);
+    void card.offsetWidth; // commit that state before the transition is allowed back
+    card.style.transition = "";
   },
 
   // The tile whose photo is currently out in the polaroid sits empty (see
