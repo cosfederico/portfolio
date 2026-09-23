@@ -50,6 +50,9 @@ const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`
     border: 0;
     background: #050505 url("/_resources/film-strip.png") no-repeat center / 100% 100%;
     text-align: left;
+    /* The hidden title sits a few px low for its slide-up; without clipping
+       it overflows the row, making the strip vertically scrollable. */
+    overflow: hidden;
   }
 
   .playlist-card:focus-visible { outline-offset: -4px; }

@@ -16,25 +16,76 @@ function initBackgroundVideos(signal) {
   const toggle = document.getElementById("bg-toggle");
   if (!stack || !toggle) return;
 
-  const videos = [...stack.querySelectorAll("video")];
+  const originals = [...stack.querySelectorAll("video")];
   const visible = new Set();
   let paused = prefersReducedMotion();
 
-  // ClientRouter can reuse a <video> element across navigations, and a reused
-  // element doesn't reliably restart - an explicit load() resets it.
-  videos.forEach((video) => video.load());
-
   const sync = () =>
-    videos.forEach((video) => (!paused && visible.has(video) ? video.play().catch(() => {}) : video.pause()));
-  // play() is rejected while nothing is buffered yet; retry once data arrives.
-  videos.forEach((video) => video.addEventListener("canplay", sync, { signal }));
+    [...stack.children].forEach((video) => (!paused && visible.has(video) ? video.play().catch(() => {}) : video.pause()));
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(({ target, isIntersecting }) => (isIntersecting ? visible.add(target) : visible.delete(target)));
     sync();
   });
-  videos.forEach((video) => observer.observe(video));
-  signal.addEventListener("abort", () => observer.disconnect());
+
+  const track = (video) => {
+    // play() is rejected while nothing is buffered yet; retry once data arrives.
+    video.addEventListener("canplay", sync, { signal });
+    observer.observe(video);
+  };
+
+  // ClientRouter can reuse a <video> element across navigations, and a reused
+  // element doesn't reliably restart - an explicit load() resets it.
+  originals.forEach((video) => {
+    video.load();
+    track(video);
+  });
+
+  // The clips are repeated in order until the stack covers the area it has to
+  // fill - only the ones on screen ever play. With parallax (see .video-bg in
+  // videos/index.astro) that's one screen plus the distance the stack
+  // travels; otherwise the background scrolls with the page and must be as
+  // tall as the content.
+  const parallax = CSS.supports("animation-timeline: scroll()") && !prefersReducedMotion();
+  const fill = () => {
+    let height = stack.parentElement.clientHeight;
+    if (parallax) {
+      const speed = parseFloat(getComputedStyle(stack).getPropertyValue("--parallax-speed")) || 0;
+      const distance = Math.max(0, document.documentElement.scrollHeight - innerHeight) * speed;
+      stack.style.setProperty("--parallax-distance", `${distance}px`);
+      height = innerHeight + distance;
+    }
+
+    const clipHeight = (stack.clientWidth * 9) / 16;
+    const count = Math.max(originals.length, Math.ceil(height / clipHeight) || 0);
+    while (stack.children.length < count) {
+      const clone = originals[stack.children.length % originals.length].cloneNode();
+      clone.muted = true;
+      stack.appendChild(clone);
+      track(clone);
+    }
+    while (stack.children.length > count) {
+      const extra = stack.lastElementChild;
+      observer.unobserve(extra);
+      visible.delete(extra);
+      extra.remove();
+    }
+  };
+
+  // Content height and window size both change the fill; body resizes cover both.
+  let fillFrame = 0;
+  const resizeObserver = new ResizeObserver(() => {
+    cancelAnimationFrame(fillFrame);
+    fillFrame = requestAnimationFrame(fill);
+  });
+  resizeObserver.observe(document.body);
+  fill();
+
+  signal.addEventListener("abort", () => {
+    observer.disconnect();
+    resizeObserver.disconnect();
+    cancelAnimationFrame(fillFrame);
+  });
 
   const render = () => {
     toggle.classList.toggle("is-paused", paused);
