@@ -1,6 +1,7 @@
 .claude/
 .claudectl/
 .archeus/
+.codex/
 _resources/
 assets-source/
 __pycache__/
