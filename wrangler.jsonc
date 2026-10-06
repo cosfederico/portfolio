@@ -3,5 +3,6 @@
   "name": "portfolio",
   "compatibility_date": "2026-09-21",
   "observability": { "enabled": true },
-  "secrets": { "required": [] }
+  "secrets": { "required": [] },
+  "ratelimits": [{ "name": "CONTACT_LIMITER", "namespace_id": "1001", "simple": { "limit": 3, "period": 60 } }]
 }

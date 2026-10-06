@@ -11,7 +11,11 @@ const json = (body: unknown, status: number) =>
 
 const SEND_FAILED = "Failed to send your message. Please try again later.";
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  // Per-IP limit (3/minute, see wrangler.jsonc). Approximate: counted per Cloudflare location.
+  const { success } = await env.CONTACT_LIMITER.limit({ key: clientAddress });
+  if (!success) return json({ ok: false, error: "Too many messages. Please wait a minute and try again." }, 429);
+
   if (Number(request.headers.get("content-length") ?? 0) > LIMITS.bodyBytes) {
     return json({ ok: false, error: "Request body too large." }, 413);
   }
