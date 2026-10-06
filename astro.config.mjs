@@ -8,6 +8,7 @@ export default defineConfig({
   // Images are optimized once at build time with sharp; nothing is resized at request time.
   adapter: cloudflare({ imageService: "compile" }),
   integrations: [sitemap({ filter: (page) => !page.includes("/api/") })],
+  session: false,
   // Keep HTML-aware whitespace collapsing: the v7 default ('jsx') strips the
   // spaces between inline elements that the copy relies on ("my <a>YouTube</a>").
   compressHTML: true,
