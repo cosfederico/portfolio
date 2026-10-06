@@ -1,14 +1,14 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import bgImage from "../_resources/images-web/IMG_8638.webp";
+import { imageUrl, photoById } from "../lib/photos";
 
 const bgFocusY = 55; // vertical crop focal point, 0 = top, 100 = bottom
+const bgImage = photoById("img-127");
 ---
 
 <Layout title="Federico Coscia | Page Not Found" description="This page doesn't exist." bodyClass="fill-viewport" page="404">
   <div class="page-bg" aria-hidden="true">
-    <Image src={bgImage} alt="" widths={[800, 1200, 1600]} sizes="100vw" style={`--focus-y: ${bgFocusY}%`} />
+    <img src={imageUrl(bgImage.src)} alt="" width={bgImage.width} height={bgImage.height} style={`--focus-y: ${bgFocusY}%`} />
   </div>
 
   <main class="page-shell error-shell" id="main">
