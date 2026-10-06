@@ -9,8 +9,9 @@ node_modules/
 dist/
 .astro/
 .wrangler/
+.vscode/
 
-# Secrets used by scripts/fetch_youtube_playlists.py
+# Secrets used by scripts/fetch-youtube-playlists.mjs
 .env
 .env.*
 !.env.example

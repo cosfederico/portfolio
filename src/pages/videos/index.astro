@@ -90,7 +90,7 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
     </div>
 
     <div class="channel-playlists">
-      {rows.length === 0 && <p class="empty-state">No playlists yet - run scripts/fetch_youtube_playlists.py to pull them from YouTube.</p>}
+      {rows.length === 0 && <p class="empty-state">No playlists yet - set YOUTUBE_API_KEY and run npm run build to pull them from YouTube.</p>}
       {
         rows.map((row) => (
           <section class="playlist-row reveal" aria-label={row.title}>
