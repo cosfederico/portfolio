@@ -2,6 +2,8 @@
 // One film-strip card in a playlist row. Rendered three times per row by
 // src/pages/videos/index.astro (clone buffer, real cards, clone buffer) for
 // the infinite scroll - clones are hidden from assistive tech and tabbing.
+import filmStrip from "../assets/film-strip.png";
+
 interface Props {
   video: { id: string; title: string };
   isClone?: boolean;
@@ -21,6 +23,7 @@ const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`
   aria-label={`Play ${video.title}`}
   aria-hidden={isClone ? "true" : undefined}
   tabindex={isClone ? -1 : undefined}
+  style={`--film-strip: url(${filmStrip.src})`}
 >
   <span class="playlist-card__thumb">
     <img
@@ -48,7 +51,7 @@ const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`
     scroll-snap-align: start;
     padding: 0;
     border: 0;
-    background: #050505 url("/_resources/film-strip.png") no-repeat center / 100% 100%;
+    background: #050505 var(--film-strip) no-repeat center / 100% 100%;
     text-align: left;
     /* The hidden title sits a few px low for its slide-up; without clipping
        it overflows the row, making the strip vertically scrollable. */
