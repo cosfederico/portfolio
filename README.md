@@ -42,7 +42,7 @@ npm test          # unit tests (node:test)
   `images` are ids from `mosaic-items.json`. The current collections are a first pass grouped by year - rename, regroup and rewrite the descriptions freely.
 - **New photos:** add originals to `assets-source/images`, run `scripts/convert-images-to-webp.bat` (writes to `src/_resources/images-web/`), add an entry to `mosaic-items.json`, then `python scripts/populate_metadata.py` to fill EXIF fields. Astro generates the thumbnail/lightbox sizes at build time (`src/lib/photos.ts`).
 - **New videos:** `scripts/convert-videos-to-web.bat`, then list them in `src/data/background-videos.json`.
-- **YouTube playlists** (`src/data/youtube-playlists.json`): regenerate with `python scripts/fetch_youtube_playlists.py` (needs a `.env` with `YOUTUBE_API_KEY` - see `.env.example`).
+- **YouTube playlists** (`src/data/youtube-playlists.json`): refreshed automatically on every `npm run build` by `scripts/fetch-youtube-playlists.mjs` (the `prebuild` script), using `YOUTUBE_API_KEY` from `.env` locally (see `.env.example`) or from the Worker's build variables in Cloudflare. Without the key, or if the API fails, the build keeps using the committed file.
 - **Name, email, location, social links:** `src/data/site.json` (used by the header, footer, contact page, structured data and the contact endpoint).
 
 Content in `src/data/*.json` is loaded at **build time**, so re-run `npm run dev`/`npm run build` after editing.
