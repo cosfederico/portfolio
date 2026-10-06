@@ -8,6 +8,7 @@ import site from "../../data/site.json";
 import { wrappedSlice } from "../../lib/wrappedSlice.js";
 import { LOOP_BUFFER_CARDS } from "../../lib/constants.js";
 import { formatLongDate } from "../../lib/format.js";
+import { bucketUrl } from "../../lib/photos";
 
 const featuredVideo = videos.find((v) => v.featured) ?? videos[0];
 const youtubeChannel = site.social.find((s) => s.url.includes("youtube"))?.url;
@@ -45,7 +46,7 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
         {
           backgroundVideos.map((bg) => (
             <video
-              src={bg.src}
+              src={bucketUrl(bg.src)}
               muted
               loop
               playsinline

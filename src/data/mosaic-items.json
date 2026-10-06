@@ -1,7 +1,7 @@
 [
   {
     "id": "img-001",
-    "src": "other/15258773_1208427219237731_5120815891281346560_n.jpg",
+    "src": "images/other/15258773_1208427219237731_5120815891281346560_n.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -15,7 +15,7 @@
   },
   {
     "id": "img-002",
-    "src": "other/18253211_452707721738572_6686528450758443008_n.jpg",
+    "src": "images/other/18253211_452707721738572_6686528450758443008_n.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -29,7 +29,7 @@
   },
   {
     "id": "img-003",
-    "src": "2019/IMG_0082.jpg",
+    "src": "images/2019/IMG_0082.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -43,7 +43,7 @@
   },
   {
     "id": "img-004",
-    "src": "2019/IMG_0163.jpg",
+    "src": "images/2019/IMG_0163.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -57,7 +57,7 @@
   },
   {
     "id": "img-005",
-    "src": "other/IMG_0323.jpg",
+    "src": "images/other/IMG_0323.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -71,7 +71,7 @@
   },
   {
     "id": "img-006",
-    "src": "other/IMG_0332.jpg",
+    "src": "images/other/IMG_0332.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -85,7 +85,7 @@
   },
   {
     "id": "img-007",
-    "src": "other/IMG_0334.jpg",
+    "src": "images/other/IMG_0334.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -99,7 +99,7 @@
   },
   {
     "id": "img-008",
-    "src": "other/IMG_0346.jpg",
+    "src": "images/other/IMG_0346.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -113,7 +113,7 @@
   },
   {
     "id": "img-009",
-    "src": "other/IMG_0366.jpg",
+    "src": "images/other/IMG_0366.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -127,7 +127,7 @@
   },
   {
     "id": "img-010",
-    "src": "other/IMG_0389.jpg",
+    "src": "images/other/IMG_0389.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -141,7 +141,7 @@
   },
   {
     "id": "img-011",
-    "src": "2019/IMG_0402.jpg",
+    "src": "images/2019/IMG_0402.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -155,7 +155,7 @@
   },
   {
     "id": "img-012",
-    "src": "2019/IMG_0458.jpg",
+    "src": "images/2019/IMG_0458.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -169,7 +169,7 @@
   },
   {
     "id": "img-013",
-    "src": "other/IMG_0491.jpg",
+    "src": "images/other/IMG_0491.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -183,7 +183,7 @@
   },
   {
     "id": "img-014",
-    "src": "other/IMG_0493.jpg",
+    "src": "images/other/IMG_0493.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -197,7 +197,7 @@
   },
   {
     "id": "img-015",
-    "src": "other/IMG_0495.jpg",
+    "src": "images/other/IMG_0495.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -211,7 +211,7 @@
   },
   {
     "id": "img-016",
-    "src": "other/IMG_0498.jpg",
+    "src": "images/other/IMG_0498.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -225,7 +225,7 @@
   },
   {
     "id": "img-017",
-    "src": "2019/IMG_0512.jpg",
+    "src": "images/2019/IMG_0512.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -239,7 +239,7 @@
   },
   {
     "id": "img-018",
-    "src": "other/IMG_0525.jpg",
+    "src": "images/other/IMG_0525.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -253,7 +253,7 @@
   },
   {
     "id": "img-019",
-    "src": "other/IMG_0589.jpg",
+    "src": "images/other/IMG_0589.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -267,7 +267,7 @@
   },
   {
     "id": "img-020",
-    "src": "other/IMG_0591.jpg",
+    "src": "images/other/IMG_0591.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -281,7 +281,7 @@
   },
   {
     "id": "img-021",
-    "src": "other/IMG_0705.jpg",
+    "src": "images/other/IMG_0705.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -295,7 +295,7 @@
   },
   {
     "id": "img-022",
-    "src": "2019/IMG_0706.jpg",
+    "src": "images/2019/IMG_0706.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -309,7 +309,7 @@
   },
   {
     "id": "img-023",
-    "src": "2025/IMG_0830-Migliorato-NR.jpg",
+    "src": "images/2025/IMG_0830-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -323,7 +323,7 @@
   },
   {
     "id": "img-024",
-    "src": "2024/IMG_0834.jpg",
+    "src": "images/2024/IMG_0834.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1250s",
@@ -337,7 +337,7 @@
   },
   {
     "id": "img-025",
-    "src": "2019/IMG_0900.jpg",
+    "src": "images/2019/IMG_0900.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -351,7 +351,7 @@
   },
   {
     "id": "img-026",
-    "src": "2019/IMG_0941.jpg",
+    "src": "images/2019/IMG_0941.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -365,7 +365,7 @@
   },
   {
     "id": "img-027",
-    "src": "2019/IMG_0948.jpg",
+    "src": "images/2019/IMG_0948.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -379,7 +379,7 @@
   },
   {
     "id": "img-028",
-    "src": "other/IMG_0959.jpg",
+    "src": "images/other/IMG_0959.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -393,7 +393,7 @@
   },
   {
     "id": "img-029",
-    "src": "2019/IMG_0962.jpg",
+    "src": "images/2019/IMG_0962.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -407,7 +407,7 @@
   },
   {
     "id": "img-030",
-    "src": "other/IMG_1021.jpg",
+    "src": "images/other/IMG_1021.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -421,7 +421,7 @@
   },
   {
     "id": "img-031",
-    "src": "2024/IMG_1051-Migliorato-NR.jpg",
+    "src": "images/2024/IMG_1051-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -435,7 +435,7 @@
   },
   {
     "id": "img-032",
-    "src": "2024/IMG_1055-Migliorato-NR.jpg",
+    "src": "images/2024/IMG_1055-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -449,7 +449,7 @@
   },
   {
     "id": "img-033",
-    "src": "2024/IMG_1065-Migliorato-NR.jpg",
+    "src": "images/2024/IMG_1065-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -463,7 +463,7 @@
   },
   {
     "id": "img-034",
-    "src": "2024/IMG_1150.jpg",
+    "src": "images/2024/IMG_1150.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -477,7 +477,7 @@
   },
   {
     "id": "img-035",
-    "src": "other/IMG_1193.jpg",
+    "src": "images/other/IMG_1193.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -491,7 +491,7 @@
   },
   {
     "id": "img-036",
-    "src": "other/IMG_1195.jpg",
+    "src": "images/other/IMG_1195.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -505,7 +505,7 @@
   },
   {
     "id": "img-037",
-    "src": "2019/IMG_1219.jpg",
+    "src": "images/2019/IMG_1219.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -519,7 +519,7 @@
   },
   {
     "id": "img-038",
-    "src": "other/IMG_1285.jpg",
+    "src": "images/other/IMG_1285.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -533,7 +533,7 @@
   },
   {
     "id": "img-039",
-    "src": "2019/IMG_1472.jpg",
+    "src": "images/2019/IMG_1472.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -547,7 +547,7 @@
   },
   {
     "id": "img-040",
-    "src": "other/IMG_1527.jpg",
+    "src": "images/other/IMG_1527.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -561,7 +561,7 @@
   },
   {
     "id": "img-041",
-    "src": "2019/IMG_1727.jpg",
+    "src": "images/2019/IMG_1727.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -575,7 +575,7 @@
   },
   {
     "id": "img-042",
-    "src": "2019/IMG_1729.jpg",
+    "src": "images/2019/IMG_1729.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -589,7 +589,7 @@
   },
   {
     "id": "img-043",
-    "src": "2019/IMG_1818.jpg",
+    "src": "images/2019/IMG_1818.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -603,7 +603,7 @@
   },
   {
     "id": "img-044",
-    "src": "2019/IMG_2044.jpg",
+    "src": "images/2019/IMG_2044.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -617,7 +617,7 @@
   },
   {
     "id": "img-045",
-    "src": "2019/IMG_2254-2.jpg",
+    "src": "images/2019/IMG_2254-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/6s",
@@ -631,7 +631,7 @@
   },
   {
     "id": "img-046",
-    "src": "2019/IMG_2271-2.jpg",
+    "src": "images/2019/IMG_2271-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/5s",
@@ -645,7 +645,7 @@
   },
   {
     "id": "img-047",
-    "src": "2019/IMG_2272-2.jpg",
+    "src": "images/2019/IMG_2272-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/5s",
@@ -659,7 +659,7 @@
   },
   {
     "id": "img-048",
-    "src": "2019/IMG_2321-2.jpg",
+    "src": "images/2019/IMG_2321-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/8s",
@@ -673,7 +673,7 @@
   },
   {
     "id": "img-049",
-    "src": "other/IMG_2441.jpg",
+    "src": "images/other/IMG_2441.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -687,7 +687,7 @@
   },
   {
     "id": "img-050",
-    "src": "other/IMG_2470.jpg",
+    "src": "images/other/IMG_2470.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -701,7 +701,7 @@
   },
   {
     "id": "img-051",
-    "src": "2024/IMG_2522.jpg",
+    "src": "images/2024/IMG_2522.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -715,7 +715,7 @@
   },
   {
     "id": "img-052",
-    "src": "2024/IMG_2539.jpg",
+    "src": "images/2024/IMG_2539.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -729,7 +729,7 @@
   },
   {
     "id": "img-053",
-    "src": "2026/IMG_2811.jpg",
+    "src": "images/2026/IMG_2811.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1250s",
@@ -743,7 +743,7 @@
   },
   {
     "id": "img-054",
-    "src": "2026/IMG_2821.jpg",
+    "src": "images/2026/IMG_2821.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/2000s",
@@ -757,7 +757,7 @@
   },
   {
     "id": "img-055",
-    "src": "2026/IMG_2833.jpg",
+    "src": "images/2026/IMG_2833.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/2000s",
@@ -771,7 +771,7 @@
   },
   {
     "id": "img-056",
-    "src": "other/IMG_2843.jpg",
+    "src": "images/other/IMG_2843.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -785,7 +785,7 @@
   },
   {
     "id": "img-057",
-    "src": "2026/IMG_2844.jpg",
+    "src": "images/2026/IMG_2844.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -799,7 +799,7 @@
   },
   {
     "id": "img-058",
-    "src": "2026/IMG_2846.jpg",
+    "src": "images/2026/IMG_2846.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -813,7 +813,7 @@
   },
   {
     "id": "img-059",
-    "src": "2026/IMG_2847.jpg",
+    "src": "images/2026/IMG_2847.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -827,7 +827,7 @@
   },
   {
     "id": "img-060",
-    "src": "2026/IMG_2851.jpg",
+    "src": "images/2026/IMG_2851.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -841,7 +841,7 @@
   },
   {
     "id": "img-061",
-    "src": "2026/IMG_2854.jpg",
+    "src": "images/2026/IMG_2854.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -855,7 +855,7 @@
   },
   {
     "id": "img-062",
-    "src": "other/IMG_3018.jpg",
+    "src": "images/other/IMG_3018.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -869,7 +869,7 @@
   },
   {
     "id": "img-063",
-    "src": "other/IMG_3040.jpg",
+    "src": "images/other/IMG_3040.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -883,7 +883,7 @@
   },
   {
     "id": "img-064",
-    "src": "other/IMG_3064.jpg",
+    "src": "images/other/IMG_3064.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -897,7 +897,7 @@
   },
   {
     "id": "img-065",
-    "src": "other/IMG_3071.jpg",
+    "src": "images/other/IMG_3071.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -911,7 +911,7 @@
   },
   {
     "id": "img-066",
-    "src": "other/IMG_3093.jpg",
+    "src": "images/other/IMG_3093.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -925,7 +925,7 @@
   },
   {
     "id": "img-067",
-    "src": "other/IMG_3308.jpg",
+    "src": "images/other/IMG_3308.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -939,7 +939,7 @@
   },
   {
     "id": "img-068",
-    "src": "other/IMG_3414.jpg",
+    "src": "images/other/IMG_3414.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -953,7 +953,7 @@
   },
   {
     "id": "img-069",
-    "src": "other/IMG_3449.jpg",
+    "src": "images/other/IMG_3449.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -967,7 +967,7 @@
   },
   {
     "id": "img-070",
-    "src": "other/IMG_3652.jpg",
+    "src": "images/other/IMG_3652.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -981,7 +981,7 @@
   },
   {
     "id": "img-071",
-    "src": "other/IMG_3653.jpg",
+    "src": "images/other/IMG_3653.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -995,7 +995,7 @@
   },
   {
     "id": "img-072",
-    "src": "other/IMG_3673.jpg",
+    "src": "images/other/IMG_3673.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1009,7 +1009,7 @@
   },
   {
     "id": "img-073",
-    "src": "other/IMG_3701.jpg",
+    "src": "images/other/IMG_3701.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1023,7 +1023,7 @@
   },
   {
     "id": "img-074",
-    "src": "other/IMG_3705.jpg",
+    "src": "images/other/IMG_3705.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1037,7 +1037,7 @@
   },
   {
     "id": "img-075",
-    "src": "2024/IMG_3776-Migliorato-NR.jpg",
+    "src": "images/2024/IMG_3776-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/8s",
@@ -1051,7 +1051,7 @@
   },
   {
     "id": "img-076",
-    "src": "2024/IMG_3864.jpg",
+    "src": "images/2024/IMG_3864.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1065,7 +1065,7 @@
   },
   {
     "id": "img-077",
-    "src": "2024/IMG_3969.jpg",
+    "src": "images/2024/IMG_3969.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1079,7 +1079,7 @@
   },
   {
     "id": "img-078",
-    "src": "2024/IMG_3976.jpg",
+    "src": "images/2024/IMG_3976.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -1093,7 +1093,7 @@
   },
   {
     "id": "img-079",
-    "src": "2017/IMG_4239.jpg",
+    "src": "images/2017/IMG_4239.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1107,7 +1107,7 @@
   },
   {
     "id": "img-080",
-    "src": "other/IMG_5007.jpg",
+    "src": "images/other/IMG_5007.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1121,7 +1121,7 @@
   },
   {
     "id": "img-081",
-    "src": "other/IMG_5084.jpg",
+    "src": "images/other/IMG_5084.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1135,7 +1135,7 @@
   },
   {
     "id": "img-082",
-    "src": "other/IMG_5125.jpg",
+    "src": "images/other/IMG_5125.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1149,7 +1149,7 @@
   },
   {
     "id": "img-083",
-    "src": "other/IMG_5128.jpg",
+    "src": "images/other/IMG_5128.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1163,7 +1163,7 @@
   },
   {
     "id": "img-084",
-    "src": "other/IMG_5129.jpg",
+    "src": "images/other/IMG_5129.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1177,7 +1177,7 @@
   },
   {
     "id": "img-085",
-    "src": "other/IMG_5171.jpg",
+    "src": "images/other/IMG_5171.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1191,7 +1191,7 @@
   },
   {
     "id": "img-086",
-    "src": "other/IMG_5224.jpg",
+    "src": "images/other/IMG_5224.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1205,7 +1205,7 @@
   },
   {
     "id": "img-087",
-    "src": "other/IMG_5232.jpg",
+    "src": "images/other/IMG_5232.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1219,7 +1219,7 @@
   },
   {
     "id": "img-088",
-    "src": "other/IMG_5250.jpg",
+    "src": "images/other/IMG_5250.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1233,7 +1233,7 @@
   },
   {
     "id": "img-089",
-    "src": "other/IMG_5253.jpg",
+    "src": "images/other/IMG_5253.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1247,7 +1247,7 @@
   },
   {
     "id": "img-090",
-    "src": "other/IMG_5514.jpg",
+    "src": "images/other/IMG_5514.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1261,7 +1261,7 @@
   },
   {
     "id": "img-091",
-    "src": "other/IMG_5663.jpg",
+    "src": "images/other/IMG_5663.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1275,7 +1275,7 @@
   },
   {
     "id": "img-092",
-    "src": "2017/IMG_5721.jpg",
+    "src": "images/2017/IMG_5721.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1289,7 +1289,7 @@
   },
   {
     "id": "img-093",
-    "src": "2021/IMG_6532.jpg",
+    "src": "images/2021/IMG_6532.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -1303,7 +1303,7 @@
   },
   {
     "id": "img-094",
-    "src": "other/IMG_6675-Federico-Coscia.jpg",
+    "src": "images/other/IMG_6675-Federico-Coscia.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1317,7 +1317,7 @@
   },
   {
     "id": "img-095",
-    "src": "2021/IMG_6782.jpg",
+    "src": "images/2021/IMG_6782.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -1331,7 +1331,7 @@
   },
   {
     "id": "img-096",
-    "src": "2021/IMG_6821.jpg",
+    "src": "images/2021/IMG_6821.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1345,7 +1345,7 @@
   },
   {
     "id": "img-097",
-    "src": "2021/IMG_6829.jpg",
+    "src": "images/2021/IMG_6829.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1359,7 +1359,7 @@
   },
   {
     "id": "img-098",
-    "src": "2021/IMG_6908.jpg",
+    "src": "images/2021/IMG_6908.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1373,7 +1373,7 @@
   },
   {
     "id": "img-099",
-    "src": "2021/IMG_6942.jpg",
+    "src": "images/2021/IMG_6942.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -1387,7 +1387,7 @@
   },
   {
     "id": "img-100",
-    "src": "2021/IMG_6962.jpg",
+    "src": "images/2021/IMG_6962.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1401,7 +1401,7 @@
   },
   {
     "id": "img-101",
-    "src": "2021/IMG_6977.jpg",
+    "src": "images/2021/IMG_6977.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -1415,7 +1415,7 @@
   },
   {
     "id": "img-102",
-    "src": "2021/IMG_6986.jpg",
+    "src": "images/2021/IMG_6986.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -1429,7 +1429,7 @@
   },
   {
     "id": "img-103",
-    "src": "other/IMG_7103.jpg",
+    "src": "images/other/IMG_7103.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1443,7 +1443,7 @@
   },
   {
     "id": "img-104",
-    "src": "other/IMG_7118.jpg",
+    "src": "images/other/IMG_7118.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1457,7 +1457,7 @@
   },
   {
     "id": "img-105",
-    "src": "other/IMG_7131.jpg",
+    "src": "images/other/IMG_7131.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1471,7 +1471,7 @@
   },
   {
     "id": "img-106",
-    "src": "other/IMG_7152.jpg",
+    "src": "images/other/IMG_7152.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1485,7 +1485,7 @@
   },
   {
     "id": "img-107",
-    "src": "2018/IMG_7440.png",
+    "src": "images/2018/IMG_7440.png",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1499,7 +1499,7 @@
   },
   {
     "id": "img-108",
-    "src": "other/IMG_7495.jpg",
+    "src": "images/other/IMG_7495.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1513,7 +1513,7 @@
   },
   {
     "id": "img-109",
-    "src": "other/IMG_7535.jpg",
+    "src": "images/other/IMG_7535.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1527,7 +1527,7 @@
   },
   {
     "id": "img-110",
-    "src": "2018/IMG_7920.jpg",
+    "src": "images/2018/IMG_7920.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1541,7 +1541,7 @@
   },
   {
     "id": "img-111",
-    "src": "2018/IMG_7937.jpg",
+    "src": "images/2018/IMG_7937.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1555,7 +1555,7 @@
   },
   {
     "id": "img-112",
-    "src": "2022/IMG_7971.jpg",
+    "src": "images/2022/IMG_7971.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1569,7 +1569,7 @@
   },
   {
     "id": "img-113",
-    "src": "2022/IMG_7979.jpg",
+    "src": "images/2022/IMG_7979.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1583,7 +1583,7 @@
   },
   {
     "id": "img-114",
-    "src": "2022/IMG_7986.jpg",
+    "src": "images/2022/IMG_7986.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1597,7 +1597,7 @@
   },
   {
     "id": "img-115",
-    "src": "2022/IMG_7994.jpg",
+    "src": "images/2022/IMG_7994.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1611,7 +1611,7 @@
   },
   {
     "id": "img-116",
-    "src": "2022/IMG_8044.jpg",
+    "src": "images/2022/IMG_8044.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1625,7 +1625,7 @@
   },
   {
     "id": "img-117",
-    "src": "2022/IMG_8046.jpg",
+    "src": "images/2022/IMG_8046.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1639,7 +1639,7 @@
   },
   {
     "id": "img-118",
-    "src": "2018/IMG_8079.jpg",
+    "src": "images/2018/IMG_8079.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1653,7 +1653,7 @@
   },
   {
     "id": "img-119",
-    "src": "2019/IMG_8092.jpg",
+    "src": "images/2019/IMG_8092.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1667,7 +1667,7 @@
   },
   {
     "id": "img-120",
-    "src": "2019/IMG_8115.jpg",
+    "src": "images/2019/IMG_8115.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1681,7 +1681,7 @@
   },
   {
     "id": "img-121",
-    "src": "2019/IMG_8125.jpg",
+    "src": "images/2019/IMG_8125.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -1695,7 +1695,7 @@
   },
   {
     "id": "img-122",
-    "src": "2019/IMG_8139.jpg",
+    "src": "images/2019/IMG_8139.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1709,7 +1709,7 @@
   },
   {
     "id": "img-123",
-    "src": "2018/IMG_8219.jpg",
+    "src": "images/2018/IMG_8219.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1723,7 +1723,7 @@
   },
   {
     "id": "img-124",
-    "src": "2018/IMG_8387.jpg",
+    "src": "images/2018/IMG_8387.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1737,7 +1737,7 @@
   },
   {
     "id": "img-125",
-    "src": "2025/IMG_8622.jpg",
+    "src": "images/2025/IMG_8622.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1751,7 +1751,7 @@
   },
   {
     "id": "img-126",
-    "src": "2025/IMG_8635.jpg",
+    "src": "images/2025/IMG_8635.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1765,7 +1765,7 @@
   },
   {
     "id": "img-127",
-    "src": "2025/IMG_8638.jpg",
+    "src": "images/2025/IMG_8638.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1779,7 +1779,7 @@
   },
   {
     "id": "img-128",
-    "src": "2025/IMG_8656.jpg",
+    "src": "images/2025/IMG_8656.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1793,7 +1793,7 @@
   },
   {
     "id": "img-129",
-    "src": "2025/IMG_8682-Migliorato-NR.jpg",
+    "src": "images/2025/IMG_8682-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1807,7 +1807,7 @@
   },
   {
     "id": "img-130",
-    "src": "2025/IMG_8706-Migliorato-NR.jpg",
+    "src": "images/2025/IMG_8706-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1821,7 +1821,7 @@
   },
   {
     "id": "img-131",
-    "src": "2026/IMG_8802.jpg",
+    "src": "images/2026/IMG_8802.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1835,7 +1835,7 @@
   },
   {
     "id": "img-132",
-    "src": "2026/IMG_8813.jpg",
+    "src": "images/2026/IMG_8813.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1849,7 +1849,7 @@
   },
   {
     "id": "img-133",
-    "src": "2026/IMG_8818.jpg",
+    "src": "images/2026/IMG_8818.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1863,7 +1863,7 @@
   },
   {
     "id": "img-134",
-    "src": "2026/IMG_8833.jpg",
+    "src": "images/2026/IMG_8833.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1877,7 +1877,7 @@
   },
   {
     "id": "img-135",
-    "src": "2026/IMG_8848.jpg",
+    "src": "images/2026/IMG_8848.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1891,7 +1891,7 @@
   },
   {
     "id": "img-136",
-    "src": "2019/IMG_8883.jpg",
+    "src": "images/2019/IMG_8883.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1905,7 +1905,7 @@
   },
   {
     "id": "img-137",
-    "src": "2019/IMG_8888.jpg",
+    "src": "images/2019/IMG_8888.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1919,7 +1919,7 @@
   },
   {
     "id": "img-138",
-    "src": "2019/IMG_8928.jpg",
+    "src": "images/2019/IMG_8928.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1933,7 +1933,7 @@
   },
   {
     "id": "img-139",
-    "src": "2019/IMG_8930.jpg",
+    "src": "images/2019/IMG_8930.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/20s",
@@ -1947,7 +1947,7 @@
   },
   {
     "id": "img-140",
-    "src": "2019/IMG_9122.jpg",
+    "src": "images/2019/IMG_9122.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1961,7 +1961,7 @@
   },
   {
     "id": "img-141",
-    "src": "2019/IMG_9150.jpg",
+    "src": "images/2019/IMG_9150.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -1975,7 +1975,7 @@
   },
   {
     "id": "img-142",
-    "src": "2019/IMG_9159_1.jpg",
+    "src": "images/2019/IMG_9159_1.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1989,7 +1989,7 @@
   },
   {
     "id": "img-143",
-    "src": "2018/IMG_9159.jpg",
+    "src": "images/2018/IMG_9159.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "5s",
@@ -2003,7 +2003,7 @@
   },
   {
     "id": "img-144",
-    "src": "2019/IMG_9160.jpg",
+    "src": "images/2019/IMG_9160.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -2017,7 +2017,7 @@
   },
   {
     "id": "img-145",
-    "src": "2019/IMG_9220.jpg",
+    "src": "images/2019/IMG_9220.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -2031,7 +2031,7 @@
   },
   {
     "id": "img-146",
-    "src": "2019/IMG_9225.jpg",
+    "src": "images/2019/IMG_9225.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -2045,7 +2045,7 @@
   },
   {
     "id": "img-147",
-    "src": "2019/IMG_9251.jpg",
+    "src": "images/2019/IMG_9251.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -2059,7 +2059,7 @@
   },
   {
     "id": "img-148",
-    "src": "2019/IMG_9419.jpg",
+    "src": "images/2019/IMG_9419.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -2073,7 +2073,7 @@
   },
   {
     "id": "img-149",
-    "src": "2025/IMG_9422.jpg",
+    "src": "images/2025/IMG_9422.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -2087,7 +2087,7 @@
   },
   {
     "id": "img-150",
-    "src": "2025/IMG_9423.jpg",
+    "src": "images/2025/IMG_9423.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -2101,7 +2101,7 @@
   },
   {
     "id": "img-151",
-    "src": "2025/IMG_9424.jpg",
+    "src": "images/2025/IMG_9424.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -2115,7 +2115,7 @@
   },
   {
     "id": "img-152",
-    "src": "2025/IMG_9425.jpg",
+    "src": "images/2025/IMG_9425.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -2129,7 +2129,7 @@
   },
   {
     "id": "img-153",
-    "src": "2019/IMG_9429.jpg",
+    "src": "images/2019/IMG_9429.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -2143,7 +2143,7 @@
   },
   {
     "id": "img-154",
-    "src": "2019/IMG_9465.jpg",
+    "src": "images/2019/IMG_9465.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/640s",
@@ -2157,7 +2157,7 @@
   },
   {
     "id": "img-155",
-    "src": "2019/IMG_9485.jpg",
+    "src": "images/2019/IMG_9485.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -2171,7 +2171,7 @@
   },
   {
     "id": "img-156",
-    "src": "2019/IMG_9551.jpg",
+    "src": "images/2019/IMG_9551.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -2185,7 +2185,7 @@
   },
   {
     "id": "img-157",
-    "src": "2019/IMG_9566.jpg",
+    "src": "images/2019/IMG_9566.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/400s",
@@ -2199,7 +2199,7 @@
   },
   {
     "id": "img-158",
-    "src": "2019/IMG_9572.jpg",
+    "src": "images/2019/IMG_9572.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/400s",
@@ -2213,7 +2213,7 @@
   },
   {
     "id": "img-159",
-    "src": "2019/IMG_9598ps.jpg",
+    "src": "images/2019/IMG_9598ps.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/25s",
@@ -2227,7 +2227,7 @@
   },
   {
     "id": "img-160",
-    "src": "2024/IMG_9720.jpg",
+    "src": "images/2024/IMG_9720.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/640s",
@@ -2241,7 +2241,7 @@
   },
   {
     "id": "img-161",
-    "src": "2024/IMG_9725.jpg",
+    "src": "images/2024/IMG_9725.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1600s",
@@ -2255,7 +2255,7 @@
   },
   {
     "id": "img-162",
-    "src": "2019/IMG_9756.jpg",
+    "src": "images/2019/IMG_9756.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -2269,7 +2269,7 @@
   },
   {
     "id": "img-163",
-    "src": "2019/IMG_9760.jpg",
+    "src": "images/2019/IMG_9760.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -2283,7 +2283,7 @@
   },
   {
     "id": "img-164",
-    "src": "2019/IMG_9767.jpg",
+    "src": "images/2019/IMG_9767.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -2297,7 +2297,7 @@
   },
   {
     "id": "img-165",
-    "src": "2019/IMG_9801.jpg",
+    "src": "images/2019/IMG_9801.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -2311,7 +2311,7 @@
   },
   {
     "id": "img-166",
-    "src": "2019/IMG_9817.jpg",
+    "src": "images/2019/IMG_9817.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -2325,7 +2325,7 @@
   },
   {
     "id": "img-167",
-    "src": "other/IMG_9842.jpg",
+    "src": "images/other/IMG_9842.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2339,7 +2339,7 @@
   },
   {
     "id": "img-168",
-    "src": "other/IMG_9844.jpg",
+    "src": "images/other/IMG_9844.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2353,7 +2353,7 @@
   },
   {
     "id": "img-169",
-    "src": "other/IMG_9845.jpg",
+    "src": "images/other/IMG_9845.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2367,7 +2367,7 @@
   },
   {
     "id": "img-170",
-    "src": "other/IMG_9922.jpg",
+    "src": "images/other/IMG_9922.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2381,7 +2381,7 @@
   },
   {
     "id": "img-171",
-    "src": "2019/IMG_9936.jpg",
+    "src": "images/2019/IMG_9936.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",

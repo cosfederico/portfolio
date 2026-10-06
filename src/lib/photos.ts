@@ -5,9 +5,11 @@ export type Photo = (typeof mosaicItems)[number];
 const imageOrigin = import.meta.env.PUBLIC_R2_IMAGE_ORIGIN?.replace(/\/$/, "");
 if (!imageOrigin) throw new Error("[photos] PUBLIC_R2_IMAGE_ORIGIN is required");
 
-export function imageUrl(key: string): string {
+export function bucketUrl(key: string): string {
   return `${imageOrigin}/${key}`;
 }
+
+export const imageUrl = bucketUrl;
 
 const byId = new Map(mosaicItems.map((item) => [item.id, item]));
 
@@ -22,8 +24,8 @@ export const allPhotos: Photo[] = mosaicItems;
 export function photoVariants(item: Photo) {
   return {
     ...item,
-    src: imageUrl(item.src),
-    thumb: imageUrl(item.src),
+    src: bucketUrl(item.src),
+    thumb: bucketUrl(item.src),
     srcset: "",
     aspect: Number((item.width / item.height).toFixed(4)),
   };
