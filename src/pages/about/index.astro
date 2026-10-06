@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-import portraitImage from "../../_resources/images-web/IMG_0525.webp";
-import contentBgImage from "../../_resources/images-web/IMG_6675-Federico-Coscia.webp";
+import { imageUrl, photoById } from "../../lib/photos";
 
 const contentBgFocusY = 50; // vertical crop focal point, 0 = top, 100 = bottom
+const portraitImage = photoById("img-018");
+const contentBgImage = photoById("img-094");
 
 const services = [
   { title: "Photography", text: "Events, travel, and fine art landscapes and portraits" },
@@ -18,16 +18,16 @@ const services = [
   description="About Federico Coscia — photographer and filmmaker creating atmospheric visual work."
   bodyClass="fill-viewport"
   page="about"
-  image={portraitImage}
+  image={imageUrl(portraitImage.src)}
 >
   <main class="about-layout" id="main">
     <div class="about-portrait reveal">
-      <Image src={portraitImage} alt="Portrait of Federico Coscia" widths={[640, 960, 1280]} sizes="(max-width: 768px) 100vw, 38vw" loading="eager" fetchpriority="high" />
+      <img src={imageUrl(portraitImage.src)} alt="Portrait of Federico Coscia" width={portraitImage.width} height={portraitImage.height} loading="eager" fetchpriority="high" />
     </div>
 
     <div class="about-content">
       <div class="about-content-bg" aria-hidden="true">
-        <Image src={contentBgImage} alt="" widths={[800, 1200, 1600]} sizes="(max-width: 768px) 100vw, 62vw" style={`--focus-y: ${contentBgFocusY}%`} />
+        <img src={imageUrl(contentBgImage.src)} alt="" width={contentBgImage.width} height={contentBgImage.height} style={`--focus-y: ${contentBgFocusY}%`} />
       </div>
 
       <div class="about-intro reveal">

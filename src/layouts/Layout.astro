@@ -3,9 +3,11 @@ import { ClientRouter } from "astro:transitions";
 import { Font, getImage } from "astro:assets";
 import Header from "../components/Header.astro";
 import fcLogo from "../assets/fc_logo.png";
-import defaultShareImage from "../_resources/images-web/IMG_6675-Federico-Coscia.webp";
+import { imageUrl } from "../lib/photos";
 import site from "../data/site.json";
 import "../styles/global.css";
+
+const defaultShareImage = imageUrl("other/IMG_6675-Federico-Coscia.jpg");
 
 interface Props {
   title: string;
@@ -14,18 +16,17 @@ interface Props {
   bodyClass?: string;
   noFooter?: boolean;
   /** Social share image; defaults to a site-wide photo. */
-  image?: ImageMetadata;
+  image?: string;
 }
 
 const { title, description, page, bodyClass, noFooter = false, image = defaultShareImage } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const [shareImage, touchIcon, favicon] = await Promise.all([
-  getImage({ src: image, width: 1200, height: 630, fit: "cover", format: "jpg" }),
+const [touchIcon, favicon] = await Promise.all([
   getImage({ src: fcLogo, width: 180, height: 180, format: "png" }),
   getImage({ src: fcLogo, width: 64, height: 64, format: "png" }),
 ]);
-const shareImageUrl = new URL(shareImage.src, Astro.site).href;
+const shareImageUrl = image;
 
 const personJsonLd = JSON.stringify({
   "@context": "https://schema.org",

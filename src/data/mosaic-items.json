@@ -1,7 +1,7 @@
 [
   {
     "id": "img-001",
-    "src": "/_resources/images-web/15258773_1208427219237731_5120815891281346560_n.webp",
+    "src": "other/15258773_1208427219237731_5120815891281346560_n.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -9,11 +9,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1080,
+    "height": 608
   },
   {
     "id": "img-002",
-    "src": "/_resources/images-web/18253211_452707721738572_6686528450758443008_n.webp",
+    "src": "other/18253211_452707721738572_6686528450758443008_n.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -21,11 +23,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1080,
+    "height": 720
   },
   {
     "id": "img-003",
-    "src": "/_resources/images-web/IMG_0082.webp",
+    "src": "2019/IMG_0082.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -33,11 +37,13 @@
     "iso": "1600",
     "date": "2019-11-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-004",
-    "src": "/_resources/images-web/IMG_0163.webp",
+    "src": "2019/IMG_0163.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -45,11 +51,13 @@
     "iso": "1600",
     "date": "2019-11-10",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-005",
-    "src": "/_resources/images-web/IMG_0323.webp",
+    "src": "other/IMG_0323.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -57,11 +65,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3414,
+    "height": 4268
   },
   {
     "id": "img-006",
-    "src": "/_resources/images-web/IMG_0332.webp",
+    "src": "other/IMG_0332.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -69,11 +79,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-007",
-    "src": "/_resources/images-web/IMG_0334.webp",
+    "src": "other/IMG_0334.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -81,11 +93,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-008",
-    "src": "/_resources/images-web/IMG_0346.webp",
+    "src": "other/IMG_0346.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -93,11 +107,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-009",
-    "src": "/_resources/images-web/IMG_0366.webp",
+    "src": "other/IMG_0366.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -105,11 +121,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-010",
-    "src": "/_resources/images-web/IMG_0389.webp",
+    "src": "other/IMG_0389.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -117,11 +135,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-011",
-    "src": "/_resources/images-web/IMG_0402.webp",
+    "src": "2019/IMG_0402.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -129,11 +149,13 @@
     "iso": "800",
     "date": "2019-12-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-012",
-    "src": "/_resources/images-web/IMG_0458.webp",
+    "src": "2019/IMG_0458.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -141,11 +163,13 @@
     "iso": "800",
     "date": "2019-12-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3371,
+    "height": 5056
   },
   {
     "id": "img-013",
-    "src": "/_resources/images-web/IMG_0491.webp",
+    "src": "other/IMG_0491.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -153,11 +177,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5124,
+    "height": 3416
   },
   {
     "id": "img-014",
-    "src": "/_resources/images-web/IMG_0493.webp",
+    "src": "other/IMG_0493.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -165,11 +191,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-015",
-    "src": "/_resources/images-web/IMG_0495.webp",
+    "src": "other/IMG_0495.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -177,11 +205,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-016",
-    "src": "/_resources/images-web/IMG_0498.webp",
+    "src": "other/IMG_0498.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -189,11 +219,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-017",
-    "src": "/_resources/images-web/IMG_0512.webp",
+    "src": "2019/IMG_0512.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -201,11 +233,13 @@
     "iso": "800",
     "date": "2019-12-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-018",
-    "src": "/_resources/images-web/IMG_0525.webp",
+    "src": "other/IMG_0525.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -213,11 +247,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3436,
+    "height": 4295
   },
   {
     "id": "img-019",
-    "src": "/_resources/images-web/IMG_0589.webp",
+    "src": "other/IMG_0589.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -225,11 +261,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3352,
+    "height": 3352
   },
   {
     "id": "img-020",
-    "src": "/_resources/images-web/IMG_0591.webp",
+    "src": "other/IMG_0591.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -237,11 +275,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5034,
+    "height": 2517
   },
   {
     "id": "img-021",
-    "src": "/_resources/images-web/IMG_0705.webp",
+    "src": "other/IMG_0705.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -249,11 +289,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-022",
-    "src": "/_resources/images-web/IMG_0706.webp",
+    "src": "2019/IMG_0706.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -261,11 +303,13 @@
     "iso": "200",
     "date": "2019-06-18",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3407,
+    "height": 5110
   },
   {
     "id": "img-023",
-    "src": "/_resources/images-web/IMG_0830-Migliorato-NR.webp",
+    "src": "2025/IMG_0830-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -273,11 +317,13 @@
     "iso": "3200",
     "date": "2025-09-07",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3205,
+    "height": 4807
   },
   {
     "id": "img-024",
-    "src": "/_resources/images-web/IMG_0834.webp",
+    "src": "2024/IMG_0834.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1250s",
@@ -285,11 +331,13 @@
     "iso": "100",
     "date": "2024-07-20",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-025",
-    "src": "/_resources/images-web/IMG_0900.webp",
+    "src": "2019/IMG_0900.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -297,11 +345,13 @@
     "iso": "800",
     "date": "2019-06-21",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-026",
-    "src": "/_resources/images-web/IMG_0941.webp",
+    "src": "2019/IMG_0941.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -309,11 +359,13 @@
     "iso": "400",
     "date": "2019-06-21",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5086,
+    "height": 3391
   },
   {
     "id": "img-027",
-    "src": "/_resources/images-web/IMG_0948.webp",
+    "src": "2019/IMG_0948.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -321,11 +373,13 @@
     "iso": "400",
     "date": "2019-06-21",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-028",
-    "src": "/_resources/images-web/IMG_0959.webp",
+    "src": "other/IMG_0959.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -333,11 +387,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-029",
-    "src": "/_resources/images-web/IMG_0962.webp",
+    "src": "2019/IMG_0962.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -345,11 +401,13 @@
     "iso": "800",
     "date": "2019-06-21",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5050,
+    "height": 3367
   },
   {
     "id": "img-030",
-    "src": "/_resources/images-web/IMG_1021.webp",
+    "src": "other/IMG_1021.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -357,11 +415,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-031",
-    "src": "/_resources/images-web/IMG_1051-Migliorato-NR.webp",
+    "src": "2024/IMG_1051-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -369,11 +429,13 @@
     "iso": "3200",
     "date": "2024-07-26",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4981,
+    "height": 3321
   },
   {
     "id": "img-032",
-    "src": "/_resources/images-web/IMG_1055-Migliorato-NR.webp",
+    "src": "2024/IMG_1055-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -381,11 +443,13 @@
     "iso": "3200",
     "date": "2024-07-26",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5073,
+    "height": 3382
   },
   {
     "id": "img-033",
-    "src": "/_resources/images-web/IMG_1065-Migliorato-NR.webp",
+    "src": "2024/IMG_1065-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/10s",
@@ -393,11 +457,13 @@
     "iso": "3200",
     "date": "2024-07-26",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4851,
+    "height": 2426
   },
   {
     "id": "img-034",
-    "src": "/_resources/images-web/IMG_1150.webp",
+    "src": "2024/IMG_1150.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -405,11 +471,13 @@
     "iso": "6400",
     "date": "2024-07-26",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-035",
-    "src": "/_resources/images-web/IMG_1193.webp",
+    "src": "other/IMG_1193.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -417,11 +485,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2452,
+    "height": 2452
   },
   {
     "id": "img-036",
-    "src": "/_resources/images-web/IMG_1195.webp",
+    "src": "other/IMG_1195.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -429,11 +499,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2979,
+    "height": 2979
   },
   {
     "id": "img-037",
-    "src": "/_resources/images-web/IMG_1219.webp",
+    "src": "2019/IMG_1219.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -441,11 +513,13 @@
     "iso": "200",
     "date": "2019-06-23",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-038",
-    "src": "/_resources/images-web/IMG_1285.webp",
+    "src": "other/IMG_1285.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -453,11 +527,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3341,
+    "height": 5012
   },
   {
     "id": "img-039",
-    "src": "/_resources/images-web/IMG_1472.webp",
+    "src": "2019/IMG_1472.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -465,11 +541,13 @@
     "iso": "400",
     "date": "2019-07-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-040",
-    "src": "/_resources/images-web/IMG_1527.webp",
+    "src": "other/IMG_1527.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -477,11 +555,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-041",
-    "src": "/_resources/images-web/IMG_1727.webp",
+    "src": "2019/IMG_1727.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -489,11 +569,13 @@
     "iso": "100",
     "date": "2019-07-22",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4643,
+    "height": 3095
   },
   {
     "id": "img-042",
-    "src": "/_resources/images-web/IMG_1729.webp",
+    "src": "2019/IMG_1729.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -501,11 +583,13 @@
     "iso": "100",
     "date": "2019-07-22",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4975,
+    "height": 3317
   },
   {
     "id": "img-043",
-    "src": "/_resources/images-web/IMG_1818.webp",
+    "src": "2019/IMG_1818.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -513,11 +597,13 @@
     "iso": "800",
     "date": "2019-07-26",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-044",
-    "src": "/_resources/images-web/IMG_2044.webp",
+    "src": "2019/IMG_2044.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -525,11 +611,13 @@
     "iso": "1600",
     "date": "2019-07-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-045",
-    "src": "/_resources/images-web/IMG_2254-2.webp",
+    "src": "2019/IMG_2254-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/6s",
@@ -537,11 +625,13 @@
     "iso": "1600",
     "date": "2019-07-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-046",
-    "src": "/_resources/images-web/IMG_2271-2.webp",
+    "src": "2019/IMG_2271-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/5s",
@@ -549,11 +639,13 @@
     "iso": "1600",
     "date": "2019-07-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-047",
-    "src": "/_resources/images-web/IMG_2272-2.webp",
+    "src": "2019/IMG_2272-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/5s",
@@ -561,11 +653,13 @@
     "iso": "1600",
     "date": "2019-07-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3244
   },
   {
     "id": "img-048",
-    "src": "/_resources/images-web/IMG_2321-2.webp",
+    "src": "2019/IMG_2321-2.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/8s",
@@ -573,11 +667,13 @@
     "iso": "1600",
     "date": "2019-07-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-049",
-    "src": "/_resources/images-web/IMG_2441.webp",
+    "src": "other/IMG_2441.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -585,11 +681,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3451,
+    "height": 5176
   },
   {
     "id": "img-050",
-    "src": "/_resources/images-web/IMG_2470.webp",
+    "src": "other/IMG_2470.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -597,11 +695,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5152,
+    "height": 2208
   },
   {
     "id": "img-051",
-    "src": "/_resources/images-web/IMG_2522.webp",
+    "src": "2024/IMG_2522.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -609,11 +709,13 @@
     "iso": "200",
     "date": "2024-11-03",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3380,
+    "height": 5070
   },
   {
     "id": "img-052",
-    "src": "/_resources/images-web/IMG_2539.webp",
+    "src": "2024/IMG_2539.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -621,11 +723,13 @@
     "iso": "200",
     "date": "2024-11-03",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-053",
-    "src": "/_resources/images-web/IMG_2811.webp",
+    "src": "2026/IMG_2811.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1250s",
@@ -633,11 +737,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3222,
+    "height": 4833
   },
   {
     "id": "img-054",
-    "src": "/_resources/images-web/IMG_2821.webp",
+    "src": "2026/IMG_2821.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/2000s",
@@ -645,11 +751,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5146,
+    "height": 3431
   },
   {
     "id": "img-055",
-    "src": "/_resources/images-web/IMG_2833.webp",
+    "src": "2026/IMG_2833.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/2000s",
@@ -657,11 +765,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-056",
-    "src": "/_resources/images-web/IMG_2843.webp",
+    "src": "other/IMG_2843.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -669,11 +779,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3405,
+    "height": 5107
   },
   {
     "id": "img-057",
-    "src": "/_resources/images-web/IMG_2844.webp",
+    "src": "2026/IMG_2844.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -681,11 +793,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-058",
-    "src": "/_resources/images-web/IMG_2846.webp",
+    "src": "2026/IMG_2846.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -693,11 +807,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3339,
+    "height": 5008
   },
   {
     "id": "img-059",
-    "src": "/_resources/images-web/IMG_2847.webp",
+    "src": "2026/IMG_2847.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -705,11 +821,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-060",
-    "src": "/_resources/images-web/IMG_2851.webp",
+    "src": "2026/IMG_2851.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -717,11 +835,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3429,
+    "height": 4286
   },
   {
     "id": "img-061",
-    "src": "/_resources/images-web/IMG_2854.webp",
+    "src": "2026/IMG_2854.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -729,11 +849,13 @@
     "iso": "100",
     "date": "2026-01-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 4608
   },
   {
     "id": "img-062",
-    "src": "/_resources/images-web/IMG_3018.webp",
+    "src": "other/IMG_3018.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -741,11 +863,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-063",
-    "src": "/_resources/images-web/IMG_3040.webp",
+    "src": "other/IMG_3040.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -753,11 +877,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5150,
+    "height": 2575
   },
   {
     "id": "img-064",
-    "src": "/_resources/images-web/IMG_3064.webp",
+    "src": "other/IMG_3064.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -765,11 +891,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2541,
+    "height": 5082
   },
   {
     "id": "img-065",
-    "src": "/_resources/images-web/IMG_3071.webp",
+    "src": "other/IMG_3071.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -777,11 +905,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3390,
+    "height": 5085
   },
   {
     "id": "img-066",
-    "src": "/_resources/images-web/IMG_3093.webp",
+    "src": "other/IMG_3093.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -789,11 +919,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-067",
-    "src": "/_resources/images-web/IMG_3308.webp",
+    "src": "other/IMG_3308.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -801,11 +933,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-068",
-    "src": "/_resources/images-web/IMG_3414.webp",
+    "src": "other/IMG_3414.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -813,11 +947,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-069",
-    "src": "/_resources/images-web/IMG_3449.webp",
+    "src": "other/IMG_3449.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -825,11 +961,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3381,
+    "height": 5072
   },
   {
     "id": "img-070",
-    "src": "/_resources/images-web/IMG_3652.webp",
+    "src": "other/IMG_3652.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -837,11 +975,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-071",
-    "src": "/_resources/images-web/IMG_3653.webp",
+    "src": "other/IMG_3653.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -849,11 +989,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-072",
-    "src": "/_resources/images-web/IMG_3673.webp",
+    "src": "other/IMG_3673.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -861,11 +1003,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-073",
-    "src": "/_resources/images-web/IMG_3701.webp",
+    "src": "other/IMG_3701.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -873,11 +1017,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-074",
-    "src": "/_resources/images-web/IMG_3705.webp",
+    "src": "other/IMG_3705.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -885,11 +1031,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-075",
-    "src": "/_resources/images-web/IMG_3776-Migliorato-NR.webp",
+    "src": "2024/IMG_3776-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/8s",
@@ -897,11 +1045,13 @@
     "iso": "3200",
     "date": "2024-12-23",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5118,
+    "height": 3412
   },
   {
     "id": "img-076",
-    "src": "/_resources/images-web/IMG_3864.webp",
+    "src": "2024/IMG_3864.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -909,11 +1059,13 @@
     "iso": "800",
     "date": "2024-12-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4973,
+    "height": 3315
   },
   {
     "id": "img-077",
-    "src": "/_resources/images-web/IMG_3969.webp",
+    "src": "2024/IMG_3969.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -921,11 +1073,13 @@
     "iso": "400",
     "date": "2024-12-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-078",
-    "src": "/_resources/images-web/IMG_3976.webp",
+    "src": "2024/IMG_3976.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -933,11 +1087,13 @@
     "iso": "200",
     "date": "2024-12-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3303,
+    "height": 4404
   },
   {
     "id": "img-079",
-    "src": "/_resources/images-web/IMG_4239.webp",
+    "src": "2017/IMG_4239.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -945,11 +1101,13 @@
     "iso": "100",
     "date": "2017-08-12",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5018,
+    "height": 3345
   },
   {
     "id": "img-080",
-    "src": "/_resources/images-web/IMG_5007.webp",
+    "src": "other/IMG_5007.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -957,11 +1115,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-081",
-    "src": "/_resources/images-web/IMG_5084.webp",
+    "src": "other/IMG_5084.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -969,11 +1129,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5078,
+    "height": 3385
   },
   {
     "id": "img-082",
-    "src": "/_resources/images-web/IMG_5125.webp",
+    "src": "other/IMG_5125.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -981,11 +1143,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-083",
-    "src": "/_resources/images-web/IMG_5128.webp",
+    "src": "other/IMG_5128.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -993,11 +1157,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-084",
-    "src": "/_resources/images-web/IMG_5129.webp",
+    "src": "other/IMG_5129.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1005,11 +1171,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-085",
-    "src": "/_resources/images-web/IMG_5171.webp",
+    "src": "other/IMG_5171.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1017,11 +1185,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-086",
-    "src": "/_resources/images-web/IMG_5224.webp",
+    "src": "other/IMG_5224.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1029,11 +1199,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3422,
+    "height": 5133
   },
   {
     "id": "img-087",
-    "src": "/_resources/images-web/IMG_5232.webp",
+    "src": "other/IMG_5232.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1041,11 +1213,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5022,
+    "height": 3348
   },
   {
     "id": "img-088",
-    "src": "/_resources/images-web/IMG_5250.webp",
+    "src": "other/IMG_5250.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1053,11 +1227,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-089",
-    "src": "/_resources/images-web/IMG_5253.webp",
+    "src": "other/IMG_5253.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1065,11 +1241,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-090",
-    "src": "/_resources/images-web/IMG_5514.webp",
+    "src": "other/IMG_5514.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1077,11 +1255,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-091",
-    "src": "/_resources/images-web/IMG_5663.webp",
+    "src": "other/IMG_5663.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1089,11 +1269,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-092",
-    "src": "/_resources/images-web/IMG_5721.webp",
+    "src": "2017/IMG_5721.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1101,11 +1283,13 @@
     "iso": "200",
     "date": "2017-12-25",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-093",
-    "src": "/_resources/images-web/IMG_6532.webp",
+    "src": "2021/IMG_6532.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -1113,11 +1297,13 @@
     "iso": "1600",
     "date": "2021-11-14",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-094",
-    "src": "/_resources/images-web/IMG_6675-Federico-Coscia.webp",
+    "src": "other/IMG_6675-Federico-Coscia.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1125,11 +1311,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4000,
+    "height": 2667
   },
   {
     "id": "img-095",
-    "src": "/_resources/images-web/IMG_6782.webp",
+    "src": "2021/IMG_6782.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/30s",
@@ -1137,11 +1325,13 @@
     "iso": "3200",
     "date": "2021-11-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1365,
+    "height": 2048
   },
   {
     "id": "img-096",
-    "src": "/_resources/images-web/IMG_6821.webp",
+    "src": "2021/IMG_6821.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1149,11 +1339,13 @@
     "iso": "1600",
     "date": "2021-11-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1024
   },
   {
     "id": "img-097",
-    "src": "/_resources/images-web/IMG_6829.webp",
+    "src": "2021/IMG_6829.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1161,11 +1353,13 @@
     "iso": "1600",
     "date": "2021-11-29",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-098",
-    "src": "/_resources/images-web/IMG_6908.webp",
+    "src": "2021/IMG_6908.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1173,11 +1367,13 @@
     "iso": "100",
     "date": "2021-11-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1365,
+    "height": 2048
   },
   {
     "id": "img-099",
-    "src": "/_resources/images-web/IMG_6942.webp",
+    "src": "2021/IMG_6942.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -1185,11 +1381,13 @@
     "iso": "200",
     "date": "2021-11-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1638,
+    "height": 2048
   },
   {
     "id": "img-100",
-    "src": "/_resources/images-web/IMG_6962.webp",
+    "src": "2021/IMG_6962.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1197,11 +1395,13 @@
     "iso": "200",
     "date": "2021-11-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-101",
-    "src": "/_resources/images-web/IMG_6977.webp",
+    "src": "2021/IMG_6977.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -1209,11 +1409,13 @@
     "iso": "200",
     "date": "2021-11-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1638,
+    "height": 2048
   },
   {
     "id": "img-102",
-    "src": "/_resources/images-web/IMG_6986.webp",
+    "src": "2021/IMG_6986.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/200s",
@@ -1221,11 +1423,13 @@
     "iso": "100",
     "date": "2021-11-30",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1638,
+    "height": 2048
   },
   {
     "id": "img-103",
-    "src": "/_resources/images-web/IMG_7103.webp",
+    "src": "other/IMG_7103.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1233,11 +1437,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-104",
-    "src": "/_resources/images-web/IMG_7118.webp",
+    "src": "other/IMG_7118.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1245,11 +1451,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-105",
-    "src": "/_resources/images-web/IMG_7131.webp",
+    "src": "other/IMG_7131.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1257,11 +1465,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3291,
+    "height": 4936
   },
   {
     "id": "img-106",
-    "src": "/_resources/images-web/IMG_7152.webp",
+    "src": "other/IMG_7152.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1269,11 +1479,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3393,
+    "height": 5089
   },
   {
     "id": "img-107",
-    "src": "/_resources/images-web/IMG_7440.webp",
+    "src": "2018/IMG_7440.png",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1281,11 +1493,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-108",
-    "src": "/_resources/images-web/IMG_7495.webp",
+    "src": "other/IMG_7495.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1293,11 +1507,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3371,
+    "height": 5056
   },
   {
     "id": "img-109",
-    "src": "/_resources/images-web/IMG_7535.webp",
+    "src": "other/IMG_7535.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -1305,11 +1521,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3275,
+    "height": 4912
   },
   {
     "id": "img-110",
-    "src": "/_resources/images-web/IMG_7920.webp",
+    "src": "2018/IMG_7920.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1317,11 +1535,13 @@
     "iso": "400",
     "date": "2018-05-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-111",
-    "src": "/_resources/images-web/IMG_7937.webp",
+    "src": "2018/IMG_7937.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1329,11 +1549,13 @@
     "iso": "800",
     "date": "2018-05-05",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-112",
-    "src": "/_resources/images-web/IMG_7971.webp",
+    "src": "2022/IMG_7971.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1341,11 +1563,13 @@
     "iso": "100",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 1365,
+    "height": 2048
   },
   {
     "id": "img-113",
-    "src": "/_resources/images-web/IMG_7979.webp",
+    "src": "2022/IMG_7979.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1353,11 +1577,13 @@
     "iso": "100",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1152
   },
   {
     "id": "img-114",
-    "src": "/_resources/images-web/IMG_7986.webp",
+    "src": "2022/IMG_7986.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1365,11 +1591,13 @@
     "iso": "100",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-115",
-    "src": "/_resources/images-web/IMG_7994.webp",
+    "src": "2022/IMG_7994.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1377,11 +1605,13 @@
     "iso": "100",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-116",
-    "src": "/_resources/images-web/IMG_8044.webp",
+    "src": "2022/IMG_8044.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1389,11 +1619,13 @@
     "iso": "800",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 2048
   },
   {
     "id": "img-117",
-    "src": "/_resources/images-web/IMG_8046.webp",
+    "src": "2022/IMG_8046.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1401,11 +1633,13 @@
     "iso": "800",
     "date": "2022-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2048,
+    "height": 1365
   },
   {
     "id": "img-118",
-    "src": "/_resources/images-web/IMG_8079.webp",
+    "src": "2018/IMG_8079.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1413,11 +1647,13 @@
     "iso": "200",
     "date": "2018-05-23",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-119",
-    "src": "/_resources/images-web/IMG_8092.webp",
+    "src": "2019/IMG_8092.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1425,11 +1661,13 @@
     "iso": "800",
     "date": "2019-02-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-120",
-    "src": "/_resources/images-web/IMG_8115.webp",
+    "src": "2019/IMG_8115.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1437,11 +1675,13 @@
     "iso": "800",
     "date": "2019-02-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5152,
+    "height": 3435
   },
   {
     "id": "img-121",
-    "src": "/_resources/images-web/IMG_8125.webp",
+    "src": "2019/IMG_8125.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/100s",
@@ -1449,11 +1689,13 @@
     "iso": "800",
     "date": "2019-02-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-122",
-    "src": "/_resources/images-web/IMG_8139.webp",
+    "src": "2019/IMG_8139.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1461,11 +1703,13 @@
     "iso": "800",
     "date": "2019-02-06",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5071,
+    "height": 3381
   },
   {
     "id": "img-123",
-    "src": "/_resources/images-web/IMG_8219.webp",
+    "src": "2018/IMG_8219.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1473,11 +1717,13 @@
     "iso": "200",
     "date": "2018-05-23",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3349,
+    "height": 5023
   },
   {
     "id": "img-124",
-    "src": "/_resources/images-web/IMG_8387.webp",
+    "src": "2018/IMG_8387.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1485,11 +1731,13 @@
     "iso": "200",
     "date": "2018-05-23",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-125",
-    "src": "/_resources/images-web/IMG_8622.webp",
+    "src": "2025/IMG_8622.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1497,11 +1745,13 @@
     "iso": "100",
     "date": "2025-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5124,
+    "height": 2562
   },
   {
     "id": "img-126",
-    "src": "/_resources/images-web/IMG_8635.webp",
+    "src": "2025/IMG_8635.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1509,11 +1759,13 @@
     "iso": "100",
     "date": "2025-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3336,
+    "height": 5004
   },
   {
     "id": "img-127",
-    "src": "/_resources/images-web/IMG_8638.webp",
+    "src": "2025/IMG_8638.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1521,11 +1773,13 @@
     "iso": "100",
     "date": "2025-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3330,
+    "height": 4995
   },
   {
     "id": "img-128",
-    "src": "/_resources/images-web/IMG_8656.webp",
+    "src": "2025/IMG_8656.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1533,11 +1787,13 @@
     "iso": "400",
     "date": "2025-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5148,
+    "height": 3432
   },
   {
     "id": "img-129",
-    "src": "/_resources/images-web/IMG_8682-Migliorato-NR.webp",
+    "src": "2025/IMG_8682-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1545,11 +1801,13 @@
     "iso": "3200",
     "date": "2025-05-02",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-130",
-    "src": "/_resources/images-web/IMG_8706-Migliorato-NR.webp",
+    "src": "2025/IMG_8706-Migliorato-NR.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1557,11 +1815,13 @@
     "iso": "3200",
     "date": "2025-05-02",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5078,
+    "height": 2997
   },
   {
     "id": "img-131",
-    "src": "/_resources/images-web/IMG_8802.webp",
+    "src": "2026/IMG_8802.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1569,11 +1829,13 @@
     "iso": "800",
     "date": "2026-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-132",
-    "src": "/_resources/images-web/IMG_8813.webp",
+    "src": "2026/IMG_8813.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1581,11 +1843,13 @@
     "iso": "800",
     "date": "2026-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3424,
+    "height": 5136
   },
   {
     "id": "img-133",
-    "src": "/_resources/images-web/IMG_8818.webp",
+    "src": "2026/IMG_8818.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1593,11 +1857,13 @@
     "iso": "200",
     "date": "2026-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4959,
+    "height": 3306
   },
   {
     "id": "img-134",
-    "src": "/_resources/images-web/IMG_8833.webp",
+    "src": "2026/IMG_8833.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/125s",
@@ -1605,11 +1871,13 @@
     "iso": "200",
     "date": "2026-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3337,
+    "height": 4450
   },
   {
     "id": "img-135",
-    "src": "/_resources/images-web/IMG_8848.webp",
+    "src": "2026/IMG_8848.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1617,11 +1885,13 @@
     "iso": "400",
     "date": "2026-05-01",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 2592
   },
   {
     "id": "img-136",
-    "src": "/_resources/images-web/IMG_8883.webp",
+    "src": "2019/IMG_8883.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1629,11 +1899,13 @@
     "iso": "100",
     "date": "2019-08-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-137",
-    "src": "/_resources/images-web/IMG_8888.webp",
+    "src": "2019/IMG_8888.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1641,11 +1913,13 @@
     "iso": "100",
     "date": "2019-08-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-138",
-    "src": "/_resources/images-web/IMG_8928.webp",
+    "src": "2019/IMG_8928.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/40s",
@@ -1653,11 +1927,13 @@
     "iso": "1600",
     "date": "2019-08-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3363,
+    "height": 5045
   },
   {
     "id": "img-139",
-    "src": "/_resources/images-web/IMG_8930.webp",
+    "src": "2019/IMG_8930.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/20s",
@@ -1665,11 +1941,13 @@
     "iso": "1600",
     "date": "2019-08-09",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-140",
-    "src": "/_resources/images-web/IMG_9122.webp",
+    "src": "2019/IMG_9122.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1677,11 +1955,13 @@
     "iso": "400",
     "date": "2019-04-16",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-141",
-    "src": "/_resources/images-web/IMG_9150.webp",
+    "src": "2019/IMG_9150.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -1689,11 +1969,13 @@
     "iso": "100",
     "date": "2019-08-17",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3357,
+    "height": 5035
   },
   {
     "id": "img-142",
-    "src": "/_resources/images-web/IMG_9159_1.webp",
+    "src": "2019/IMG_9159_1.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1701,11 +1983,13 @@
     "iso": "100",
     "date": "2019-08-17",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-143",
-    "src": "/_resources/images-web/IMG_9159.webp",
+    "src": "2018/IMG_9159.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "5s",
@@ -1713,11 +1997,13 @@
     "iso": "800",
     "date": "2018-07-28",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-144",
-    "src": "/_resources/images-web/IMG_9160.webp",
+    "src": "2019/IMG_9160.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1725,11 +2011,13 @@
     "iso": "100",
     "date": "2019-08-17",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3271,
+    "height": 4906
   },
   {
     "id": "img-145",
-    "src": "/_resources/images-web/IMG_9220.webp",
+    "src": "2019/IMG_9220.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -1737,11 +2025,13 @@
     "iso": "100",
     "date": "2019-04-24",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-146",
-    "src": "/_resources/images-web/IMG_9225.webp",
+    "src": "2019/IMG_9225.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/500s",
@@ -1749,11 +2039,13 @@
     "iso": "100",
     "date": "2019-04-24",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-147",
-    "src": "/_resources/images-web/IMG_9251.webp",
+    "src": "2019/IMG_9251.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -1761,11 +2053,13 @@
     "iso": "400",
     "date": "2019-08-17",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3426,
+    "height": 5139
   },
   {
     "id": "img-148",
-    "src": "/_resources/images-web/IMG_9419.webp",
+    "src": "2019/IMG_9419.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -1773,11 +2067,13 @@
     "iso": "400",
     "date": "2019-08-22",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-149",
-    "src": "/_resources/images-web/IMG_9422.webp",
+    "src": "2025/IMG_9422.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1785,11 +2081,13 @@
     "iso": "800",
     "date": "2025-05-25",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-150",
-    "src": "/_resources/images-web/IMG_9423.webp",
+    "src": "2025/IMG_9423.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/160s",
@@ -1797,11 +2095,13 @@
     "iso": "800",
     "date": "2025-05-25",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 2628,
+    "height": 3942
   },
   {
     "id": "img-151",
-    "src": "/_resources/images-web/IMG_9424.webp",
+    "src": "2025/IMG_9424.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1809,11 +2109,13 @@
     "iso": "800",
     "date": "2025-05-25",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 2304
   },
   {
     "id": "img-152",
-    "src": "/_resources/images-web/IMG_9425.webp",
+    "src": "2025/IMG_9425.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/250s",
@@ -1821,11 +2123,13 @@
     "iso": "800",
     "date": "2025-05-25",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 4970,
+    "height": 3313
   },
   {
     "id": "img-153",
-    "src": "/_resources/images-web/IMG_9429.webp",
+    "src": "2019/IMG_9429.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -1833,11 +2137,13 @@
     "iso": "400",
     "date": "2019-08-22",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-154",
-    "src": "/_resources/images-web/IMG_9465.webp",
+    "src": "2019/IMG_9465.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/640s",
@@ -1845,11 +2151,13 @@
     "iso": "100",
     "date": "2019-08-22",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-155",
-    "src": "/_resources/images-web/IMG_9485.webp",
+    "src": "2019/IMG_9485.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/800s",
@@ -1857,11 +2165,13 @@
     "iso": "200",
     "date": "2019-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-156",
-    "src": "/_resources/images-web/IMG_9551.webp",
+    "src": "2019/IMG_9551.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1000s",
@@ -1869,11 +2179,13 @@
     "iso": "100",
     "date": "2019-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-157",
-    "src": "/_resources/images-web/IMG_9566.webp",
+    "src": "2019/IMG_9566.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/400s",
@@ -1881,11 +2193,13 @@
     "iso": "400",
     "date": "2019-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-158",
-    "src": "/_resources/images-web/IMG_9572.webp",
+    "src": "2019/IMG_9572.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/400s",
@@ -1893,11 +2207,13 @@
     "iso": "400",
     "date": "2019-05-08",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-159",
-    "src": "/_resources/images-web/IMG_9598ps.webp",
+    "src": "2019/IMG_9598ps.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/25s",
@@ -1905,11 +2221,13 @@
     "iso": "400",
     "date": "2019-09-07",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-160",
-    "src": "/_resources/images-web/IMG_9720.webp",
+    "src": "2024/IMG_9720.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/640s",
@@ -1917,11 +2235,13 @@
     "iso": "100",
     "date": "2024-06-03",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-161",
-    "src": "/_resources/images-web/IMG_9725.webp",
+    "src": "2024/IMG_9725.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/1600s",
@@ -1929,11 +2249,13 @@
     "iso": "100",
     "date": "2024-06-03",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-162",
-    "src": "/_resources/images-web/IMG_9756.webp",
+    "src": "2019/IMG_9756.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1941,11 +2263,13 @@
     "iso": "200",
     "date": "2019-09-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3331,
+    "height": 4996
   },
   {
     "id": "img-163",
-    "src": "/_resources/images-web/IMG_9760.webp",
+    "src": "2019/IMG_9760.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1953,11 +2277,13 @@
     "iso": "200",
     "date": "2019-09-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3194,
+    "height": 4791
   },
   {
     "id": "img-164",
-    "src": "/_resources/images-web/IMG_9767.webp",
+    "src": "2019/IMG_9767.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/320s",
@@ -1965,11 +2291,13 @@
     "iso": "400",
     "date": "2019-09-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-165",
-    "src": "/_resources/images-web/IMG_9801.webp",
+    "src": "2019/IMG_9801.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/60s",
@@ -1977,11 +2305,13 @@
     "iso": "1600",
     "date": "2019-09-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5005,
+    "height": 3337
   },
   {
     "id": "img-166",
-    "src": "/_resources/images-web/IMG_9817.webp",
+    "src": "2019/IMG_9817.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/50s",
@@ -1989,11 +2319,13 @@
     "iso": "1600",
     "date": "2019-09-27",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-167",
-    "src": "/_resources/images-web/IMG_9842.webp",
+    "src": "other/IMG_9842.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2001,11 +2333,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5026,
+    "height": 3351
   },
   {
     "id": "img-168",
-    "src": "/_resources/images-web/IMG_9844.webp",
+    "src": "other/IMG_9844.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2013,11 +2347,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-169",
-    "src": "/_resources/images-web/IMG_9845.webp",
+    "src": "other/IMG_9845.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2025,11 +2361,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   },
   {
     "id": "img-170",
-    "src": "/_resources/images-web/IMG_9922.webp",
+    "src": "other/IMG_9922.jpg",
     "alt": "",
     "camera": "",
     "shutter": "",
@@ -2037,11 +2375,13 @@
     "iso": "",
     "date": "",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 3456,
+    "height": 5184
   },
   {
     "id": "img-171",
-    "src": "/_resources/images-web/IMG_9936.webp",
+    "src": "2019/IMG_9936.jpg",
     "alt": "",
     "camera": "Canon EOS 100D",
     "shutter": "1/80s",
@@ -2049,6 +2389,8 @@
     "iso": "200",
     "date": "2019-05-14",
     "place": "",
-    "story": ""
+    "story": "",
+    "width": 5184,
+    "height": 3456
   }
 ]

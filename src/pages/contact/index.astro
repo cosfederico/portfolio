@@ -1,11 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-import bgImage from "../../_resources/images-web/IMG_0366.webp";
+import { imageUrl, photoById } from "../../lib/photos";
 import site from "../../data/site.json";
 import { LIMITS } from "../../lib/contact";
 
 const bgFocusY = 100; // vertical crop focal point, 0 = top, 100 = bottom
+const bgImage = photoById("img-009");
 ---
 
 <Layout
@@ -15,7 +15,7 @@ const bgFocusY = 100; // vertical crop focal point, 0 = top, 100 = bottom
   page="contact"
 >
   <div class="page-bg" aria-hidden="true" style="--bg-opacity: 0.75">
-    <Image src={bgImage} alt="" widths={[800, 1200, 1600]} sizes="100vw" style={`--focus-y: ${bgFocusY}%`} />
+    <img src={imageUrl(bgImage.src)} alt="" width={bgImage.width} height={bgImage.height} style={`--focus-y: ${bgFocusY}%`} />
   </div>
 
   <main class="page-shell" id="main">
