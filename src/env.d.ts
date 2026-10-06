@@ -7,6 +7,7 @@ declare namespace Cloudflare {
     CF_ACCOUNT_ID: string;
     CF_EMAIL_API_TOKEN: string;
     CF_EMAIL_FROM: string;
+    CONTACT_LIMITER: { limit(options: { key: string }): Promise<{ success: boolean }> };
   }
 }
 
