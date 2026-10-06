@@ -3,8 +3,5 @@
   "name": "portfolio",
   "compatibility_date": "2026-09-21",
   "observability": { "enabled": true },
-  "secrets": { "required": ["PUBLIC_R2_IMAGE_ORIGIN", "YOUTUBE_API_KEY"] },
-  "vars": {
-    "YOUTUBE_CHANNEL_HANDLE": "@pikasfed"
-  }
+  "secrets": { "required": [] }
 }
