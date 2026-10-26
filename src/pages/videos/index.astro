@@ -410,6 +410,10 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
   @media (max-width: 768px) {
     dialog.video-modal { width: calc(100% - 2rem); }
 
+    /* Square crop (sides cut) so each clip fills more of a tall screen and
+       repeats less. */
+    .video-bg__stack video { aspect-ratio: 1; }
+
     /* Stacked: the info panel back in flow at its natural height. */
     .video-featured__player { width: 100%; }
 

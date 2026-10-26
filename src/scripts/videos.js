@@ -57,7 +57,9 @@ function initBackgroundVideos(signal) {
       height = innerHeight + distance;
     }
 
-    const clipHeight = (stack.clientWidth * 9) / 16;
+    // Measured, not assumed: the clips' aspect ratio is breakpoint-dependent (CSS).
+    const clipHeight = originals[0]?.offsetHeight;
+    if (!clipHeight) return;
     const count = Math.max(originals.length, Math.ceil(height / clipHeight) || 0);
     while (stack.children.length < count) {
       const clone = originals[stack.children.length % originals.length].cloneNode();
