@@ -81,7 +81,10 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
       <div class="video-featured__info reveal">
         <h2 class="video-featured__title">{featuredVideo.title}</h2>
         <p class="video-featured__date"><time datetime={featuredVideo.date}>{formatLongDate(featuredVideo.date)}</time></p>
-        <p class="video-featured__description">{featuredVideo.description}</p>
+        <p class="video-featured__description" id="video-featured-description">{featuredVideo.description}</p>
+        <button type="button" class="video-featured__more" id="video-description-toggle" aria-controls="video-featured-description" aria-expanded="false" hidden>
+          Show more
+        </button>
       </div>
     </section>
 
@@ -287,6 +290,19 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
     white-space: pre-line; /* descriptions contain literal line breaks */
   }
 
+  /* Mobile only: shown by videos.js when the description is clamped. */
+  .video-featured__more {
+    display: none;
+    margin-top: 0.75rem;
+    border: 0;
+    padding: 0;
+    background: none;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
   /* ── Playlist rows ── */
 
   .channel-playlists {
@@ -403,5 +419,16 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
       border-left: 0;
       border-top: 1px solid var(--border);
     }
+
+    /* Long descriptions collapse to 3 lines, expandable via the toggle. */
+    .video-featured__description:not(.is-expanded) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      overflow: hidden;
+    }
+
+    .video-featured__more:not([hidden]) { display: inline-block; }
   }
 </style>

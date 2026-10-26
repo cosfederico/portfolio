@@ -4,6 +4,7 @@ import { LOOP_BUFFER_CARDS } from "../lib/constants.js";
 onPage(".channel-playlists", (_, signal) => {
   initBackgroundVideos(signal);
   initFeaturedFacade();
+  initDescriptionToggle(signal);
   initPlaylistRows(signal);
   initVideoModal();
 });
@@ -122,6 +123,33 @@ function initFeaturedFacade() {
     facade.replaceWith(iframe);
     iframe.focus();
   });
+}
+
+// ── Featured description ──
+// On mobile the CSS clamps the description to 3 lines; the toggle only shows
+// when that actually hides text. Rechecked on resize, since the clamp is
+// breakpoint-dependent.
+function initDescriptionToggle(signal) {
+  const description = document.getElementById("video-featured-description");
+  const toggle = document.getElementById("video-description-toggle");
+  if (!description || !toggle) return;
+
+  const update = () => {
+    if (!description.classList.contains("is-expanded")) toggle.hidden = description.scrollHeight <= description.clientHeight;
+  };
+  const observer = new ResizeObserver(update);
+  observer.observe(description);
+  signal.addEventListener("abort", () => observer.disconnect());
+
+  toggle.addEventListener(
+    "click",
+    () => {
+      const expanded = description.classList.toggle("is-expanded");
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggle.textContent = expanded ? "Show less" : "Show more";
+    },
+    { signal },
+  );
 }
 
 // ── Playlist rows ──
