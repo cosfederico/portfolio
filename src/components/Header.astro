@@ -129,7 +129,7 @@ const right = [
   .nav-toggle {
     display: none;
     position: absolute;
-    right: 1.25rem;
+    left: 1.25rem;
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
@@ -194,12 +194,6 @@ const right = [
   @media (max-width: 768px) {
     .nav-toggle { display: block; }
 
-    /* The hamburger owns the right edge here. */
-    .bg-toggle {
-      right: auto;
-      left: 1.25rem;
-    }
-
     .site-nav {
       position: fixed;
       top: var(--header-height);
@@ -235,6 +229,7 @@ const right = [
 
     .site-nav .brand-link {
       width: auto;
+      height: 1.25rem;
       margin: 0.5rem 0;
       padding: 0;
     }
