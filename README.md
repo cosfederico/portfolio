@@ -33,7 +33,7 @@ npm test          # unit tests (node:test)
 
 ## Updating content
 
-- **Photos:** every photo and its metadata (camera, exposure, date, place, story) lives in `src/data/mosaic-items.json`; the home mosaic shows all of them. The Photography page groups them into collections in `src/data/photos.json`:
+- **Photos:** every photo and its metadata (camera, exposure, date, place) lives in `src/data/mosaic-items.json`; the home mosaic shows all of them. The Photography page groups them into collections in `src/data/photos.json`:
 
   ```json
   { "collections": [{ "slug": "2025", "title": "2025", "description": "…", "images": ["img-149", "img-150"] }] }

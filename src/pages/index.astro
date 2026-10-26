@@ -40,7 +40,6 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
             <div class="polaroid__caption">
               <p class="polaroid__place" id="polaroid-place"></p>
               <p class="polaroid__date" id="polaroid-date"></p>
-              <p class="polaroid__story" id="polaroid-story"></p>
             </div>
           </div>
           <div class="polaroid__face polaroid__back">
@@ -538,13 +537,6 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #6b6b6b;
-  }
-
-  .polaroid__story {
-    margin: 0.6rem 0 0;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    color: #3a3a3a;
   }
 
   .polaroid__meta {

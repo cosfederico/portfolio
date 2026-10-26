@@ -264,7 +264,7 @@ onPage("#home-mosaic-grid", (grid, signal) => {
     backPhotoBox: modal.querySelector(".polaroid__back-photo"),
     image: modal.querySelector("#polaroid-image"),
     flipBtn: modal.querySelector("#polaroid-flip"),
-    fields: ["place", "date", "story", "camera", "shutter", "aperture", "iso"].map((key) => [
+    fields: ["place", "date", "camera", "shutter", "aperture", "iso"].map((key) => [
       key,
       modal.querySelector(`#polaroid-${key}`),
     ]),

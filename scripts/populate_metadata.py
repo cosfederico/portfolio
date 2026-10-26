@@ -4,8 +4,8 @@ Reads EXIF metadata straight from the original photos in
 assets-source/images and fills in the matching (currently-empty) fields
 in src/data/mosaic-items.json: camera, shutter, aperture, iso, date, place.
 
-Only overwrites a field if it is currently blank, so manually-entered story
-text or corrections are never clobbered by re-running this.
+Only overwrites a field if it is currently blank, so manually-entered values
+or corrections are never clobbered by re-running this.
 
 The JSON's "src" may point at the webp copies (_resources/images-web),
 which have their EXIF stripped by the conversion - so this script
