@@ -9,7 +9,7 @@
 #   1. Add your domain to Cloudflare, if it isn't already.
 #   2. Compute > Email Service > Email Sending - enable it for that domain.
 #      This verifies the sender domain used by CF_EMAIL_FROM below.
-#   3. Verify cosciafederico@outlook.com as a destination address (Cloudflare
+#   3. Verify cosciafederico@outlook.it as a destination address (Cloudflare
 #      emails it a confirmation link). Sending to a verified destination is
 #      free on any plan - see https://developers.cloudflare.com/email-service/platform/pricing/
 #   4. Create an API token (My Profile > API Tokens) scoped to permission
