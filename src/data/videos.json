@@ -6,7 +6,7 @@
     "date": "2025-08-21",
     "youtubeId": "3A9y4JiM8n4",
     "year": 2025,
-    "featured": true
+    "featured": false
   },
   {
     "id": "himym",
@@ -33,6 +33,6 @@
     "date": "2021-09-19",
     "youtubeId": "xI5c2MSAm_Y",
     "year": 2021,
-    "featured": false
+    "featured": true
   }
 ]
