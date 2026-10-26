@@ -9,7 +9,11 @@ export function bucketUrl(key: string): string {
   return `${imageOrigin}/${key}`;
 }
 
-export const imageUrl = bucketUrl;
+// The bucket keeps originals under images/ and resized webp copies under
+// images-web/ (same subfolders, see scripts/convert-images-to-webp.mjs).
+const webKey = (src: string) => src.replace(/^images\//, "images-web/").replace(/\.\w+$/, ".webp");
+
+export const imageUrl = (src: string) => bucketUrl(webKey(src));
 
 const byId = new Map(mosaicItems.map((item) => [item.id, item]));
 
@@ -24,8 +28,8 @@ export const allPhotos: Photo[] = mosaicItems;
 export function photoVariants(item: Photo) {
   return {
     ...item,
-    src: bucketUrl(item.src),
-    thumb: bucketUrl(item.src),
+    src: imageUrl(item.src),
+    thumb: imageUrl(item.src),
     srcset: "",
     aspect: Number((item.width / item.height).toFixed(4)),
   };

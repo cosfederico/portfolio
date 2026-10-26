@@ -12,7 +12,7 @@ src/data/*.json       Site content - edit these, not the pages, to update text/p
 src/scripts/          Client-side behaviour, one module per page/feature (home, photos, videos, contact, header, reveal)
 src/styles/global.css Tokens, base styles and shared components; page styles live in each .astro file
 src/lib/              Build-time helpers (photo pipeline, formatting, contact validation + its tests)
-src/_resources/       Photos (images-web/) - gitignored, optimized by Astro at build time
+_resources/           Local output of the conversion scripts (gitignored) - uploaded to the R2 bucket
 public/_resources/    Served as-is: background videos (videos-web/), film strip
 assets-source/        Raw photo/video originals (gitignored, NOT served) - input to the conversion scripts
 scripts/              Maintenance scripts (image/video conversion, YouTube playlist fetch, EXIF metadata)
@@ -40,7 +40,7 @@ npm test          # unit tests (node:test)
   ```
 
   `images` are ids from `mosaic-items.json`. The current collections are a first pass grouped by year - rename, regroup and rewrite the descriptions freely.
-- **New photos:** add originals to `assets-source/images`, run `scripts/convert-images-to-webp.bat` (writes to `src/_resources/images-web/`), add an entry to `mosaic-items.json`, then `python scripts/populate_metadata.py` to fill EXIF fields. Astro generates the thumbnail/lightbox sizes at build time (`src/lib/photos.ts`).
+- **New photos:** add originals to `assets-source/images`, upload them to the `portfolio` R2 bucket under `images/`, run `node scripts/convert-images-to-webp.mjs` (writes resized webp copies to `_resources/images-web/`, same subfolders) and upload those under `images-web/`. Add an entry to `mosaic-items.json` with `src` set to the original's key (`images/<folder>/<file>.jpg`), then `python scripts/populate_metadata.py` to fill EXIF fields. The site serves the `images-web/` copy (`src/lib/photos.ts`).
 - **New videos:** `scripts/convert-videos-to-web.bat`, then list them in `src/data/background-videos.json`.
 - **YouTube playlists** (`src/data/youtube-playlists.json`): refreshed automatically on every `npm run build` by `scripts/fetch-youtube-playlists.mjs` (the `prebuild` script), using `YOUTUBE_API_KEY` from `.env` locally (see `.env.example`) or from the Worker's build variables in Cloudflare. Without the key, or if the API fails, the build keeps using the committed file.
 - **Name, email, location, social links:** `src/data/site.json` (used by the header, footer, contact page, structured data and the contact endpoint).
@@ -55,7 +55,7 @@ Content in `src/data/*.json` is loaded at **build time**, so re-run `npm run dev
 
 `npm run build` produces a Cloudflare Worker (`dist/server`, with a generated `wrangler.json`) plus static assets (`dist/client`). Deploy with `npx wrangler deploy`. Note: `@astrojs/cloudflare` v13+ targets **Workers**, not Pages.
 
-Photos (`src/_resources/`) and videos (`public/_resources/`) are gitignored, so a build from a fresh git clone (e.g. Cloudflare's Git integration) won't have them - build locally, or move the media to R2 first.
+Photos are served from the R2 bucket (`PUBLIC_R2_IMAGE_ORIGIN`). Videos (`public/_resources/`) are gitignored, so a build from a fresh git clone (e.g. Cloudflare's Git integration) won't have them - build locally, or move the media to R2 first.
 
 ## License
 
