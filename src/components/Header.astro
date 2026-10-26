@@ -68,14 +68,26 @@ const right = [
     align-items: center;
     justify-content: center;
     padding: 0 var(--gutter);
-    background: rgba(8, 8, 8, 0.72);
-    backdrop-filter: blur(24px) saturate(140%);
     border-bottom: 1px solid transparent;
-    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+    transition: border-color 0.4s var(--ease-out);
+    --glass-bg: rgba(8, 8, 8, 0.72);
+  }
+
+  /* The frosted glass lives on a pseudo-element, not the header itself: an
+     element with backdrop-filter becomes the backdrop root for its children,
+     so the mobile dropdown's own blur would see nothing behind it. */
+  .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(140%);
+    transition: background 0.4s var(--ease-out);
   }
 
   .site-header.is-scrolled {
-    background: rgba(8, 8, 8, 0.92);
+    --glass-bg: rgba(8, 8, 8, 0.92);
     border-bottom-color: var(--border);
   }
 
@@ -196,27 +208,53 @@ const right = [
 
     .site-nav {
       position: fixed;
-      top: var(--header-height);
+      top: 0;
       left: 0;
       right: 0;
+      z-index: -1; /* behind the bar's buttons */
       flex-direction: column;
       gap: 0;
-      padding: 1.5rem;
-      background: rgba(8, 8, 8, 0.98);
+      padding: calc(var(--header-height) + 1.5rem) 1.5rem 1.5rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(140%);
       border-bottom: 1px solid var(--border);
-      transform: translateY(-110%);
-      opacity: 0;
-      /* visibility keeps the closed menu's links out of the tab order. */
-      visibility: hidden;
-      transition: transform 0.4s var(--ease-out), opacity 0.3s ease, visibility 0s linear 0.4s;
+      /* Closed, only its top strip shows, as the bar's glass; opening reveals
+         the rest. One blurred surface, so bar and menu shade identically. */
+      clip-path: inset(0 0 calc(100% - var(--header-height)) 0);
+      transition: clip-path 0.4s var(--ease-out), background 0.4s var(--ease-out);
     }
 
-    .site-nav.is-open {
-      transform: none;
+    .site-nav.is-open { clip-path: inset(0); }
+
+    /* visibility keeps the closed menu's links out of the tab order. */
+    .site-nav > * {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0s linear 0.4s;
+    }
+
+    .site-nav.is-open > * {
       opacity: 1;
       visibility: visible;
       transition-delay: 0s;
     }
+
+    /* The nav is the glass here (see above). */
+    .site-header::before { display: none; }
+
+    /* The scrolled hairline, drawn above the nav's glass, which covers the
+       header's own border; hidden while the menu is open. */
+    .site-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      transition: background 0.4s var(--ease-out);
+    }
+
+    .site-header.is-scrolled:not(:has(.is-open))::after { background: var(--border); }
 
     .site-nav a {
       padding: 0.85rem 0;
