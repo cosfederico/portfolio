@@ -185,7 +185,47 @@ const bgImage = photoById("img-009");
     }
   }
 
+  /* Phones: everything a step smaller, so the page has room to breathe. */
+  @media (max-width: 768px) {
+    .contact-layout { gap: 1.75rem; }
+
+    .contact-info h1 {
+      margin-bottom: 0.75rem;
+      font-size: 1.7rem;
+    }
+
+    .contact-info .lead { font-size: 0.85rem; }
+
+    .contact-info p:not(.lead) { font-size: 0.8rem; }
+
+    .email-link {
+      margin: 0.4rem 0 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    .form-card {
+      gap: 0.7rem;
+      padding: 1.25rem;
+    }
+
+    .form-group { gap: 0.3rem; }
+
+    .form-group label { font-size: 0.58rem; }
+
+    input,
+    textarea { padding: 0.55rem 0.75rem; }
+
+    textarea { min-height: 6rem; }
+
+    .form-card .button {
+      padding: 0.7rem 1.1rem;
+      font-size: 0.66rem;
+    }
+
+    .social-links a { font-size: 0.66rem; }
+  }
+
   @media (max-width: 480px) {
-    .form-card { padding: 1.25rem; }
+    .form-card { padding: 1rem; }
   }
 </style>
