@@ -201,7 +201,18 @@ const services = [
        of double-exposing with it. */
     .about-portrait img { filter: brightness(0.45); }
 
-    .about-content { padding: calc(var(--header-height) + 1.5rem) 1.5rem 4rem; }
+    .about-content { padding: calc(var(--header-height) + 1.5rem) 1.5rem 3rem; }
     .about-facts__row { grid-template-columns: 1fr; gap: 0.35rem; }
+
+    /* Everything a step smaller, like the contact page on phones. */
+    .about-intro { margin-bottom: 1.25rem; }
+    .about-intro .lead { font-size: 0.85rem; margin-bottom: 0.75rem; }
+    .about-copy { font-size: 0.8rem; }
+    .about-facts { margin-bottom: 1.25rem; }
+    .about-facts__row { padding: 0.85rem 0; }
+    .about-facts__row dd { font-size: 0.85rem; }
+    .about-services { gap: 1.25rem 1.5rem; }
+    .about-services h2 { font-size: 0.9rem; }
+    .about-services p { font-size: 0.78rem; }
   }
 </style>
