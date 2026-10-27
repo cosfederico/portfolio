@@ -253,7 +253,21 @@ const coverImage = collections[0]?.photos[0];
   }
 
   @media (max-width: 768px) {
-    .collection__grid { --row-h: 9.375rem; gap: 0.35rem; }
+    .collection__grid { --row-h: 6rem; gap: 0.25rem; }
+
+    /* Small enough for every filter to fit across a phone; it still scrolls
+       on the narrowest screens. */
+    .collection-nav {
+      justify-content: space-between;
+      gap: 0.15rem;
+      padding-block: 0.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.3rem 0.25rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+    }
     .collections { gap: 2.5rem; }
 
     /* Swipe does the job on touch; keep the arrows out of the photo. */
