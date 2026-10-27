@@ -1,4 +1,5 @@
 import { onPage, prefersReducedMotion } from "./utils.js";
+import { fillParallaxStack } from "./parallax-bg.js";
 import { LOOP_BUFFER_CARDS } from "../lib/constants.js";
 
 onPage(".channel-playlists", (_, signal) => {
@@ -42,53 +43,18 @@ function initBackgroundVideos(signal) {
     track(video);
   });
 
-  // The clips are repeated in order until the stack covers the area it has to
-  // fill - only the ones on screen ever play. With parallax (see .video-bg in
-  // videos/index.astro) that's one screen plus the distance the stack
-  // travels; otherwise the background scrolls with the page and must be as
-  // tall as the content.
-  const parallax = CSS.supports("animation-timeline: scroll()") && !prefersReducedMotion();
-  const fill = () => {
-    let height = stack.parentElement.clientHeight;
-    if (parallax) {
-      const speed = parseFloat(getComputedStyle(stack).getPropertyValue("--parallax-speed")) || 0;
-      const distance = Math.max(0, document.documentElement.scrollHeight - innerHeight) * speed;
-      stack.style.setProperty("--parallax-distance", `${distance}px`);
-      height = innerHeight + distance;
-    }
-
-    // Measured, not assumed: the clips' aspect ratio is breakpoint-dependent (CSS).
-    const clipHeight = originals[0]?.offsetHeight;
-    if (!clipHeight) return;
-    const count = Math.max(originals.length, Math.ceil(height / clipHeight) || 0);
-    while (stack.children.length < count) {
-      const clone = originals[stack.children.length % originals.length].cloneNode();
+  // Clips are repeated to fill the background; only the ones on screen play.
+  fillParallaxStack(stack, signal, {
+    onAdd: (clone) => {
       clone.muted = true;
-      stack.appendChild(clone);
       track(clone);
-    }
-    while (stack.children.length > count) {
-      const extra = stack.lastElementChild;
-      observer.unobserve(extra);
-      visible.delete(extra);
-      extra.remove();
-    }
-  };
-
-  // Content height and window size both change the fill; body resizes cover both.
-  let fillFrame = 0;
-  const resizeObserver = new ResizeObserver(() => {
-    cancelAnimationFrame(fillFrame);
-    fillFrame = requestAnimationFrame(fill);
+    },
+    onRemove: (clip) => {
+      observer.unobserve(clip);
+      visible.delete(clip);
+    },
   });
-  resizeObserver.observe(document.body);
-  fill();
-
-  signal.addEventListener("abort", () => {
-    observer.disconnect();
-    resizeObserver.disconnect();
-    cancelAnimationFrame(fillFrame);
-  });
+  signal.addEventListener("abort", () => observer.disconnect());
 
   const render = () => {
     toggle.classList.toggle("is-paused", paused);

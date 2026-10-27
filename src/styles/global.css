@@ -165,6 +165,71 @@ body.fill-viewport > main {
   opacity: var(--bg-opacity, 0.45);
 }
 
+/* Vertical stack of clips/photos behind a page's content, with parallax
+   (videos, photos). Goes inside a positioned element with its own stacking
+   context, so the negative z-index stays behind that element's content
+   without dropping behind the header/footer. src/scripts/parallax-bg.js
+   repeats the items to fill it.
+
+   Default: full-bleed behind the content column, as tall as the content,
+   scrolling with the page. */
+.parallax-bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.parallax-bg__stack {
+  --parallax-speed: 0.5; /* 0 = fixed, 1 = scrolls with the page */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Parallax: the background becomes a fixed window, and as the page scrolls
+   from top to bottom the stack slides up by --parallax-distance (scroll
+   range x speed, set by parallax-bg.js, which also repeats items so the
+   stack always covers the window). Native scroll-driven animation, so it
+   runs off the main thread. Without support, or with reduced motion, the
+   default above applies instead. Keep this condition in sync with
+   `parallax` in parallax-bg.js. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-bg {
+      position: fixed;
+      inset: 0;
+      width: auto;
+      transform: none;
+    }
+
+    .parallax-bg__stack {
+      will-change: transform;
+      animation: parallax-bg linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@keyframes parallax-bg {
+  to { transform: translateY(calc(-1 * var(--parallax-distance, 0px))); }
+}
+
+.parallax-bg__stack > * {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* Per-item vertical focal point, see "focusY" in background-*.json. */
+  object-position: center var(--focus-y, 50%);
+  opacity: var(--bg-opacity, 0.45);
+}
+
 /* ── Buttons ── */
 
 .button {
@@ -233,33 +298,29 @@ body.fill-viewport > main {
   border-color: var(--border-strong);
 }
 
-/* Chip-style filter buttons (photos page). */
+/* Text filter buttons styled like the header nav links (photos page). */
 .filter-btn {
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--border);
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
   background: transparent;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
 
-.filter-btn:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-  background: var(--surface);
-}
+.filter-btn:hover { color: var(--text); }
 
 .filter-btn[aria-pressed="true"] {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--surface);
+  color: var(--text);
+  border-bottom-color: var(--accent);
 }
 
-/* ── Modal dialogs (shared shell for the lightbox and video modal) ── */
+/* ── Modal dialogs (shared backdrop for the video modal) ── */
 
 dialog.modal::backdrop {
   background: rgba(0, 0, 0, 0);
@@ -376,6 +437,10 @@ body.nav-open {
   }
 
   .page-shell { padding-top: calc(var(--header-height) + 1.5rem); }
+
+  /* Square crop (sides cut) so each item fills more of a tall screen and
+     repeats less. */
+  .parallax-bg__stack > * { aspect-ratio: 1; }
 }
 
 @media (max-width: 480px) {

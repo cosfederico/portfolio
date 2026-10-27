@@ -1,0 +1,322 @@
+---
+// Polaroid photo viewer, driven by src/scripts/polaroid.js. Slotted content
+// goes inside the dialog (e.g. gallery arrows).
+---
+
+<dialog id="polaroid-modal" class="polaroid-modal" aria-label="Photo details">
+  <div class="polaroid-panel">
+    <div class="polaroid" id="polaroid">
+      <div class="polaroid__card">
+        <div class="polaroid__face polaroid__front">
+          <div class="polaroid__photo">
+            <img id="polaroid-image" alt="" decoding="async" />
+          </div>
+          <div class="polaroid__caption">
+            <p class="polaroid__place" id="polaroid-place"></p>
+            <p class="polaroid__date" id="polaroid-date"></p>
+          </div>
+        </div>
+        <div class="polaroid__face polaroid__back">
+          <dl class="polaroid__back-photo polaroid__meta">
+            {
+              ["Camera", "Aperture", "Shutter", "ISO"].map((label) => (
+                <div class="polaroid__meta-cell">
+                  <dt class="polaroid__meta-label">{label}</dt>
+                  <dd class="polaroid__meta-value" id={`polaroid-${label.toLowerCase()}`} />
+                </div>
+              ))
+            }
+          </dl>
+          <div class="polaroid__back-blank" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+    <div class="polaroid-actions">
+      <button type="button" class="polaroid-actions__btn polaroid-actions__btn--flip" id="polaroid-flip">Turn over</button>
+      <button type="button" class="polaroid-actions__btn polaroid-actions__btn--close" id="polaroid-close">Put back</button>
+    </div>
+  </div>
+  <slot />
+</dialog>
+
+<style is:global>
+  /* Global: the flight ghosts are created by polaroid.js, outside the reach
+     of scoped styles. */
+  /* Single source of truth for the polaroid choreography - polaroid.js reads these
+     back at runtime, so tune the animation here only. The *-lead values are
+     pure JS scheduling. Units must be ms or s. */
+  :root,
+  dialog.polaroid-modal::backdrop {
+    --polaroid-flight: 500ms; /* photo zoom, tile <-> polaroid */
+    --polaroid-frame-fade: 300ms; /* frame/caption/actions fade */
+    --polaroid-frame-lead: 250ms; /* open: frame fades in this long before the photo lands */
+    --polaroid-close-lead: 100ms; /* close: photo leaves this long before the frame finished fading */
+    --polaroid-flip: 800ms; /* card turning over */
+    --polaroid-ease: cubic-bezier(0.25, 0, 0.25, 1);
+    /* The dialog stays painted this long after close() so the return flight
+       (which runs inside it) isn't cut off mid-air. */
+    --polaroid-keep-alive: calc(var(--polaroid-flight) + 100ms);
+  }
+
+  dialog.polaroid-modal {
+    /* No display here: the UA display:none for a closed dialog must stay in
+       effect, or it lingers as an invisible full-screen layer eating clicks. */
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    margin: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    overflow: visible;
+    transition: overlay var(--polaroid-keep-alive) allow-discrete, display var(--polaroid-keep-alive) allow-discrete;
+  }
+
+  dialog.polaroid-modal[open] {
+    display: flex;
+  }
+
+  /* Still painted during the keep-alive window after close(); must not eat
+     clicks meant for the mosaic. */
+  dialog.polaroid-modal:not([open]) {
+    pointer-events: none;
+  }
+
+  dialog.polaroid-modal::backdrop {
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    transition: background var(--polaroid-flight) var(--polaroid-ease), backdrop-filter var(--polaroid-flight) var(--polaroid-ease),
+      overlay var(--polaroid-keep-alive) allow-discrete, display var(--polaroid-keep-alive) allow-discrete;
+  }
+
+  dialog.polaroid-modal[open]::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(16px);
+  }
+
+  @starting-style {
+    dialog.polaroid-modal[open]::backdrop {
+      background: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+    }
+  }
+
+  /* Width is set per photo by sizePolaroid() in polaroid.js. No geometry
+     transition: the flight measures the photo box straight after sizing. */
+  .polaroid-panel {
+    width: min(23.75rem, 100%);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .polaroid {
+    width: 100%;
+    perspective: 2000px;
+  }
+
+  /* Frame hidden while the photo ghost flies. Also matched on the ghost: a
+     turned card flies home as a clone of the whole card and sheds its frame
+     mid-flight using these same rules. */
+  :is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__caption,
+  :is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid-actions {
+    opacity: 0;
+  }
+
+  .polaroid__caption,
+  .polaroid-actions {
+    transition: opacity var(--polaroid-frame-fade) ease;
+  }
+
+  .polaroid-panel.is-photo-hidden .polaroid__photo img {
+    opacity: 0;
+  }
+
+  .polaroid-panel.is-card-flying {
+    opacity: 0;
+  }
+
+  .polaroid-flight-ghost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .polaroid-flight-ghost--card {
+    perspective: 2000px;
+  }
+
+  .polaroid-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .polaroid-actions__btn {
+    width: 11rem;
+    flex: 0 0 auto;
+    padding: 0.8rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    transition: opacity 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+
+  .polaroid-actions__btn--flip {
+    border: none;
+    background: #fff;
+    color: #0a0a0a;
+  }
+
+  .polaroid-actions__btn--flip:hover { opacity: 0.85; }
+
+  .polaroid-actions__btn--close {
+    border: 1px solid #fff;
+    background: transparent;
+    color: #fff;
+  }
+
+  .polaroid-actions__btn--close:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .polaroid__card {
+    position: relative;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform var(--polaroid-flip) cubic-bezier(0.65, 0, 0.35, 1), box-shadow var(--polaroid-frame-fade) ease;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  }
+
+  .polaroid.is-flipped .polaroid__card {
+    transform: rotateY(180deg);
+  }
+
+  :is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__card {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0);
+  }
+
+  .polaroid__face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    width: 100%;
+    background-color: #f2efe8;
+    transition: background-color var(--polaroid-frame-fade) ease;
+    padding: 0.9rem 0.9rem 1.4rem;
+  }
+
+  :is(.polaroid-panel, .polaroid-flight-ghost).is-chrome-hidden .polaroid__face {
+    background-color: transparent;
+  }
+
+  .polaroid__front {
+    position: relative;
+  }
+
+  .polaroid__back {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .polaroid__back-photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #0b0b0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .polaroid__back-blank {
+    flex: 1;
+  }
+
+  .polaroid__photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .polaroid-panel.is-photo-hidden .polaroid__photo {
+    background: transparent;
+  }
+
+  .polaroid__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .polaroid__caption {
+    padding-top: 0.9rem;
+    text-align: center;
+    color: #1a1a1a;
+  }
+
+  .polaroid__place {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: #1a1a1a;
+  }
+
+  .polaroid__date {
+    margin: 0.2rem 0 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+  }
+
+  .polaroid__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    margin: 0;
+    padding: 0 0.9rem;
+  }
+
+  /* Value above its label (dt must come first in the markup). */
+  .polaroid__meta-cell {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+  }
+
+  .polaroid__meta-value {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #f2efe8;
+  }
+
+  .polaroid__meta-label {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #d9c76a;
+  }
+</style>

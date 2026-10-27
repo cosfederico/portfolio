@@ -36,12 +36,13 @@ npm test          # unit tests (node:test)
 - **Photos:** every photo and its metadata (camera, exposure, date, place) lives in `src/data/mosaic-items.json`; the home mosaic shows all of them. The Photography page groups them into collections in `src/data/photos.json`:
 
   ```json
-  { "collections": [{ "slug": "2025", "title": "2025", "description": "…", "images": ["img-149", "img-150"] }] }
+  { "collections": [{ "slug": "2025", "title": "2025", "images": ["img-149", "img-150"] }] }
   ```
 
-  `images` are ids from `mosaic-items.json`. The current collections are a first pass grouped by year - rename, regroup and rewrite the descriptions freely.
+  `images` are ids from `mosaic-items.json`, shown first in that order. The Photography page shows every photo: those not listed anywhere join the collection whose slug years cover their date (`"2024"`, `"2017-2019"`), or the last collection (archive) if none does.
 - **New photos:** add originals to `assets-source/images`, upload them to the `portfolio` R2 bucket under `images/`, run `node scripts/convert-images-to-webp.mjs` (writes resized webp copies to `_resources/images-web/`, same subfolders) and upload those under `images-web/`. Add an entry to `mosaic-items.json` with `src` set to the original's key (`images/<folder>/<file>.jpg`), then `python scripts/populate_metadata.py` to fill EXIF fields. The site serves the `images-web/` copy (`src/lib/photos.ts`).
 - **New videos:** `scripts/convert-videos-to-web.bat`, then list them in `src/data/background-videos.json`.
+- **Photos page background:** ids from `mosaic-items.json` in `src/data/background-photos.json` (stacked and repeated behind the page with parallax; `focusY` is the vertical crop, 0 = top, 100 = bottom).
 - **YouTube playlists** (`src/data/youtube-playlists.json`): refreshed automatically on every `npm run build` by `scripts/fetch-youtube-playlists.mjs` (the `prebuild` script), using `YOUTUBE_API_KEY` from `.env` locally (see `.env.example`) or from the Worker's build variables in Cloudflare. Without the key, or if the API fails, the build keeps using the committed file.
 - **Name, email, location, social links:** `src/data/site.json` (used by the header, footer, contact page, structured data and the contact endpoint).
 

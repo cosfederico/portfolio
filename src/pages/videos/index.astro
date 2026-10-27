@@ -41,8 +41,8 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
   </Fragment>
 
   <main class="page-shell" id="main">
-    <div class="video-bg" aria-hidden="true">
-      <div id="video-bg-stack" class="video-bg__stack">
+    <div class="parallax-bg" aria-hidden="true">
+      <div id="video-bg-stack" class="parallax-bg__stack">
         {
           backgroundVideos.map((bg) => (
             <video
@@ -131,69 +131,10 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
 </script>
 
 <style>
-  /* Own stacking context, so .video-bg's negative z-index stays behind this
-     page's content without dropping behind the header/footer. */
+  /* Own stacking context for the .parallax-bg clips (global.css). */
   .page-shell {
     position: relative;
     z-index: 0;
-  }
-
-  /* Default: full-bleed behind the content column, as tall as the content,
-     scrolling with the page (videos.js repeats clips to fill that height). */
-  .video-bg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 100vw;
-    transform: translateX(-50%);
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .video-bg__stack {
-    --parallax-speed: 0.5; /* 0 = fixed, 1 = scrolls with the page */
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Parallax: the background becomes a fixed window, and as the page scrolls
-     from top to bottom the stack slides up by --parallax-distance (scroll
-     range x speed, set by videos.js, which also repeats clips so the stack
-     always covers the window). Native scroll-driven animation, so it runs off
-     the main thread. Without support, or with reduced motion, the default
-     above applies instead. Keep this condition in sync with `parallax` in
-     videos.js. */
-  @supports (animation-timeline: scroll()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .video-bg {
-        position: fixed;
-        inset: 0;
-        width: auto;
-        transform: none;
-      }
-
-      .video-bg__stack {
-        will-change: transform;
-        animation: video-parallax linear both;
-        animation-timeline: scroll(root block);
-      }
-    }
-  }
-
-  @keyframes video-parallax {
-    to { transform: translateY(calc(-1 * var(--parallax-distance, 0px))); }
-  }
-
-  .video-bg__stack video {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    /* Per-clip vertical focal point, see "focusY" in background-videos.json. */
-    object-position: center var(--focus-y, 50%);
-    opacity: 0.45;
   }
 
   .youtube-link {
@@ -409,10 +350,6 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
 
   @media (max-width: 768px) {
     dialog.video-modal { width: calc(100% - 2rem); }
-
-    /* Square crop (sides cut) so each clip fills more of a tall screen and
-       repeats less. */
-    .video-bg__stack video { aspect-ratio: 1; }
 
     /* Stacked: the info panel back in flow at its natural height. */
     .video-featured__player { width: 100%; }
