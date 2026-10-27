@@ -4,8 +4,8 @@
   "email": "cosciafederico@outlook.it",
   "location": "Based in Milan, Italy. Currently working in Italy.",
   "social": [
-    { "label": "Personal Instagram", "url": "https://instagram.com/pikasfed" },
-    { "label": "Events Photography Instagram", "url": "https://instagram.com/federicocosciaphotographer" },
+    { "label": "Instagram", "url": "https://instagram.com/pikasfed" },
+    { "label": "Events", "url": "https://instagram.com/federicocosciaphotographer" },
     { "label": "YouTube", "url": "https://youtube.com/@pikasfed" }
   ]
 }
