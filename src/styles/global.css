@@ -438,6 +438,8 @@ body.nav-open {
 
   .page-shell { padding-top: calc(var(--header-height) + 1.5rem); }
 
+  h1 { font-size: 2rem; }
+
   /* Square crop (sides cut) so each item fills more of a tall screen and
      repeats less. */
   .parallax-bg__stack > * { aspect-ratio: 1; }

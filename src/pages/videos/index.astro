@@ -351,6 +351,13 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
   @media (max-width: 768px) {
     dialog.video-modal { width: calc(100% - 2rem); }
 
+    /* Tighter, like the photos page on phones. */
+    .video-featured { margin-bottom: 2rem; }
+    .video-featured__info { padding: 1rem; }
+    .video-featured__description { font-size: 0.85rem; }
+    .channel-playlists { gap: 1.75rem; }
+    .playlist-row__head { margin-bottom: 0.6rem; }
+
     /* Stacked: the info panel back in flow at its natural height. */
     .video-featured__player { width: 100%; }
 

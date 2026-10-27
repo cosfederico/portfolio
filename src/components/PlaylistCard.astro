@@ -29,7 +29,7 @@ const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`
     <img
       src={thumb("mqdefault")}
       srcset={`${thumb("mqdefault")} 320w, ${thumb("hqdefault")} 480w`}
-      sizes="(max-width: 768px) 170px, 250px"
+      sizes="(max-width: 768px) 130px, 250px"
       alt=""
       width="320"
       height="180"
@@ -113,6 +113,7 @@ const thumb = (size: string) => `https://i.ytimg.com/vi/${video.id}/${size}.jpg`
   }
 
   @media (max-width: 768px) {
-    .playlist-card { flex-basis: 10.625rem; }
+    .playlist-card { flex-basis: 8.5rem; }
+    .playlist-card__title { padding: 1.25rem 0.5rem 0.4rem; font-size: 0.68rem; }
   }
 </style>
