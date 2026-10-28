@@ -1,0 +1,212 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Polaroid from "../../components/Polaroid.astro";
+import { imageUrl } from "../../lib/photos";
+import { toJsonIsland } from "../../lib/format.js";
+import { wrappedSlice } from "../../lib/wrappedSlice.js";
+import { LOOP_BUFFER_CARDS } from "../../lib/constants.js";
+import data from "../../data/events.json";
+
+// Each event's photo list in events.json is built by
+// scripts/populate_events.py (shuffled); titles, CV text, places and row
+// order are edited there by hand. An event's `date` stands in for photos
+// whose exports lost their EXIF date.
+const events = data.events.map((event) => {
+  const photos = event.photos.map((photo, index) => ({
+    ...photo,
+    index,
+    url: imageUrl(photo.src),
+    aspect: Number((photo.width / photo.height).toFixed(4)),
+  }));
+  // Clone buffers for the infinite scroll, as on the videos page.
+  const canLoop = photos.length >= 2;
+  const tiles = [
+    ...(canLoop ? wrappedSlice(photos, -LOOP_BUFFER_CARDS, LOOP_BUFFER_CARDS) : []).map((photo) => ({ photo, isClone: true })),
+    ...photos.map((photo) => ({ photo, isClone: false })),
+    ...(canLoop ? wrappedSlice(photos, photos.length, LOOP_BUFFER_CARDS) : []).map((photo) => ({ photo, isClone: true })),
+  ];
+  return { ...event, photos, canLoop, tiles };
+});
+
+// The polaroid steps through an event client-side, so it gets just the
+// fields it displays.
+const polaroidJson = toJsonIsland(
+  Object.fromEntries(
+    events.map((event) => [
+      event.slug,
+      event.photos.map(({ url, aspect, date, camera, aperture, shutter, iso }) => ({
+        src: url,
+        alt: "",
+        aspect,
+        date: date || event.date || "",
+        place: event.place,
+        camera,
+        aperture,
+        shutter,
+        iso,
+      })),
+    ])
+  )
+);
+---
+
+<Layout title="Federico Coscia | Events" description="Concert and event photography by Federico Coscia, from clubs and stages around Milan." page="events">
+  <main class="page-shell" id="main">
+    <div class="parallax-bg" aria-hidden="true">
+      <div id="events-bg-stack" class="parallax-bg__stack" style="--bg-opacity: 0.3">
+        {
+          /* No loading="lazy", see the photos page. */
+          data.background.map((bg) => (
+            <img src={imageUrl(bg.src)} alt="" decoding="async" style={`--focus-y: ${Number.isFinite(bg.focusY) ? bg.focusY : 50}%`} />
+          ))
+        }
+      </div>
+    </div>
+
+    <header class="page-header reveal">
+      <h1>Music photography is so cool.</h1>
+    </header>
+
+    <div class="event-rows" id="events">
+      {
+        events.map((event) => (
+          <section class="playlist-row reveal" aria-labelledby={`${event.slug}-title`}>
+            <div class="playlist-row__head">
+              <div class="event-cv">
+                <p class="event-cv__when">{event.when}</p>
+                <h2 class="playlist-row__title" id={`${event.slug}-title`}>{event.title}</h2>
+                <p class="event-cv__role">{event.role} · {event.location}</p>
+                {event.description.length > 1 ? (
+                  <ul class="event-cv__description">
+                    {event.description.map((line) => (
+                      <li>{line}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p class="event-cv__description">{event.description[0]}</p>
+                )}
+              </div>
+              <div class="playlist-row__arrows">
+                <button type="button" class="icon-button" data-scroll="-1" aria-label={`Scroll ${event.title} back`}>&#8592;</button>
+                <button type="button" class="icon-button" data-scroll="1" aria-label={`Scroll ${event.title} forward`}>&#8594;</button>
+              </div>
+            </div>
+            <div class="playlist-row__scroller" data-loop={String(event.canLoop)} data-real-count={event.photos.length}>
+              {event.tiles.map(({ photo, isClone }) => (
+                <button
+                  type="button"
+                  class="event-photo"
+                  style={`--ar: ${photo.aspect}`}
+                  data-event={event.slug}
+                  data-index={photo.index}
+                  data-clone={isClone ? "" : undefined}
+                  aria-label={`Open ${event.title} photo ${photo.index + 1} of ${event.photos.length}`}
+                  aria-hidden={isClone ? "true" : undefined}
+                  tabindex={isClone ? -1 : undefined}
+                >
+                  <img src={photo.url} alt="" width={photo.width} height={photo.height} loading="lazy" decoding="async" />
+                </button>
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <Polaroid gallery />
+
+    <script type="application/json" id="events-data" set:html={polaroidJson} />
+  </main>
+</Layout>
+
+<script>
+  import "../../scripts/events.js";
+</script>
+
+<style>
+  /* Own stacking context for the .parallax-bg photos (global.css). */
+  .page-shell {
+    position: relative;
+    z-index: 0;
+  }
+
+  .event-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+  }
+
+  /* Each row's head reads like a CV entry: when, who, role and where, then
+     what the work was. The rule down the side ties the lines together; the
+     shadow keeps them legible over the background photos. */
+  .event-cv {
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--accent);
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.7);
+  }
+
+  .event-cv__when {
+    margin: 0 0 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .event-cv__role {
+    margin: 0.6rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .event-cv__description {
+    max-width: 62ch;
+    margin: 1rem 0 0;
+    padding-left: 0;
+    color: var(--text-soft);
+    font-size: 1.02rem;
+    line-height: 1.75;
+  }
+
+  ul.event-cv__description { padding-left: 1.1rem; }
+  .event-cv__description li + li { margin-top: 0.4rem; }
+
+  /* A continuous strip: photos edge to edge, all the same height. */
+  .event-photo {
+    flex: none;
+    height: clamp(14rem, 45vh, 24rem);
+    aspect-ratio: var(--ar);
+    scroll-snap-align: start;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: #111;
+    cursor: zoom-in;
+  }
+
+  .event-photo:focus-visible { outline-offset: -4px; }
+
+  .event-photo img { transition: transform 0.6s var(--ease-out), opacity 0.4s ease; }
+
+  /* Its photo is out in the polaroid. */
+  .event-photo.is-lifted { background: #000; }
+  .event-photo.is-lifted img { visibility: hidden; }
+
+  @media (hover: hover) {
+    .playlist-row__scroller:has(.event-photo:hover) .event-photo:not(:hover) img { opacity: 0.6; }
+    .event-photo:hover img { transform: scale(1.03); }
+  }
+
+  @media (max-width: 768px) {
+    .event-rows { gap: 3.5rem; }
+    .event-cv { padding-left: 0.9rem; }
+    .event-cv__when { font-size: 0.7rem; }
+    .event-cv__role { font-size: 0.7rem; }
+    .event-cv__description { font-size: 0.9rem; }
+    .event-photo { height: clamp(11rem, 38vh, 17rem); }
+  }
+</style>

@@ -353,3 +353,34 @@ export function createPolaroid(modal, signal, { onBusy, onClose } = {}) {
 
   return { open, show, isOpen: () => modal.open && !closing };
 }
+
+// Gallery stepping for a polaroid rendered with <Polaroid gallery />: the
+// prev/next arrows, the arrow keys and horizontal swipes on touch screens all
+// call `step(-1 | 1)`.
+export function bindPolaroidStepping(modal, signal, step) {
+  modal.querySelector("#polaroid-prev").addEventListener("click", () => step(-1));
+  modal.querySelector("#polaroid-next").addEventListener("click", () => step(1));
+
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
+    },
+    { signal }
+  );
+
+  const panel = modal.querySelector(".polaroid-panel");
+  let swipeStart = null;
+  panel.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse") swipeStart = { x: e.clientX, y: e.clientY };
+  });
+  panel.addEventListener("pointerup", (e) => {
+    if (!swipeStart) return;
+    const dx = e.clientX - swipeStart.x;
+    const dy = e.clientY - swipeStart.y;
+    swipeStart = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  });
+  panel.addEventListener("pointercancel", () => (swipeStart = null));
+}

@@ -129,10 +129,7 @@ const coverImage = collections[0]?.photos[0];
       }
     </div>
 
-    <Polaroid>
-      <button type="button" class="icon-button polaroid-nav polaroid-nav--prev" id="polaroid-prev" aria-label="Previous photo">&#8592;</button>
-      <button type="button" class="icon-button polaroid-nav polaroid-nav--next" id="polaroid-next" aria-label="Next photo">&#8594;</button>
-    </Polaroid>
+    <Polaroid gallery />
 
     <script type="application/json" id="photos-data" set:html={polaroidJson} />
   </main>
@@ -227,31 +224,6 @@ const coverImage = collections[0]?.photos[0];
     .photo-tile:hover img { transform: scale(1.03); }
   }
 
-  /* ── Polaroid gallery arrows ── */
-
-  :global(.polaroid-panel) { touch-action: pan-y pinch-zoom; } /* horizontal swipes step (photos.js) */
-
-  .polaroid-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3rem;
-    height: 3rem;
-    background: rgba(0, 0, 0, 0.35);
-    font-size: 1.1rem;
-    transition: opacity var(--polaroid-frame-fade) ease, background 0.25s ease, border-color 0.25s ease;
-  }
-
-  .polaroid-nav--prev { left: 1.5rem; }
-  .polaroid-nav--next { right: 1.5rem; }
-
-  /* They fade with the polaroid's frame, and stay out of the return flight. */
-  :global(dialog.polaroid-modal:not([open])) .polaroid-nav,
-  :global(dialog.polaroid-modal:has(.polaroid-panel.is-chrome-hidden)) .polaroid-nav {
-    opacity: 0;
-    pointer-events: none;
-  }
-
   @media (max-width: 768px) {
     .collection__grid { --row-h: 6rem; gap: 0.25rem; }
 
@@ -269,17 +241,5 @@ const coverImage = collections[0]?.photos[0];
       letter-spacing: 0.08em;
     }
     .collections { gap: 2.5rem; }
-
-    /* Swipe does the job on touch; keep the arrows out of the photo. */
-    .polaroid-nav {
-      top: auto;
-      bottom: 1.5rem;
-      transform: none;
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-
-    .polaroid-nav--prev { left: 1rem; }
-    .polaroid-nav--next { right: 1rem; }
   }
 </style>

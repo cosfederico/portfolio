@@ -1,6 +1,12 @@
 ---
-// Polaroid photo viewer, driven by src/scripts/polaroid.js. Slotted content
-// goes inside the dialog (e.g. gallery arrows).
+// Polaroid photo viewer, driven by src/scripts/polaroid.js. `gallery` adds the
+// prev/next arrows (wired by bindPolaroidStepping). Slotted content goes
+// inside the dialog.
+interface Props {
+  gallery?: boolean;
+}
+
+const { gallery = false } = Astro.props;
 ---
 
 <dialog id="polaroid-modal" class="polaroid-modal" aria-label="Photo details">
@@ -36,6 +42,14 @@
       <button type="button" class="polaroid-actions__btn polaroid-actions__btn--close" id="polaroid-close">Put back</button>
     </div>
   </div>
+  {
+    gallery && (
+      <>
+        <button type="button" class="icon-button polaroid-nav polaroid-nav--prev" id="polaroid-prev" aria-label="Previous photo">&#8592;</button>
+        <button type="button" class="icon-button polaroid-nav polaroid-nav--next" id="polaroid-next" aria-label="Next photo">&#8594;</button>
+      </>
+    )
+  }
   <slot />
 </dialog>
 
@@ -318,5 +332,46 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #d9c76a;
+  }
+
+  /* ── Gallery arrows ── */
+
+  /* Horizontal swipes step (bindPolaroidStepping in polaroid.js). */
+  dialog.polaroid-modal:has(.polaroid-nav) .polaroid-panel { touch-action: pan-y pinch-zoom; }
+
+  /* Scoped to the dialog to outrank .icon-button (global.css). */
+  .polaroid-modal .polaroid-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    background: rgba(0, 0, 0, 0.35);
+    font-size: 1.1rem;
+    transition: opacity var(--polaroid-frame-fade) ease, background 0.25s ease, border-color 0.25s ease;
+  }
+
+  .polaroid-modal .polaroid-nav--prev { left: 1.5rem; }
+  .polaroid-modal .polaroid-nav--next { right: 1.5rem; }
+
+  /* They fade with the polaroid's frame, and stay out of the return flight. */
+  dialog.polaroid-modal:not([open]) .polaroid-nav,
+  dialog.polaroid-modal:has(.polaroid-panel.is-chrome-hidden) .polaroid-nav {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    /* Swipe does the job on touch; keep the arrows out of the photo. */
+    .polaroid-modal .polaroid-nav {
+      top: auto;
+      bottom: 1.5rem;
+      transform: none;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .polaroid-modal .polaroid-nav--prev { left: 1rem; }
+    .polaroid-modal .polaroid-nav--next { right: 1rem; }
   }
 </style>

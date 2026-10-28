@@ -252,41 +252,6 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
     gap: 2.5rem;
   }
 
-  .playlist-row__head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .playlist-row__title { margin: 0; }
-
-  .playlist-row__arrows {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .playlist-row__arrows[hidden] { display: none; }
-
-  /* Touch users swipe; arrows are for mouse and keyboard. */
-  @media (hover: none) {
-    .playlist-row__arrows { display: none; }
-  }
-
-  .playlist-row__scroller {
-    display: flex;
-    /* Horizontal only: vertical wheel/swipes over a strip scroll the page. */
-    overflow: auto hidden;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    /* Full-bleed: the strip spans the viewport, the title stays in the column. */
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
-  }
-
-  .playlist-row__scroller::-webkit-scrollbar { display: none; }
-
   /* ── Video modal ── */
 
   dialog.video-modal {
@@ -356,7 +321,6 @@ const rows = (channelPlaylists?.playlists ?? []).map((playlist) => {
     .video-featured__info { padding: 1rem; }
     .video-featured__description { font-size: 0.85rem; }
     .channel-playlists { gap: 1.75rem; }
-    .playlist-row__head { margin-bottom: 0.6rem; }
 
     /* Stacked: the info panel back in flow at its natural height. */
     .video-featured__player { width: 100%; }

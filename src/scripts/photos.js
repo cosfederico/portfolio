@@ -1,5 +1,5 @@
 import { onPage, readEmbeddedJson } from "./utils.js";
-import { createPolaroid } from "./polaroid.js";
+import { bindPolaroidStepping, createPolaroid } from "./polaroid.js";
 import { fillParallaxStack } from "./parallax-bg.js";
 
 // Photography page: collection filter (synced to #slug) and the polaroid
@@ -76,32 +76,7 @@ onPage("#collections", (container, signal) => {
     if (tile) open(tile.dataset.collection, Number(tile.dataset.index));
   });
 
-  document.getElementById("polaroid-prev").addEventListener("click", () => step(-1));
-  document.getElementById("polaroid-next").addEventListener("click", () => step(1));
-
-  document.addEventListener(
-    "keydown",
-    (e) => {
-      if (e.key === "ArrowLeft") step(-1);
-      if (e.key === "ArrowRight") step(1);
-    },
-    { signal }
-  );
-
-  // Horizontal swipe on touch screens.
-  const panel = modal.querySelector(".polaroid-panel");
-  let swipeStart = null;
-  panel.addEventListener("pointerdown", (e) => {
-    if (e.pointerType !== "mouse") swipeStart = { x: e.clientX, y: e.clientY };
-  });
-  panel.addEventListener("pointerup", (e) => {
-    if (!swipeStart) return;
-    const dx = e.clientX - swipeStart.x;
-    const dy = e.clientY - swipeStart.y;
-    swipeStart = null;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
-  });
-  panel.addEventListener("pointercancel", () => (swipeStart = null));
+  bindPolaroidStepping(modal, signal, step);
 
   // ── Deep links: #slug filters, #photo-id opens that photo ──
 
