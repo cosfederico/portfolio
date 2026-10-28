@@ -6,11 +6,9 @@ import fcLogo from "../assets/fc_logo.png";
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isActive = (href: string) => (href.replace(/\/$/, "") || "/") === currentPath;
 
-const left = [
+const links = [
   { href: "/about/", label: "About" },
   { href: "/photos/", label: "Photography" },
-];
-const right = [
   { href: "/events/", label: "Events" },
   { href: "/videos/", label: "Videos" },
   { href: "/contact/", label: "Contact" },
@@ -29,21 +27,13 @@ const right = [
     <span class="bg-toggle__icon bg-toggle__icon--play" aria-hidden="true"></span>
   </button>
   <nav class="site-nav" id="site-nav" aria-label="Main">
-    {
-      left.map(({ href, label }) => (
-        <>
-          <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
-          <span class="nav-dot" aria-hidden="true">·</span>
-        </>
-      ))
-    }
     <a class="brand-link" href="/" aria-current={isActive("/") ? "page" : undefined}>
       <Image src={fcLogo} alt="Federico Coscia - Home" loading="eager" width={112} height={112} transition:name="site-logo" />
     </a>
     {
-      right.map(({ href, label }) => (
+      links.map(({ href, label }, i) => (
         <>
-          <span class="nav-dot" aria-hidden="true">·</span>
+          {i > 0 && <span class="nav-dot" aria-hidden="true">·</span>}
           <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
         </>
       ))
@@ -120,12 +110,16 @@ const right = [
     user-select: none;
   }
 
+  /* Pinned to the bar's left edge; the links stay centred. */
   .brand-link {
+    position: absolute;
+    top: 50%;
+    left: var(--gutter);
+    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 1.75rem;
-    margin: 0 0.25rem;
   }
 
   .brand-link img {
@@ -266,7 +260,10 @@ const right = [
 
     .nav-dot { display: none; }
 
+    /* Back in the menu's column, at the top. */
     .site-nav .brand-link {
+      position: static;
+      transform: none;
       width: auto;
       height: 1.25rem;
       margin: 0.5rem 0;
