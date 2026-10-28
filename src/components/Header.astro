@@ -7,10 +7,10 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isActive = (href: string) => (href.replace(/\/$/, "") || "/") === currentPath;
 
 const links = [
-  { href: "/about/", label: "About" },
   { href: "/photos/", label: "Photography" },
   { href: "/events/", label: "Events" },
   { href: "/videos/", label: "Videos" },
+  { href: "/about/", label: "About" },
   { href: "/contact/", label: "Contact" },
 ];
 ---
@@ -31,9 +31,9 @@ const links = [
       <Image src={fcLogo} alt="Federico Coscia - Home" loading="eager" width={112} height={112} transition:name="site-logo" />
     </a>
     {
-      links.map(({ href, label }, i) => (
+      links.map(({ href, label }) => (
         <>
-          {i > 0 && <span class="nav-dot" aria-hidden="true">·</span>}
+          <span class="nav-dot" aria-hidden="true">·</span>
           <a href={href} aria-current={isActive(href) ? "page" : undefined}>{label}</a>
         </>
       ))
@@ -110,16 +110,12 @@ const links = [
     user-select: none;
   }
 
-  /* Pinned to the bar's left edge; the links stay centred. */
   .brand-link {
-    position: absolute;
-    top: 50%;
-    left: var(--gutter);
-    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 1.75rem;
+    margin: 0 0.25rem;
   }
 
   .brand-link img {
@@ -260,10 +256,7 @@ const links = [
 
     .nav-dot { display: none; }
 
-    /* Back in the menu's column, at the top. */
     .site-nav .brand-link {
-      position: static;
-      transform: none;
       width: auto;
       height: 1.25rem;
       margin: 0.5rem 0;
