@@ -27,6 +27,242 @@
   ],
   "events": [
     {
+      "slug": "spyair",
+      "title": "SPYAIR",
+      "folder": "SPYAIR",
+      "when": "08.11.2026",
+      "role": "Concert photographer",
+      "location": "Magazzini Generali, Milan",
+      "description": [
+        "SPYAIR are a Japanese rock band from Nagoya, together since 2005 and signed to Sony Music. They're best known for anime themes, including Haikyū!!, Gintama, Bleach and Gundam, and have played Tokyo's Nippon Budokan.",
+        "A huge thanks to JNIGHT and Aura Productions who allowed me to be part of this, a milestone I'll remember in my career, here's to many many more."
+      ],
+      "place": "Magazzini Generali, Milano IT",
+      "date": "2026-11-08",
+      "photos": [
+        {
+          "src": "images/events/SPYAIR/IMG_4084.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/250s",
+          "aperture": "f/2.8",
+          "iso": "400",
+          "width": 5078,
+          "height": 3385
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4353.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/100s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 5184,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4368.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/200s",
+          "aperture": "f/5.6",
+          "iso": "800",
+          "width": 3456,
+          "height": 5184
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4253.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/160s",
+          "aperture": "f/3.5",
+          "iso": "1600",
+          "width": 4608,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4257.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/160s",
+          "aperture": "f/4.5",
+          "iso": "1600",
+          "width": 4320,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4321.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/160s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 5078,
+          "height": 3385
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4297.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/400s",
+          "aperture": "f/3.5",
+          "iso": "400",
+          "width": 3456,
+          "height": 4608
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4153.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 4608,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4586.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/160s",
+          "aperture": "f/4",
+          "iso": "3200",
+          "width": 3231,
+          "height": 4308
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4090.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/250s",
+          "aperture": "f/2.8",
+          "iso": "400",
+          "width": 3364,
+          "height": 4485
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4230.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/320s",
+          "aperture": "f/3.5",
+          "iso": "1600",
+          "width": 3456,
+          "height": 5184
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4733.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/4",
+          "iso": "3200",
+          "width": 4608,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4407.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/200s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 5184,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4614.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/1.4",
+          "iso": "100",
+          "width": 4608,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4769.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/200s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 3456,
+          "height": 5184
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4300.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/160s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 3456,
+          "height": 5184
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4681.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/100s",
+          "aperture": "f/5.6",
+          "iso": "3200",
+          "width": 3456,
+          "height": 4608
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4754.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/3.5",
+          "iso": "3200",
+          "width": 3310,
+          "height": 4138
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4180.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 3456,
+          "height": 4608
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4326.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/100s",
+          "aperture": "f/3.5",
+          "iso": "800",
+          "width": 5184,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4288.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/100s",
+          "aperture": "f/3.5",
+          "iso": "400",
+          "width": 4320,
+          "height": 3456
+        },
+        {
+          "src": "images/events/SPYAIR/IMG_4426.jpg",
+          "date": "2026-11-08",
+          "camera": "Canon EOS 100D",
+          "shutter": "1/125s",
+          "aperture": "f/4.5",
+          "iso": "3200",
+          "width": 3456,
+          "height": 4608
+        }
+      ]
+    },
+    {
       "slug": "camilla-pnk",
       "title": "Camilla PNK",
       "folder": "CAMILLA PNK",
