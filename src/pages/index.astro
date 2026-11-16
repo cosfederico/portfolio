@@ -4,11 +4,15 @@ import Polaroid from "../components/Polaroid.astro";
 import { allPhotos, photoVariants } from "../lib/photos";
 import { toJsonIsland } from "../lib/format.js";
 import site from "../data/site.json";
+import eventsMosaicItems from "../data/events-mosaic-items.json";
 
 // The mosaic's recycling pool (src/scripts/home.js) needs the whole photo list
 // client-side, so it ships as an inline JSON island instead of a fetch. Tiles
 // get a small `thumb`; the polaroid gets the full-size `src`.
 const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)));
+// Second mosaic, swapped in by the Events switch: every events-page photo
+// (built by scripts/populate_events.py).
+const eventsMosaicJson = toJsonIsland(await Promise.all(eventsMosaicItems.map(photoVariants)));
 ---
 
 <Layout
@@ -32,6 +36,15 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
 
   <Polaroid />
 
+  <div class="focus-toggle mosaic-toggle">
+    <span class="focus-toggle__glow" aria-hidden="true"></span>
+    <span class="focus-toggle__label">Artistic</span>
+    <button type="button" class="focus-toggle__switch" id="events-switch" role="switch" aria-checked="false" aria-labelledby="events-label">
+      <span class="focus-toggle__knob"></span>
+    </button>
+    <span class="focus-toggle__label" id="events-label">Events</span>
+  </div>
+
   <div class="focus-toggle">
     <span class="focus-toggle__glow" aria-hidden="true"></span>
     <span class="focus-toggle__label" id="focus-label">Interactive Mode</span>
@@ -41,6 +54,7 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
   </div>
 
   <script type="application/json" id="mosaic-data" set:html={mosaicJson} />
+  <script type="application/json" id="events-mosaic-data" set:html={eventsMosaicJson} />
   <!-- Inline (and re-run on every visit) so the offset applies before first
        paint. Measures 0 with overlay scrollbars. -->
   <script is:inline data-astro-rerun>
@@ -92,6 +106,15 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
   }
 
   .home-mosaic::-webkit-scrollbar { display: none; }
+
+  /* Frozen copy of the old mosaic during a swap (home.js). */
+  .home-mosaic-ghost {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
 
   /* Registered so getComputedStyle() hands home.js a px value. */
   @property --tile-height {
@@ -190,6 +213,23 @@ const mosaicJson = toJsonIsland(await Promise.all(allPhotos.map(photoVariants)))
     display: flex;
     align-items: center;
     gap: 0.85rem;
+  }
+
+  .focus-toggle[hidden] { display: none; }
+
+  /* Artistic / Events: an either-or switch, so the side not shown dims. */
+  .mosaic-toggle {
+    top: calc(var(--header-height) + 0.75rem);
+    bottom: auto;
+  }
+
+  .mosaic-toggle .focus-toggle__label {
+    transition: opacity 0.5s ease;
+  }
+
+  .mosaic-toggle .focus-toggle__label:has(+ .is-on),
+  .mosaic-toggle .focus-toggle__switch:not(.is-on) + .focus-toggle__label {
+    opacity: 0.45;
   }
 
   .focus-toggle__glow {

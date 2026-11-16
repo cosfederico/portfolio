@@ -1,4 +1,4 @@
-import { onPage, readEmbeddedJson } from "./utils.js";
+import { onPage, readEmbeddedJson, prefersReducedMotion } from "./utils.js";
 import { formatShortDate } from "../lib/format.js";
 import { createPolaroid } from "./polaroid.js";
 
@@ -17,7 +17,9 @@ onPage("#home-mosaic-grid", (grid, signal) => {
 
   const scroller = grid.closest(".home-mosaic");
   const header = document.querySelector(".site-header");
-  const images = shuffle(items);
+  const photoImages = shuffle(items);
+  const eventImages = shuffle(readEmbeddedJson("events-mosaic-data") ?? []);
+  let images = photoImages;
   let focusMode = false;
   let resizeTimer;
   let resumeTimer;
@@ -113,13 +115,12 @@ onPage("#home-mosaic-grid", (grid, signal) => {
   }
 
   // Width or tile size changed: rebuild the rows, keeping the photo that was
-  // at the top of the screen at the top.
-  function relayout() {
+  // at the top of the screen at the top (or from the start, for a new mosaic).
+  function relayout(anchor = rows[Math.floor(scroller.scrollTop / tileHeight)]?.tiles[0]?.index ?? 0) {
     if (busy) {
       relayoutPending = true;
       return;
     }
-    const anchor = rows[Math.floor(scroller.scrollTop / tileHeight)]?.tiles[0]?.index ?? 0;
     measure();
     for (const tile of live.values()) {
       tile.hidden = true;
@@ -151,7 +152,7 @@ onPage("#home-mosaic-grid", (grid, signal) => {
     "resize",
     () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(relayout, 250);
+      resizeTimer = setTimeout(() => relayout(), 250);
     },
     { signal }
   );
@@ -178,7 +179,7 @@ onPage("#home-mosaic-grid", (grid, signal) => {
       tile.classList.remove("is-focused");
     });
     tile.addEventListener("click", () => {
-      if (focusMode) polaroid.open(itemAt(tile._index), tile);
+      if (focusMode && !swapping) polaroid.open(itemAt(tile._index), tile);
     });
     return tile;
   }
@@ -212,6 +213,58 @@ onPage("#home-mosaic-grid", (grid, signal) => {
   };
   setFocusMode(false);
   toggle.addEventListener("click", () => setFocusMode(!focusMode));
+
+  // ── Mosaic source ──
+  // Artistic or events. The swap is a blur crossfade of two screen-sized
+  // layers (not per tile, which lags): a frozen copy of the old mosaic fades
+  // out on top while the new one, laid out from the top, fades in beneath.
+
+  const eventsToggle = document.getElementById("events-switch");
+  let swapping = false;
+
+  // Starts the next mosaic's first screens loading before the click lands.
+  const warmNext = () =>
+    (eventsToggle.classList.contains("is-on") ? photoImages : eventImages).slice(0, 48).forEach((item) => (new Image().src = item.thumb));
+
+  async function setEvents(on) {
+    if (swapping || busy) return;
+    swapping = true;
+    eventsToggle.classList.toggle("is-on", on);
+    eventsToggle.setAttribute("aria-checked", String(on));
+    grid.classList.remove("is-hovering");
+
+    const ghost = document.createElement("div");
+    ghost.className = "home-mosaic-ghost";
+    ghost.inert = true;
+    const frozen = grid.cloneNode(true);
+    frozen.removeAttribute("id");
+    frozen.style.transform = `translateY(${-scroller.scrollTop}px)`;
+    ghost.append(frozen);
+    scroller.after(ghost);
+
+    images = on ? eventImages : photoImages;
+    relayout(0);
+
+    const reduce = prefersReducedMotion();
+    const blur = reduce ? "blur(0)" : "blur(12px)";
+    const timing = { duration: 450, easing: "ease" };
+    await Promise.all(
+      [
+        ghost.animate([{ opacity: 1, filter: "blur(0)" }, { opacity: 0, filter: blur }], { ...timing, fill: "forwards" }),
+        scroller.animate([{ opacity: 0, filter: blur }, { opacity: 1, filter: "blur(0)" }], timing),
+      ].map((a) => a.finished.catch(() => {}))
+    );
+    ghost.remove();
+    swapping = false;
+  }
+
+  if (eventImages.length) {
+    eventsToggle.addEventListener("pointerenter", warmNext);
+    eventsToggle.addEventListener("focus", warmNext);
+    eventsToggle.addEventListener("click", () => setEvents(!eventsToggle.classList.contains("is-on")));
+  } else {
+    eventsToggle.closest(".focus-toggle").hidden = true;
+  }
 
   // ── Polaroid ──
 

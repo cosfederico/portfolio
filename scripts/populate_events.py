@@ -5,6 +5,9 @@ originals in assets-source/images/events/<folder>, in a shuffled order that
 is the same on every run. Everything else in the file (titles, CV text,
 places, row order, background) is kept.
 
+Also writes src/data/events-mosaic-items.json: every event photo, in the
+same shape as mosaic-items.json, for the home page's events mosaic.
+
 Run after adding photos to an event folder:
     python scripts/populate_events.py
 """
@@ -18,6 +21,7 @@ from PIL import Image
 from populate_metadata import ORIGINAL_EXTENSIONS, REPO_ROOT, extract_metadata
 
 JSON_PATH = REPO_ROOT / "src" / "data" / "events.json"
+MOSAIC_PATH = REPO_ROOT / "src" / "data" / "events-mosaic-items.json"
 EVENTS_DIR = REPO_ROOT / "assets-source" / "images" / "events"
 ORIENTATION_SWAPS = {5, 6, 7, 8}  # EXIF orientations rotated by 90 degrees
 
@@ -41,6 +45,28 @@ def read_photo(path):
     }
 
 
+def write_mosaic(data):
+    photos = [(event, photo) for event in data["events"] for photo in event["photos"]]
+    items = [
+        {
+            "id": f"evt-{n:03}",
+            "src": photo["src"],
+            "alt": "",
+            "camera": photo["camera"],
+            "shutter": photo["shutter"],
+            "aperture": photo["aperture"],
+            "iso": photo["iso"],
+            "date": photo["date"] or event.get("date", ""),  # as on the events page
+            "place": event.get("place", ""),
+            "width": photo["width"],
+            "height": photo["height"],
+        }
+        for n, (event, photo) in enumerate(photos, 1)
+    ]
+    MOSAIC_PATH.write_text(json.dumps(items, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Events mosaic: {len(items)} photos")
+
+
 def main():
     data = json.loads(JSON_PATH.read_text(encoding="utf-8"))
     for event in data["events"]:
@@ -53,6 +79,7 @@ def main():
         event["photos"] = photos
         print(f"{event['title']}: {len(photos)} photos")
     JSON_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_mosaic(data)
 
 
 if __name__ == "__main__":
