@@ -45,6 +45,8 @@ def main():
     data = json.loads(JSON_PATH.read_text(encoding="utf-8"))
     for event in data["events"]:
         files = sorted(f for f in (EVENTS_DIR / event["folder"]).iterdir() if f.suffix.lower() in ORIGINAL_EXTENSIONS)
+        if "only" in event:  # optional: show just these filenames of the folder
+            files = [f for f in files if f.name in event["only"]]
         photos = [read_photo(f) for f in files]
         # Seeded by the event, so re-running only reshuffles when photos change.
         random.Random(event["slug"]).shuffle(photos)
